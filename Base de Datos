@@ -1,0 +1,588 @@
+--Base de Datos Clinica Dental
+
+CREATE TABLE Paciente (
+    ID_Paciente INT PRIMARY KEY,
+    Num_Cedula  NUMBER ( 9),
+    Nom_Paciente VARCHAR(100),
+    Apellidos_Paciente VARCHAR(100),
+    Direccion VARCHAR(255),
+    Telefono_p NUMBER(8),
+    Alergias VARCHAR(255),
+    Enferm_Cronicas VARCHAR(255)
+);
+
+CREATE TABLE Medicos (
+    ID_Medico INT PRIMARY KEY,
+    Nom_Medico VARCHAR(100),
+    Apellidos_Medico VARCHAR(100),
+    Ced_Medico NUMBER(9),
+    Telefono_m NUMBER(8),
+    Turno VARCHAR(50),
+    Especialidad VARCHAR(50)
+);
+
+CREATE TABLE Registro_Citas (
+    ID_Cita NUMBER PRIMARY KEY,
+    Hora TIMESTAMP,
+    Fecha DATE,
+    Consultorio VARCHAR2(255),
+    ID_Paciente NUMBER,
+    ID_Medico NUMBER,
+    FOREIGN KEY (ID_Paciente) REFERENCES Paciente(ID_Paciente),
+    FOREIGN KEY (ID_Medico) REFERENCES Medicos(ID_Medico)
+);
+
+CREATE TABLE Insumos (
+    ID_Insumos INT PRIMARY KEY,
+    Nombre_Insu VARCHAR(100),
+    Costo DECIMAL(10, 2),
+    Ubicacion VARCHAR(255),
+    Fecha_Vencimiento DATE
+);
+
+
+CREATE TABLE Pago (
+    ID_Recibo INT PRIMARY KEY,
+    Fecha DATE,
+    Hora TIMESTAMP,
+    ID_Paciente NUMBER,
+    ID_Medico NUMBER,
+    ID_Cita NUMBER,
+    ID_Insumos NUMBER,
+    Pago DECIMAL(10, 2),
+    FOREIGN KEY (ID_Paciente) REFERENCES Paciente(ID_Paciente),
+    FOREIGN KEY (ID_Medico) REFERENCES Medicos(ID_Medico),
+    FOREIGN KEY (ID_Cita) REFERENCES Registro_Citas(ID_Cita),
+    FOREIGN KEY (ID_Insumos) REFERENCES Insumos(ID_Insumos)
+);
+
+
+--------------------------------------------------------------------------------------------
+
+--12 procedimientos
+
+--1. Insertar nuevo paciente
+
+CREATE OR REPLACE PROCEDURE Insertar_Paciente(
+    p_ID_Paciente IN INT,
+    p_Num_Cedula IN NUMBER,
+    p_Nom_Paciente IN VARCHAR2,
+    p_Apellidos_Paciente IN VARCHAR2,
+    p_Direccion IN VARCHAR2,
+    p_Telefono_p IN NUMBER,
+    p_Alergias IN VARCHAR2,
+    p_Enferm_Cronicas IN VARCHAR2
+)
+IS
+BEGIN
+    INSERT INTO Paciente(ID_Paciente, Num_Cedula, Nom_Paciente, Apellidos_Paciente, Direccion, Telefono_p, Alergias, Enferm_Cronicas)
+    VALUES (p_ID_Paciente, p_Num_Cedula, p_Nom_Paciente, p_Apellidos_Paciente, p_Direccion, p_Telefono_p, p_Alergias, p_Enferm_Cronicas);
+    COMMIT;
+END Insertar_Paciente;
+/
+
+BEGIN
+    Insertar_Paciente(
+        p_ID_Paciente => 26,
+        p_Num_Cedula => 112270854,
+        p_Nom_Paciente => 'Juan',
+        p_Apellidos_Paciente => 'Pérez',
+        p_Direccion => 'Calle Principal, San-Jose',
+        p_Telefono_p => 88664455,
+        p_Alergias => 'Polen',
+        p_Enferm_Cronicas => 'Hipertensión'
+    );
+END;
+/
+
+--2. Insertar Medico
+
+CREATE OR REPLACE PROCEDURE Insertar_Medico(
+    p_ID_Medico IN INT,
+    p_Nom_Medico IN VARCHAR2,
+    p_Apellidos_Medico IN VARCHAR2,
+    p_Ced_Medico IN NUMBER,
+    p_Telefono_m IN NUMBER,
+    p_Turno IN VARCHAR2,
+    p_Especialidad IN VARCHAR2
+)
+IS
+BEGIN
+    INSERT INTO Medicos(ID_Medico, Nom_Medico, Apellidos_Medico, Ced_Medico, Telefono_m, Turno, Especialidad)
+    VALUES (p_ID_Medico, p_Nom_Medico, p_Apellidos_Medico, p_Ced_Medico, p_Telefono_m, p_Turno, p_Especialidad);
+    COMMIT;
+END;
+/
+
+BEGIN
+    Insertar_Medico(
+        p_ID_Medico => 26,
+        p_Nom_Medico => 'Ana',
+        p_Apellidos_Medico => 'González',
+        p_Ced_Medico => 12570985,
+        p_Telefono_m => 88765432,
+        p_Turno => 'Mañana',
+        p_Especialidad => 'Odontologa'
+    );
+END;
+/
+
+--3. Insertar registro de citas
+
+CREATE OR REPLACE PROCEDURE Insertar_Registro_Citas(
+    p_ID_Cita IN NUMBER,
+    p_Hora IN TIMESTAMP,
+    p_Fecha IN DATE,
+    p_Consultorio IN VARCHAR2,
+    p_ID_Paciente IN NUMBER,
+    p_ID_Medico IN NUMBER
+)
+IS
+BEGIN
+    INSERT INTO Registro_Citas(ID_Cita, Hora, Fecha, Consultorio, ID_Paciente, ID_Medico)
+    VALUES (p_ID_Cita, p_Hora, p_Fecha, p_Consultorio, p_ID_Paciente, p_ID_Medico);
+    COMMIT;
+END;
+/
+
+--4. Insertar insumos
+
+CREATE OR REPLACE PROCEDURE Insertar_Insumos(
+    p_ID_Insumos IN INT,
+    p_Nombre_Insu IN VARCHAR2,
+    p_Costo IN DECIMAL,
+    p_Ubicacion IN VARCHAR2,
+    p_Fecha_Vencimiento IN DATE
+)
+IS
+BEGIN
+    INSERT INTO Insumos(ID_Insumos, Nombre_Insu, Costo, Ubicacion, Fecha_Vencimiento)
+    VALUES (p_ID_Insumos, p_Nombre_Insu, p_Costo, p_Ubicacion, p_Fecha_Vencimiento);
+    COMMIT;
+END;
+/
+
+--5. Actualizar Paciente
+
+CREATE OR REPLACE PROCEDURE Actualizar_Informacion_Paciente(
+    p_ID_Paciente IN INT,
+    p_Nom_Paciente IN VARCHAR2,
+    p_Apellidos_Paciente IN VARCHAR2,
+    p_Direccion IN VARCHAR2,
+    p_Telefono_p IN NUMBER,
+    p_Alergias IN VARCHAR2,
+    p_Enferm_Cronicas IN VARCHAR2
+)
+IS
+BEGIN
+    UPDATE Paciente
+    SET Nom_Paciente = p_Nom_Paciente,
+        Apellidos_Paciente = p_Apellidos_Paciente,
+        Direccion = p_Direccion,
+        Telefono_p = p_Telefono_p,
+        Alergias = p_Alergias,
+        Enferm_Cronicas = p_Enferm_Cronicas
+    WHERE ID_Paciente = p_ID_Paciente;
+    COMMIT;
+END;
+/
+
+
+--6. Actualizar Medico
+
+CREATE OR REPLACE PROCEDURE Actualizar_Informacion_Medico(
+    p_ID_Medico IN INT,
+    p_Nom_Medico IN VARCHAR2,
+    p_Apellidos_Medico IN VARCHAR2,
+    p_Ced_Medico IN NUMBER,
+    p_Telefono_m IN NUMBER,
+    p_Turno IN VARCHAR2,
+    p_Especialidad IN VARCHAR2
+)
+IS
+BEGIN
+    UPDATE Medicos
+    SET Nom_Medico = p_Nom_Medico,
+        Apellidos_Medico = p_Apellidos_Medico,
+        Ced_Medico = p_Ced_Medico,
+        Telefono_m = p_Telefono_m,
+        Turno = p_Turno,
+        Especialidad = p_Especialidad
+    WHERE ID_Medico = p_ID_Medico;
+    COMMIT;
+END;
+/
+
+--7. Actualizar Registro de citas
+
+CREATE OR REPLACE PROCEDURE Actualizar_Registro_Citas(
+    p_ID_Cita IN NUMBER,
+    p_Hora IN TIMESTAMP,
+    p_Fecha IN DATE,
+    p_Consultorio IN VARCHAR2,
+    p_ID_Paciente IN NUMBER,
+    p_ID_Medico IN NUMBER
+)
+IS
+BEGIN
+    UPDATE Registro_Citas
+    SET Hora = p_Hora,
+        Fecha = p_Fecha,
+        Consultorio = p_Consultorio,
+        ID_Paciente = p_ID_Paciente,
+        ID_Medico = p_ID_Medico
+    WHERE ID_Cita = p_ID_Cita;
+    COMMIT;
+END;
+/
+
+--8. Actualizar de insumos
+
+CREATE OR REPLACE PROCEDURE Actualizar_Informacion_Insumos(
+    p_ID_Insumos IN INT,
+    p_Nombre_Insu IN VARCHAR2,
+    p_Costo IN DECIMAL,
+    p_Ubicacion IN VARCHAR2,
+    p_Fecha_Vencimiento IN DATE
+)
+IS
+BEGIN
+    UPDATE Insumos
+    SET Nombre_Insu = p_Nombre_Insu,
+        Costo = p_Costo,
+        Ubicacion = p_Ubicacion,
+        Fecha_Vencimiento = p_Fecha_Vencimiento
+    WHERE ID_Insumos = p_ID_Insumos;
+    COMMIT;
+END;
+/
+
+--9. Eliminar registro de paciente 
+
+CREATE OR REPLACE PROCEDURE Eliminar_Paciente(
+    p_ID_Paciente IN INT
+)
+IS
+BEGIN
+    DELETE FROM Paciente
+    WHERE ID_Paciente = p_ID_Paciente;
+    COMMIT;
+END;
+/
+
+
+--10.Eliminar registro de medico
+
+CREATE OR REPLACE PROCEDURE Eliminar_Medico(
+    p_ID_Medico IN INT
+)
+IS
+BEGIN
+    DELETE FROM Medicos
+    WHERE ID_Medico = p_ID_Medico;
+    COMMIT;
+END;
+/
+
+--11.Eliminar registro de cita
+
+CREATE OR REPLACE PROCEDURE Eliminar_Registro_Citas(
+    p_ID_Cita IN NUMBER
+)
+IS
+BEGIN
+    DELETE FROM Registro_Citas
+    WHERE ID_Cita = p_ID_Cita;
+    COMMIT;
+END;
+/
+
+
+--12.Eliminar insumo
+
+CREATE OR REPLACE PROCEDURE Eliminar_Insumo(
+    p_ID_Insumo IN INT
+)
+IS
+BEGIN
+    DELETE FROM Insumos
+    WHERE ID_Insumos = p_ID_Insumo;
+    COMMIT;
+END;
+/
+
+-------------------------------------------------------------------------------------------
+
+-- Genmeracion de 5 VISTAS
+
+--1. Vista Detalles de Citas
+
+CREATE VIEW Vista_Detalles_Citas AS
+SELECT RC.ID_Cita, P.Nom_Paciente, P.Apellidos_Paciente, M.Nom_Medico, M.Apellidos_Medico, RC.Consultorio, RC.Hora, RC.Fecha
+FROM Registro_Citas RC
+INNER JOIN Paciente P ON RC.ID_Paciente = P.ID_Paciente
+INNER JOIN Medicos M ON RC.ID_Medico = M.ID_Medico;
+
+--2. Vista Medicos y Activos
+
+CREATE VIEW Vista_Medicos_Activos AS
+SELECT ID_Medico, Nom_Medico, Apellidos_Medico
+FROM Medicos
+WHERE Especialidad = 'Ortodoncista';
+
+--3. Vista para pacientes que pagaron mas de 60000
+CREATE VIEW Vista_Pacientes_Pago_Mayor_60000 AS
+SELECT DISTINCT P.ID_Paciente, P.Nom_Paciente, P.Apellidos_Paciente
+FROM Pago PA
+JOIN Paciente P ON PA.ID_Paciente = P.ID_Paciente
+GROUP BY P.ID_Paciente, P.Nom_Paciente, P.Apellidos_Paciente
+HAVING SUM(PA.Pago) > 60000;
+
+--4. Vista para ver la cantidad de citas de un dentista general
+CREATE VIEW Vista_Cantidad_Citas_Dentista_General AS
+SELECT M.ID_Medico, M.Nom_Medico, M.Apellidos_Medico, COUNT(RC.ID_Cita) AS Cantidad_Citas
+FROM Medicos M
+LEFT JOIN Registro_Citas RC ON M.ID_Medico = RC.ID_Medico
+WHERE M.Especialidad = 'Dentista General'
+GROUP BY M.ID_Medico, M.Nom_Medico, M.Apellidos_Medico;
+
+
+--5. Vista Medicos de turno en la mañana
+CREATE VIEW Vista_Medicos_Turno_Mañana AS
+SELECT ID_Medico, Nom_Medico, Apellidos_Medico, Especialidad
+FROM Medicos
+WHERE Turno = 'Mañana';
+
+
+---------------------------------------------------------------------------------------
+
+-- Elaboracion de 3 TRIGGERS
+
+--1. TRIGGERS insercion de paciente
+CREATE OR REPLACE TRIGGER trg_after_insert_paciente
+AFTER INSERT ON Paciente
+FOR EACH ROW
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Se ha insertado un nuevo paciente con ID: ' || :NEW.ID_Paciente);
+END;
+/
+
+--2. TRIGGERS insercion de cita
+CREATE OR REPLACE TRIGGER Trig_Insertar_Cita
+BEFORE INSERT ON Registro_Citas
+FOR EACH ROW
+BEGIN
+    IF :NEW.Fecha < SYSDATE THEN
+        RAISE_APPLICATION_ERROR(-20001, 'No se puede programar una cita en una fecha pasada.');
+    END IF;
+END;
+/
+
+--3. TRIGGERS notificacion de nuevo pago
+CREATE OR REPLACE TRIGGER Trig_Notificar_Nuevo_Pago
+AFTER INSERT ON Pago
+FOR EACH ROW
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Se ha registrado un nuevo pago con ID de recibo: ' || :NEW.ID_Recibo);
+END;
+/
+
+---------------------------------------------------------------------------------------
+
+-- Elaboracion de 7 funciones
+
+CREATE SEQUENCE SecuenciaPacientes
+    START WITH 1
+    INCREMENT BY 1
+    NOCACHE
+    NOCYCLE;
+
+
+
+CREATE TABLE Pacientes (
+    IdPaciente NUMBER PRIMARY KEY,
+    Nombre VARCHAR2(50),
+    Apellido VARCHAR2(50),
+    Telefono VARCHAR2(15),
+    CorreoElectronico VARCHAR2(100)
+);
+
+
+SELECT USER FROM DUAL;
+
+
+CREATE OR REPLACE FUNCTION RegistrarNuevoPaciente(
+    p_Nombre VARCHAR2,
+    p_Apellido VARCHAR2,
+    p_Telefono VARCHAR2,
+    p_CorreoElectronico VARCHAR2
+)
+RETURN NUMBER
+AS
+    v_NuevoIdPaciente NUMBER;
+BEGIN
+    -- Obtener el próximo valor de la secuencia para IdPaciente
+    SELECT SecuenciaPacientes.NEXTVAL INTO v_NuevoIdPaciente FROM DUAL;
+
+    -- Insertar el nuevo paciente
+    INSERT INTO Pacientes (IdPaciente, Nombre, Apellido, Telefono, CorreoElectronico)
+    VALUES (v_NuevoIdPaciente, p_Nombre, p_Apellido, p_Telefono, p_CorreoElectronico);
+
+    RETURN v_NuevoIdPaciente;
+END;
+/
+
+
+
+DECLARE
+    nuevoId NUMBER;
+BEGIN
+    nuevoId := RegistrarNuevoPaciente('NombreEjemplo', 'ApellidoEjemplo', '123456789', 'ejemplo@correo.com');
+    DBMS_OUTPUT.PUT_LINE('Nuevo IdPaciente: ' || nuevoId);
+END;
+/
+
+
+
+CREATE OR REPLACE FUNCTION ListarTodosLosPacientes
+RETURN SYS_REFCURSOR
+AS
+   v_Cursor SYS_REFCURSOR;
+BEGIN
+   OPEN v_Cursor FOR
+      SELECT * FROM Pacientes;
+   RETURN v_Cursor;
+END;
+/
+
+
+
+CREATE OR REPLACE FUNCTION BuscarPacientePorId(
+   p_IdPaciente NUMBER
+)
+RETURN SYS_REFCURSOR
+AS
+   v_Cursor SYS_REFCURSOR;
+BEGIN
+   OPEN v_Cursor FOR
+      SELECT * FROM Pacientes WHERE IdPaciente = p_IdPaciente;
+   RETURN v_Cursor;
+END;
+/
+
+
+
+CREATE OR REPLACE PROCEDURE ModificarInformacionPaciente(
+   p_IdPaciente NUMBER,
+   p_NuevoNombre VARCHAR2,
+   p_NuevoApellido VARCHAR2,
+   p_NuevoTelefono VARCHAR2,
+   p_NuevoCorreoElectronico VARCHAR2
+)
+AS
+BEGIN
+   UPDATE Pacientes
+   SET Nombre = p_NuevoNombre,
+       Apellido = p_NuevoApellido,
+       Telefono = p_NuevoTelefono,
+       CorreoElectronico = p_NuevoCorreoElectronico
+   WHERE IdPaciente = p_IdPaciente;
+END;
+/
+
+
+----------------------------------------------------------------------------------------
+
+
+-- 7 Cursores 
+SET SERVEROUTPUT ON;
+--1. Cursor Listado de Pacientes
+
+CREATE OR REPLACE PROCEDURE Listar_Pacientes AS
+    CURSOR c_pacientes IS
+        SELECT * FROM Paciente;
+    v_id_paciente Paciente.ID_Paciente%TYPE;
+    v_num_cedula Paciente.Num_Cedula%TYPE;
+    v_nom_paciente Paciente.Nom_Paciente%TYPE;
+    v_apellidos_paciente Paciente.Apellidos_Paciente%TYPE;
+    v_direccion Paciente.Direccion%TYPE;
+    v_telefono_p Paciente.Telefono_p%TYPE;
+    v_alergias Paciente.Alergias%TYPE;
+    v_enferm_cronicas Paciente.Enferm_Cronicas%TYPE;
+BEGIN
+
+    DBMS_OUTPUT.PUT_LINE('Listado de Pacientes:');
+    DBMS_OUTPUT.PUT_LINE('ID_PACIENTE | NUM_CEDULA | NOM_PACIENTE | APELLIDOS_PACIENTE | DIRECCION | TELEFONO_P | ALERGIAS | ENFERM_CRONICAS');
+    DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------');
+
+    OPEN c_pacientes;
+
+    LOOP
+        FETCH c_pacientes INTO v_id_paciente, v_num_cedula, v_nom_paciente, v_apellidos_paciente, v_direccion, v_telefono_p, v_alergias, v_enferm_cronicas;
+        EXIT WHEN c_pacientes%NOTFOUND;
+        
+        DBMS_OUTPUT.PUT_LINE(v_id_paciente || ' | ' || v_num_cedula || ' | ' || v_nom_paciente || ' | ' || v_apellidos_paciente || ' | ' || v_direccion || ' | ' || v_telefono_p || ' | ' || v_alergias || ' | ' || v_enferm_cronicas);
+    END LOOP;
+
+    CLOSE c_pacientes;
+END;
+/
+
+BEGIN
+    Listar_Pacientes;
+END;
+/
+
+
+--2. Cursor Listado de Medicos
+
+CREATE OR REPLACE PROCEDURE Listar_Medicos AS
+    CURSOR c_medicos IS
+        SELECT ID_Medico, Nom_Medico FROM Medicos;
+    v_id_medico Medicos.ID_Medico%TYPE;
+    v_nom_medico Medicos.Nom_Medico%TYPE;
+BEGIN
+    OPEN c_medicos;
+    LOOP
+        FETCH c_medicos INTO v_id_medico, v_nom_medico;
+        EXIT WHEN c_medicos%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('ID Medico: ' || v_id_medico || ', Nombre: ' || v_nom_medico);
+    END LOOP;
+    CLOSE c_medicos;
+END Listar_Medicos;
+/
+
+BEGIN
+    Listar_Medicos;
+END;
+/
+
+--3. Cursor Listado de Citas
+
+CREATE OR REPLACE PROCEDURE Listar_Citas AS
+    CURSOR c_citas IS
+        SELECT * FROM Registro_Citas;
+
+    v_id_cita Registro_Citas.ID_Cita%TYPE;
+    v_hora_cita Registro_Citas.Hora%TYPE;
+    v_fecha_cita Registro_Citas.Fecha%TYPE;
+    v_consultorio Registro_Citas.Consultorio%TYPE;
+    v_id_paciente Registro_Citas.ID_Paciente%TYPE;
+    v_id_medico Registro_Citas.ID_Medico%TYPE;
+BEGIN
+    OPEN c_citas;
+    LOOP
+        FETCH c_citas INTO v_id_cita, v_hora_cita, v_fecha_cita, v_consultorio, v_id_paciente, v_id_medico;
+        EXIT WHEN c_citas%NOTFOUND;
+        DBMS_OUTPUT.PUT_LINE('ID Cita: ' || v_id_cita || ', Hora: ' || v_hora_cita || ', Fecha: ' || v_fecha_cita || ', Consultorio: ' || v_consultorio || ', ID Paciente: ' || v_id_paciente || ', ID Medico: ' || v_id_medico);
+    END LOOP;
+    CLOSE c_citas;
+END Listar_Citas;
+/
+
+BEGIN
+    Listar_Citas;
+END;
+/
+
+
