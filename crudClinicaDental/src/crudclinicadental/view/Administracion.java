@@ -62,7 +62,7 @@ public class Administracion extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTblMedicos1 = new javax.swing.JTable();
+        jTblPaciente = new javax.swing.JTable();
         jPanel13 = new javax.swing.JPanel();
         jLabel9 = new javax.swing.JLabel();
         jTextFieldNombre1 = new javax.swing.JTextField();
@@ -72,7 +72,7 @@ public class Administracion extends javax.swing.JFrame {
         jLabel13 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
         jTextFieldApellido1 = new javax.swing.JTextField();
-        jTextFieldCedula1 = new javax.swing.JTextField();
+        jTextFieldCedulaPaciente = new javax.swing.JTextField();
         jTextFieldTelefono1 = new javax.swing.JTextField();
         jTextFieldTurno1 = new javax.swing.JTextField();
         jTextFieldEspecialidad1 = new javax.swing.JTextField();
@@ -308,7 +308,7 @@ public class Administracion extends javax.swing.JFrame {
 
         Medicos.addTab("Medicos", jPanel2);
 
-        jTblMedicos1.setModel(new javax.swing.table.DefaultTableModel(
+        jTblPaciente.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -316,7 +316,7 @@ public class Administracion extends javax.swing.JFrame {
 
             }
         ));
-        jScrollPane3.setViewportView(jTblMedicos1);
+        jScrollPane3.setViewportView(jTblPaciente);
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Nombre:");
@@ -345,7 +345,7 @@ public class Administracion extends javax.swing.JFrame {
 
         jTextFieldApellido1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jTextFieldCedula1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldCedulaPaciente.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jTextFieldTelefono1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -425,7 +425,7 @@ public class Administracion extends javax.swing.JFrame {
                                 .addComponent(jTextFieldApellido1)
                                 .addComponent(jTextFieldTelefono1)
                                 .addComponent(jTextFieldTurno1, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                                .addComponent(jTextFieldCedula1)))))
+                                .addComponent(jTextFieldCedulaPaciente)))))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel13Layout.setVerticalGroup(
@@ -446,7 +446,7 @@ public class Administracion extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11)
-                    .addComponent(jTextFieldCedula1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCedulaPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel12)
@@ -681,7 +681,7 @@ public class Administracion extends javax.swing.JFrame {
         );
 
         jLabel24.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel24.setText("Pacientes");
+        jLabel24.setText("Medicamentos");
 
         javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
         jPanel14.setLayout(jPanel14Layout);
@@ -730,7 +730,7 @@ public class Administracion extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        Medicos.addTab("tab3", jPanel4);
+        Medicos.addTab("Medicamentos", jPanel4);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -1023,14 +1023,14 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTable jTblMedicos;
-    private javax.swing.JTable jTblMedicos1;
     private javax.swing.JTable jTblMedicos2;
+    private javax.swing.JTable jTblPaciente;
     private javax.swing.JTextField jTextFieldApellido;
     private javax.swing.JTextField jTextFieldApellido1;
     private javax.swing.JTextField jTextFieldApellido2;
     private javax.swing.JTextField jTextFieldCedula;
-    private javax.swing.JTextField jTextFieldCedula1;
     private javax.swing.JTextField jTextFieldCedula2;
+    private javax.swing.JTextField jTextFieldCedulaPaciente;
     private javax.swing.JTextField jTextFieldEspecialidad;
     private javax.swing.JTextField jTextFieldEspecialidad1;
     private javax.swing.JTextField jTextFieldEspecialidad2;
