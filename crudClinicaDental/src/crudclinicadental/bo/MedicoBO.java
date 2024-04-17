@@ -4,8 +4,9 @@
  */
 package crudclinicadental.bo;
 
-import con.registro.entity.MedicoEntity;
+
 import crudclinicadental.dao.MedicoDAO;
+import crudclinicadental.entity.MedicoEntity;
 import java.sql.Connection;
 
 /**
@@ -18,6 +19,11 @@ public class MedicoBO {
     private MedicoDAO mdao = new MedicoDAO();
 
     public String agregarMedico(MedicoEntity med) {
+        Connection conn = Conexion.getConnection()
+        try {
+            
+        } catch (Exception e) {
+        }
         return mensaje;
     }
 
