@@ -17,19 +17,19 @@ import javax.swing.JTable;
 public class PacientesDAO {
         private String mensaje="";
     
-    public String agregarPaciente(Connection con, PacienteEntiy pacienteEntiy){
+    public String agregarPaciente(Connection con, PacienteEntiy pacienteEntity){
         PreparedStatement pst = null;
         String sql = "INSERT INTO PACIENTE (ID_PACIENTE, NUM_CEDULA, NOM_PACIENTE, APELLIDOS_PACIENTE, DIRECCION, TELEFONO_P, ALERGIAS, ENFERM_CRONICAS) "
                 + "VALUES(SECUENCIAPACIENTES.NEXTVAL,?,?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setInt(1, pacienteEntiy.getCedula());
-            pst.setString(2, pacienteEntiy.getNombre());
-            pst.setString(3, pacienteEntiy.getApellidos());
-            pst.setString(4, pacienteEntiy.getDireccion());
-            pst.setInt(5, pacienteEntiy.getTelefono());
-            pst.setString(6, pacienteEntiy.getAlegias());
-            pst.setString(6, pacienteEntiy.getEnfermedad());
+            pst.setInt(1, pacienteEntity.getCedula());
+            pst.setString(2, pacienteEntity.getNombre());
+            pst.setString(3, pacienteEntity.getApellidos());
+            pst.setString(4, pacienteEntity.getDireccion());
+            pst.setInt(5, pacienteEntity.getTelefono());
+            pst.setString(6, pacienteEntity.getAlegias());
+            pst.setString(7, pacienteEntity.getEnfermedad());
             mensaje = "PACIENTE GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
@@ -39,19 +39,19 @@ public class PacientesDAO {
         return mensaje;
     }
 
-    public String modificarPaciente(Connection con, PacienteEntiy pacienteEntiy) {
+    public String modificarPaciente(Connection con, PacienteEntiy pacienteEntity) {
         PreparedStatement pst = null;
         String sql = "UPDATE PACIENTE SET NUM_CEDULA = ?, NOM_PACIENTE = ?, APELLIDOS_PACIENTE = ?, DIERECCION = ?,TELEFONO_P = ?, ALERGIAS = ?, ENFERM_CRONICAS = ?"
                 + "WHERE ID_PACIENTE = ?";
         try {
             pst = con.prepareStatement(sql);
-            pst.setInt(1, pacienteEntiy.getCedula());
-            pst.setString(2, pacienteEntiy.getNombre());
-            pst.setString(3, pacienteEntiy.getApellidos());
-            pst.setString(4, pacienteEntiy.getDireccion());
-            pst.setInt(5, pacienteEntiy.getTelefono());
-            pst.setString(6, pacienteEntiy.getAlegias());
-            pst.setString(6, pacienteEntiy.getEnfermedad());
+            pst.setInt(1, pacienteEntity.getCedula());
+            pst.setString(2, pacienteEntity.getNombre());
+            pst.setString(3, pacienteEntity.getApellidos());
+            pst.setString(4, pacienteEntity.getDireccion());
+            pst.setInt(5, pacienteEntity.getTelefono());
+            pst.setString(6, pacienteEntity.getAlegias());
+            pst.setString(7, pacienteEntity.getEnfermedad());
             mensaje = "PACIENTE GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
