@@ -74,6 +74,6 @@ public class ProveedoresDAO {
         return mensaje;
     }
 
-    public void listarProveedores(Connection CON, JTable tabla) {
+    public void listarProveedores(Connection Con, JTable tabla) {
     }
 }

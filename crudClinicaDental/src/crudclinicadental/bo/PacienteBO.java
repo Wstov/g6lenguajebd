@@ -4,29 +4,25 @@
  */
 package crudclinicadental.bo;
 
-
-import crudclinicadental.dao.MedicoDAO;
+import crudclinicadental.dao.PacientesDAO;
 import crudclinicadental.db.Conexion;
-import crudclinicadental.entity.MedicoEntity;
+import crudclinicadental.entity.PacienteEntiy;
+
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JTable;
 
 /**
  *
  * @author Wstov
  */
-public class MedicoBO {
-
+public class PacienteBO {
+    
     private String mensaje = "";
-    private MedicoDAO medicoDAO = new MedicoDAO();
+    private PacientesDAO pacientesDAO = new PacientesDAO();
 
-    public String agregarMedico(MedicoEntity med) {
+    public String agregarPaciente(PacienteEntiy pacienteEntiy) {
         Connection conn = Conexion.getConnection();
         try {
-            mensaje = medicoDAO.agregarMedico(conn, med);
+            mensaje = pacientesDAO.agregarPaciente(conn, pacienteEntiy);
             
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -43,10 +39,10 @@ public class MedicoBO {
         return mensaje;
     }
 
-    public String modificarMedico(MedicoEntity med) {
+    public String modificarPaciente(PacienteEntiy pacienteEntiy) {
                 Connection conn = Conexion.getConnection();
         try {
-            mensaje = medicoDAO.modificarMedico(conn, med);
+            mensaje = pacientesDAO.modificarPaciente(conn, pacienteEntiy);
            
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -63,10 +59,10 @@ public class MedicoBO {
         return mensaje;
     }
 
-    public String eliminarMedico(int id) {
+    public String eliminarPaciente(int id) {
            Connection conn = Conexion.getConnection();
         try {
-            mensaje = medicoDAO.eliminarMedico(conn, id);
+            mensaje = pacientesDAO.eliminarPaciente(conn, id);
             
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -83,13 +79,6 @@ public class MedicoBO {
         return mensaje;
     }
 
-    public void listarMedico(JTable tabla) {
-        Connection conn = Conexion.getConnection();
-        medicoDAO.listarMedico(conn, tabla);
-        try {
-            conn.close();
-        } catch (SQLException ex) {
-            System.out.println(ex.getMessage());
-        }
+    public void listarPaciente() {
     }
 }

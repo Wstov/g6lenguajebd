@@ -77,6 +77,6 @@ public class PacientesDAO {
         return mensaje;
     }
 
-    public void listarPaciente(Connection CON, JTable tabla) {
+    public void listarPaciente(Connection Con, JTable tabla) {
     }
 }

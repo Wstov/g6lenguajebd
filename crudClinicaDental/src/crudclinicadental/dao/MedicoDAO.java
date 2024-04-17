@@ -7,7 +7,9 @@ package crudclinicadental.dao;
 import crudclinicadental.entity.MedicoEntity;
 import java.sql.Connection;
 import java.sql.*;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 /**
  *
  * @author Wstov
@@ -31,7 +33,7 @@ public class MedicoDAO {
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
-        } catch (Exception e) {
+        } catch (SQLException e) {
             mensaje = "NO SE GUARDO CORRECTAMENTE \n " + e.getMessage();
         }
         return mensaje;
@@ -69,12 +71,34 @@ public class MedicoDAO {
             mensaje = "ELIMINADO CORRECTAMENTE";
             pst.execute();
             pst.close();
-        } catch (Exception e) {
+        } catch (SQLException  e) {
             mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
         }
         return mensaje;
     }
 
-    public void listarMedico(Connection CON, JTable tabla) {
+    public void listarMedico(Connection con, JTable tabla) {
+        DefaultTableModel model;
+        String [] columnas = {"ID","NOMBRE","APELLIDO","CEDULA","TELEFONO","TURNO","ESPECIALIDAD"};
+        model = new DefaultTableModel(null, columnas);
+        
+        String sql = "SELECT * FROM MEDICOS ORDER BY ID_MEDICO";
+        
+        String [] filas = new String[7];
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                for (int i = 0; i < 7; i++) {
+                    filas[i] = rs.getString(i+1);
+                }
+                model.addRow(filas);
+            }
+            tabla.setModel(model);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+        }
     }
 }

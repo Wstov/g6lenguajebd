@@ -73,6 +73,6 @@ public class MedicamentosDAO {
         return mensaje;
     }
 
-    public void listarMedicamentos(Connection CON, JTable tabla) {
+    public void listarMedicamentos(Connection Con, JTable tabla) {
     }
 }
