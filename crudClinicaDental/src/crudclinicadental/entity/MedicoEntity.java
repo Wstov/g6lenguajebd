@@ -8,7 +8,7 @@ package con.registro.entity;
  *
  * @author Wstov
  */
-public class RegistroMedicoEntity {
+public class MedicoEntity {
     private int idMedico;
     private String nombre;
     private String Apellido;
@@ -17,10 +17,10 @@ public class RegistroMedicoEntity {
     private String turno;
     private String especialidad;
 
-    public RegistroMedicoEntity() {
+    public MedicoEntity() {
     }
 
-    public RegistroMedicoEntity(int idMedico, String nombre, String Apellido, int cedula, int telefono, String turno, String especialidad) {
+    public MedicoEntity(int idMedico, String nombre, String Apellido, int cedula, int telefono, String turno, String especialidad) {
         this.idMedico = idMedico;
         this.nombre = nombre;
         this.Apellido = Apellido;
