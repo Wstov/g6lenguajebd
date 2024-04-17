@@ -4,7 +4,7 @@
  */
 package crudclinicadental.dao;
 
-import con.registro.entity.MedicoEntity;
+import crudclinicadental.entity.MedicoEntity;
 import java.sql.Connection;
 import java.sql.*;
 import javax.swing.JTable;

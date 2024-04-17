@@ -4,7 +4,8 @@
  */
 package crudclinicadental.dao;
 
-import con.registro.entity.MedicoEntity;
+
+import crudclinicadental.entity.PacienteEntiy;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import javax.swing.JTable;
@@ -16,65 +17,66 @@ import javax.swing.JTable;
 public class PacientesDAO {
         private String mensaje="";
     
-    public String agregarPaciente(Connection con, MedicoEntity med){
+    public String agregarPaciente(Connection con, PacienteEntiy pacienteEntiy){
         PreparedStatement pst = null;
-        String sql = "INSERT INTO MEDICOS (ID_MEDICO, NOM_MEDICO, APELLIDOS_MEDICO, CED_MEDICO, TELEFONO_M,TURNO,ESPECIALIDAD) "
-                + "VALUES(MEDICOS_SEQ.NEXTVAL,?,?,?,?,?,?)";
+        String sql = "INSERT INTO PACIENTE (ID_PACIENTE, NUM_CEDULA, NOM_PACIENTE, APELLIDOS_PACIENTE, DIRECCION, TELEFONO_P, ALERGIAS, ENFERM_CRONICAS) "
+                + "VALUES(SECUENCIAPACIENTES.NEXTVAL,?,?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1, med.getNombre());
-            pst.setString(2, med.getApellido());
-            pst.setInt(3, med.getCedula());
-            pst.setInt(4, med.getTelefono());
-            pst.setString(5, med.getTurno());
-            pst.setString(6, med.getEspecialidad());
-            mensaje = "GUARDADO CORRECTAMENTE";
+            pst.setInt(1, pacienteEntiy.getCedula());
+            pst.setString(2, pacienteEntiy.getNombre());
+            pst.setString(3, pacienteEntiy.getApellidos());
+            pst.setString(4, pacienteEntiy.getDireccion());
+            pst.setInt(5, pacienteEntiy.getTelefono());
+            pst.setString(6, pacienteEntiy.getAlegias());
+            pst.setString(6, pacienteEntiy.getEnfermedad());
+            mensaje = "PACIENTE GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
         } catch (Exception e) {
-            mensaje = "NO SE GUARDO CORRECTAMENTE \n " + e.getMessage();
+            mensaje = "EL PACIENTE NO SE GUARDO CORRECTAMENTE \n " + e.getMessage();
         }
         return mensaje;
     }
 
-    public String modificarMedico(Connection con, MedicoEntity med) {
+    public String modificarPaciente(Connection con, PacienteEntiy pacienteEntiy) {
         PreparedStatement pst = null;
-        String sql = "UPDATE MEDICOS SET NOM_MEDICO = ?, APELLIDOS_MEDICO = ?, CED_MEDICO = ?, TELEFONO_M = ?,TURNO = ?,ESPECIALIDAD = ?"
-                + "WHERE ID_MEDICO = ?";
+        String sql = "UPDATE PACIENTE SET NUM_CEDULA = ?, NOM_PACIENTE = ?, APELLIDOS_PACIENTE = ?, DIERECCION = ?,TELEFONO_P = ?, ALERGIAS = ?, ENFERM_CRONICAS = ?"
+                + "WHERE ID_PACIENTE = ?";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1, med.getNombre());
-            pst.setString(2, med.getApellido());
-            pst.setInt(3, med.getCedula());
-            pst.setInt(4, med.getTelefono());
-            pst.setString(5, med.getTurno());
-            pst.setString(6, med.getEspecialidad());
-            pst.setInt(7, med.getIdMedico());
-            mensaje = "ACTUALIZADO CORRECTAMENTE";
+            pst.setInt(1, pacienteEntiy.getCedula());
+            pst.setString(2, pacienteEntiy.getNombre());
+            pst.setString(3, pacienteEntiy.getApellidos());
+            pst.setString(4, pacienteEntiy.getDireccion());
+            pst.setInt(5, pacienteEntiy.getTelefono());
+            pst.setString(6, pacienteEntiy.getAlegias());
+            pst.setString(6, pacienteEntiy.getEnfermedad());
+            mensaje = "PACIENTE GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
         } catch (Exception e) {
-            mensaje = "NO SE ACTUALIZAR CORRECTAMENTE \n " + e.getMessage();
+            mensaje = "EL PACIENTE NO SE GUARDO CORRECTAMENTE \n " + e.getMessage();
         }
         return mensaje;
     }
 
-    public String eliminarMedico(Connection con, int id) {
+    public String eliminarPaciente(Connection con, int id) {
         PreparedStatement pst = null;
-        String sql = "DELETE FROM MEDICOS WHERE ID_MEDICO = ?";
+        String sql = "DELETE FROM PACIENTE WHERE ID_PACEINTE = ?";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, id);
 
-            mensaje = "ELIMINADO CORRECTAMENTE";
+            mensaje = "EL PACIENTE SE HA ELIMINADO CORRECTAMENTE";
             pst.execute();
             pst.close();
         } catch (Exception e) {
-            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+            mensaje = "EL PACIENTE NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
         }
         return mensaje;
     }
 
-    public void listarMedico(Connection CON, JTable tabla) {
+    public void listarPaciente(Connection CON, JTable tabla) {
     }
 }
