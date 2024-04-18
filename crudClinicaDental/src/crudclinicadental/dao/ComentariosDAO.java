@@ -53,6 +53,7 @@ public class ComentariosDAO {
             pst.setInt(2, comen.getIdPaciente());
             pst.setDate(3, Date.valueOf(comen.getFecha()));
             pst.setString(4, comen.getComentario());
+            pst.setInt(5, comen.getIdComentario());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();
             pst.close();

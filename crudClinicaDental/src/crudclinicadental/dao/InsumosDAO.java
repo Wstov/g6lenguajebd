@@ -54,6 +54,7 @@ public class InsumosDAO {
             pst.setInt(2, insumoEntity.getCosto());
             pst.setString(3, insumoEntity.getUbicacion());
             pst.setDate(4, Date.valueOf(insumoEntity.getFechaVencimiento()));
+            pst.setInt(5, insumoEntity.getIdInsumo());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();
             pst.close();

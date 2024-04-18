@@ -54,6 +54,7 @@ public class ProveedoresDAO {
             pst.setString(2, proveeEntity.getTelefono());
             pst.setString(3, proveeEntity.getDireccion());
             pst.setString(4, proveeEntity.getEmail());
+            pst.setInt(5, proveeEntity.getIdProveedor());
 
             mensaje = "El PROVEEDOR SE GUARDO CORRECTAMENTE";
             pst.execute();

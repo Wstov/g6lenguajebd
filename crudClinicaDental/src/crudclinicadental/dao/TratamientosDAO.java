@@ -44,7 +44,7 @@ public class TratamientosDAO {
 
     public String modificarTratamiento(Connection con,  TratamientoEntity trata) {
         PreparedStatement pst = null;
-        String sql = "UPDATE TRATAMIENTOS SET NOMBRE = ?, DESCRIPCION = ?, COSTO = ?, ID_INSUMO = ?,TURNO = ?,ESPECIALIDAD = ?, ID_INSUMO = ?"
+        String sql = "UPDATE TRATAMIENTOS SET NOMBRE = ?, DESCRIPCION = ?, COSTO = ?, ID_INSUMO = ?"
                 + "WHERE ID_TRATAMIENTO = ?";
         try {
             pst = con.prepareStatement(sql);
@@ -52,11 +52,12 @@ public class TratamientosDAO {
             pst.setString(2, trata.getDescripcion());
             pst.setDouble(3, trata.getCosto());
             pst.setInt(4, trata.getIdInsumo());
+            pst.setInt(5, trata.getIdTratamiento());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();
             pst.close();
         } catch (Exception e) {
-            mensaje = "NO SE ACTUALIZAR CORRECTAMENTE \n " + e.getMessage();
+            mensaje = "NO SE ACTUALIZO CORRECTAMENTE \n " + e.getMessage();
         }
         return mensaje;
     }

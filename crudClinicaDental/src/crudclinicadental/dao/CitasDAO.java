@@ -49,6 +49,7 @@ public class CitasDAO {
             pst.setString(3, citasEntity.getConsultorio());
             pst.setInt(4, citasEntity.getIdpaciente());
             pst.setInt(5, citasEntity.getIdMedico());
+            pst.setInt(6, citasEntity.getIdCita());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();
             pst.close();

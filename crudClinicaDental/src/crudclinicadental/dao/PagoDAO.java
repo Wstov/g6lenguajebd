@@ -31,14 +31,13 @@ public class PagoDAO {
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, pagoEntity.getIdPago());
-            pst.setInt(2, pagoEntity.getIdMedico());
-            pst.setDate(3, Date.valueOf(pagoEntity.getFecha()));
-            pst.setTime(4, Time.valueOf(pagoEntity.getHora()));
-            pst.setInt(5, pagoEntity.getIdPaciente());
-            pst.setInt(6, pagoEntity.getIdMedico());
-            pst.setInt(7, pagoEntity.getIdCita());
-            pst.setInt(8, pagoEntity.getIdInsumo());
-            pst.setDouble(9, pagoEntity.getPago());
+            pst.setDate(2, Date.valueOf(pagoEntity.getFecha()));
+            pst.setTime(3, Time.valueOf(pagoEntity.getHora()));
+            pst.setInt(4, pagoEntity.getIdPaciente());
+            pst.setInt(5, pagoEntity.getIdMedico());
+            pst.setInt(6, pagoEntity.getIdCita());
+            pst.setInt(7, pagoEntity.getIdInsumo());
+            pst.setDouble(8, pagoEntity.getPago());
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
@@ -61,6 +60,7 @@ public class PagoDAO {
             pst.setInt(5, pagoEntity.getIdCita());
             pst.setInt(6, pagoEntity.getIdInsumo());
             pst.setDouble(7, pagoEntity.getPago());
+            pst.setInt(8, pagoEntity.getIdPago());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();
             pst.close();

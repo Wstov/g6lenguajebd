@@ -54,6 +54,7 @@ public class ExamenesDAO {
             pst.setString(2, exa.getResultado());
             pst.setDate(3, Date.valueOf(exa.getFecha()));
             pst.setInt(4, exa.getIdPaciente());
+            pst.setInt(5, exa.getIdExamenes());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();
             pst.close();

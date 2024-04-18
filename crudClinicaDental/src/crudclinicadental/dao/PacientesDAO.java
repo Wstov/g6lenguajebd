@@ -47,7 +47,7 @@ public class PacientesDAO {
 
     public String modificarPaciente(Connection con, PacienteEntiy pacienteEntity) {
         PreparedStatement pst = null;
-        String sql = "UPDATE PACIENTE SET NUM_CEDULA = ?, NOM_PACIENTE = ?, APELLIDOS_PACIENTE = ?, DIERECCION = ?,TELEFONO_P = ?, ALERGIAS = ?, ENFERM_CRONICAS = ?"
+        String sql = "UPDATE PACIENTE SET NUM_CEDULA = ?, NOM_PACIENTE = ?, APELLIDOS_PACIENTE = ?, DIRECCION = ?,TELEFONO_P = ?, ALERGIAS = ?, ENFERM_CRONICAS = ?"
                 + "WHERE ID_PACIENTE = ?";
         try {
             pst = con.prepareStatement(sql);
@@ -58,6 +58,7 @@ public class PacientesDAO {
             pst.setInt(5, pacienteEntity.getTelefono());
             pst.setString(6, pacienteEntity.getAlegias());
             pst.setString(7, pacienteEntity.getEnfermedad());
+            pst.setInt(8, pacienteEntity.getIdPaciente());
             mensaje = "PACIENTE GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
