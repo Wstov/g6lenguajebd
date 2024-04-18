@@ -9,6 +9,7 @@ import crudclinicadental.entity.PacienteEntiy;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -67,7 +68,7 @@ public class PacientesDAO {
 
     public String eliminarPaciente(Connection con, int id) {
         PreparedStatement pst = null;
-        String sql = "DELETE FROM PACIENTE WHERE ID_PACEINTE = ?";
+        String sql = "DELETE FROM PACIENTE WHERE ID_PACIENTE = ?";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, id);
@@ -86,7 +87,7 @@ public class PacientesDAO {
         String [] columnas = {"ID","CEDULA","NOMBRE","APELLIDO","DIRECCION","TELEFONO","ALERGIAS", "EFERMEDAD"};
         model = new DefaultTableModel(null, columnas);
         
-        String sql = "SELECT * FROM PACIENTE ORDER BY ID_PACEINTE";
+        String sql = "SELECT * FROM PACIENTE ORDER BY ID_PACIENTE";
         
         String [] filas = new String[8];
         Statement st = null;
@@ -104,5 +105,24 @@ public class PacientesDAO {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
         }
+    }
+    
+    public int getMaxID(Connection con) {
+        int id = 0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "SELECT MAX(ID_PACIENTE)+1 as id FROM PACIENTE";
+        try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            rs.close();
+            pst.close();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar id " + e.getMessage());
+        }
+        return id;
     }
 }

@@ -4,9 +4,9 @@
  */
 package crudclinicadental.bo;
 
-import crudclinicadental.dao.ComentariosDAO;
+import crudclinicadental.dao.MedicamentosDAO;
 import crudclinicadental.db.Conexion;
-import crudclinicadental.entity.ComentariosEntity;
+import crudclinicadental.entity.MedicamentosEntity;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.JTable;
@@ -15,15 +15,15 @@ import javax.swing.JTable;
  *
  * @author Wstov
  */
-public class ComentariosBO {
+public class MedicamentosBO {
     
     private String mensaje = "";
-    private ComentariosDAO comentariosDAO = new ComentariosDAO();
+    private MedicamentosDAO medicamenicamentoDAO = new MedicamentosDAO();
 
-    public String agregarComentario(ComentariosEntity comen) {
+    public String agregarMedicamento(MedicamentosEntity medicamen) {
         Connection conn = Conexion.getConnection();
         try {
-            mensaje = comentariosDAO.agregarComentario(conn, comen);
+            mensaje = medicamenicamentoDAO.agregarMedicamentos(conn, medicamen);
             
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -40,10 +40,10 @@ public class ComentariosBO {
         return mensaje;
     }
 
-    public String modificarComentario(ComentariosEntity comen) {
+    public String modificarMedicamento(MedicamentosEntity medicamen) {
                 Connection conn = Conexion.getConnection();
         try {
-            mensaje = comentariosDAO.modificarComentario(conn, comen);
+            mensaje = medicamenicamentoDAO.modificarMedicamentos(conn, medicamen);
            
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -60,10 +60,10 @@ public class ComentariosBO {
         return mensaje;
     }
 
-    public String eliminarComentario(int id) {
+    public String eliminarMedicamento(int id) {
            Connection conn = Conexion.getConnection();
         try {
-            mensaje = comentariosDAO.eliminarComentario(conn, id);
+            mensaje = medicamenicamentoDAO.eliminarMedicamentos(conn, id);
             
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -74,25 +74,25 @@ public class ComentariosBO {
                     conn.close();
                 }
             } catch (Exception e) {
-                mensaje = mensaje + " " +e.getMessage();
+                mensaje = mensaje + " " + e.getMessage();
             }
         }
         return mensaje;
     }
 
-    public void listarComentario(JTable tabla) {
+    public void listarMedicamento(JTable tabla) {
         Connection conn = Conexion.getConnection();
-        comentariosDAO.listarComentario(conn, tabla);
+        medicamenicamentoDAO.listarMedicamentos(conn, tabla);
         try {
             conn.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
-    
+
     public int getMaxID() {
         Connection conn = Conexion.getConnection();
-        int id = comentariosDAO.getMaxID(conn);
+        int id = medicamenicamentoDAO.getMaxID(conn);
         try {
             conn.close();
         } catch (SQLException ex) {

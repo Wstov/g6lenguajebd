@@ -9,6 +9,8 @@ import crudclinicadental.db.Conexion;
 import crudclinicadental.entity.PacienteEntiy;
 
 import java.sql.Connection;
+import java.sql.SQLException;
+import javax.swing.JTable;
 
 /**
  *
@@ -79,6 +81,24 @@ public class PacienteBO {
         return mensaje;
     }
 
-    public void listarPaciente() {
+    public void listarPaciente(JTable tabla) {
+        Connection conn = Conexion.getConnection();
+        pacientesDAO.listarPaciente(conn, tabla);
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    public int getMaxID() {
+        Connection conn = Conexion.getConnection();
+        int id = pacientesDAO.getMaxID(conn);
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return id;
     }
 }

@@ -9,6 +9,7 @@ import crudclinicadental.entity.ProveedoresEntity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -24,7 +25,7 @@ public class ProveedoresDAO {
 
     public String agregarProveedores(Connection con, ProveedoresEntity proveeEntity) {
         PreparedStatement pst = null;
-        String sql = "INSERT INTO PROVEEDORES (PROVEEDORESID, NOMBRE, TELÉFONO, DIRECCIÓN, EMAIL) "
+        String sql = "INSERT INTO PROVEEDORES (PROVEEDORID, NOMBRE, TELÉFONO, DIRECCIÓN, EMAIL) "
                 + "VALUES(PROVEE_SEQ.NEXTVAL,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
@@ -45,7 +46,7 @@ public class ProveedoresDAO {
     public String modificarProveedores(Connection con, ProveedoresEntity proveeEntity) {
         PreparedStatement pst = null;
         String sql = "UPDATE PROVEEDORES SET NOMBRE = ?, TELÉFONO = ?, DIRECCIÓN = ?, EMAIL = ?"
-                + "WHERE PROVEEDORESID = ?";
+                + "WHERE PROVEEDORID = ?";
         try {
             pst = con.prepareStatement(sql);
             pst.setString(1, proveeEntity.getNombre());
@@ -64,7 +65,7 @@ public class ProveedoresDAO {
 
     public String eliminarProveedores(Connection con, int id) {
         PreparedStatement pst = null;
-        String sql = "DELETE FROM PROVEEDORES WHERE PROVEEDORESID = ?";
+        String sql = "DELETE FROM PROVEEDORES WHERE PROVEEDORID = ?";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, id);
@@ -83,7 +84,7 @@ public class ProveedoresDAO {
         String [] columnas = {"ID","NOMBRE","TELEFONO","DIRECCION","EMAIL"};
         model = new DefaultTableModel(null, columnas);
         
-        String sql = "SELECT * FROM PROVEEDORES ORDER BY PROVEEDORESID";
+        String sql = "SELECT * FROM PROVEEDORES ORDER BY PROVEEDORID";
         
         String [] filas = new String[5];
         Statement st = null;
@@ -102,5 +103,24 @@ public class ProveedoresDAO {
             JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
         }
     }
-    
+
+    public int getMaxID(Connection con) {
+        int id = 0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "SELECT MAX(PROVEEDORID)+1 as id FROM PROVEEDORES";
+        try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            rs.close();
+            pst.close();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar id " + e.getMessage());
+        }
+        return id;
+    }
+
 }

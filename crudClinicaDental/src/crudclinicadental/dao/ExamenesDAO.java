@@ -107,7 +107,7 @@ public class ExamenesDAO {
         int id = 0;
         PreparedStatement pst = null;
         ResultSet rs = null;
-        String sql = "SELECT EXAMENES_SEQ.CURRVAL+1 FROM REGISTRO_EXAMENES";
+        String sql = "SELECT MAX(ID_EXAMEN)+1 as id FROM REGISTRO_EXAMENES";
         try {
             pst = con.prepareStatement(sql);
             rs = pst.executeQuery();

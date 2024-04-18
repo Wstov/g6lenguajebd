@@ -102,7 +102,7 @@ public class CitasDAO {
         int id = 0;
         PreparedStatement pst = null;
         ResultSet rs = null;
-        String sql = "SELECT CITAS_SEQ.CURRVAL+1 FROM REGISTRO_CITAS";
+        String sql = "SELECT MAX(ID_CITA)+1 as id FROM REGISTRO_CITAS";
         try {
             pst = con.prepareStatement(sql);
             rs = pst.executeQuery();

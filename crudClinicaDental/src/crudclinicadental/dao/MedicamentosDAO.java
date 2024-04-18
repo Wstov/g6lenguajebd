@@ -8,6 +8,7 @@ import crudclinicadental.entity.MedicamentosEntity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -100,5 +101,24 @@ public class MedicamentosDAO {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
         }
+    }
+    
+        public int getMaxID(Connection con) {
+        int id = 0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "SELECT MAX(MEDICAMENTOID)+1 as id FROM MEDICAMENTOS";
+        try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            rs.close();
+            pst.close();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar id " + e.getMessage());
+        }
+        return id;
     }
 }

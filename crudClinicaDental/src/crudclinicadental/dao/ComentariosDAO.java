@@ -107,7 +107,7 @@ public class ComentariosDAO {
         int id = 0;
         PreparedStatement pst = null;
         ResultSet rs = null;
-        String sql = "SELECT COMENTARIOS_SEQ.CURRVAL+1 FROM COMENTARIOS_CITA";
+        String sql = "SELECT MAX(ID_COMENTARIO)+1 as id FROM COMENTARIOS_CITA";
         try {
             pst = con.prepareStatement(sql);
             rs = pst.executeQuery();

@@ -88,4 +88,15 @@ public class CitasBO {
             System.out.println(ex.getMessage());
         }
     }
+    
+    public int getMaxID() {
+        Connection conn = Conexion.getConnection();
+        int id = citasDAO.getMaxID(conn);
+        try {
+            conn.close();
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return id;
+    }
 }

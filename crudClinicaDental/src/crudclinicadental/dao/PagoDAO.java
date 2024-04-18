@@ -22,22 +22,22 @@ import javax.swing.table.DefaultTableModel;
  * @author Wstov
  */
 public class PagoDAO {
-        
     private String mensaje="";
     
     public String agregarPago(Connection con, PagoEntity pagoEntity){
         PreparedStatement pst = null;
         String sql = "INSERT INTO PAGO (ID_RECIBO, FECHA, HORA, ID_PACIENTE, ID_MEDICO, ID_CITA, ID_INSUMOS, PAGO) "
-                + "VALUES(PAGO_SEQ.NEXTVAL,?,?,?,?,?,?,?)";
+                + "VALUES(?,?,?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setDate(1, Date.valueOf(pagoEntity.getFecha()));
-            pst.setTime(2, Time.valueOf(pagoEntity.getHora()));
-            pst.setInt(3, pagoEntity.getIdPaciente());
-            pst.setInt(4, pagoEntity.getIdMedico());
-            pst.setInt(5, pagoEntity.getIdCita());
-            pst.setInt(6, pagoEntity.getIdInsumo());
-            pst.setDouble(7, pagoEntity.getPago());
+            pst.setInt(1, pagoEntity.getIdMedico());
+            pst.setDate(2, Date.valueOf(pagoEntity.getFecha()));
+            pst.setTime(3, Time.valueOf(pagoEntity.getHora()));
+            pst.setInt(4, pagoEntity.getIdPaciente());
+            pst.setInt(5, pagoEntity.getIdMedico());
+            pst.setInt(6, pagoEntity.getIdCita());
+            pst.setInt(7, pagoEntity.getIdInsumo());
+            pst.setDouble(8, pagoEntity.getPago());
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
@@ -108,5 +108,24 @@ public class PagoDAO {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
         }
+    }
+    
+        public int getMaxID(Connection con) {
+        int id = 0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "SELECT MAX(ID_RECIBO)+1 as id FROM PAGO";
+        try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            rs.close();
+            pst.close();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar id " + e.getMessage());
+        }
+        return id;
     }
 }

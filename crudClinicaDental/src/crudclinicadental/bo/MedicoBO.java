@@ -77,7 +77,7 @@ public class MedicoBO {
                     conn.close();
                 }
             } catch (Exception e) {
-                mensaje = mensaje + " " +e.getMessage();
+                mensaje = mensaje + " " + e.getMessage();
             }
         }
         return mensaje;
@@ -92,8 +92,8 @@ public class MedicoBO {
             System.out.println(ex.getMessage());
         }
     }
-    
-        public int getMaxID() {
+
+    public int getMaxID() {
         Connection conn = Conexion.getConnection();
         int id = medicoDAO.getMaxID(conn);
         try {

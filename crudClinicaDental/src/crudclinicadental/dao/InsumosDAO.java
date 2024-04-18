@@ -26,7 +26,7 @@ public class InsumosDAO {
     
     public String agregarInsumo(Connection con, InsumoEntity insumoEntity){
         PreparedStatement pst = null;
-        String sql = "INSERT INTO INSUMOS (ID_INSUMO, NOMBRE_INSU, COSTO, UBICACION, FECHA_VENCIMIENTO) "
+        String sql = "INSERT INTO INSUMOS (ID_INSUMOS, NOMBRE_INSU, COSTO, UBICACION, FECHA_VENCIMIENTO) "
                 + "VALUES(INSUMO_SEQ.NEXTVAL,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
@@ -46,7 +46,7 @@ public class InsumosDAO {
     public String modificarInsumo(Connection con,  InsumoEntity insumoEntity) {
         PreparedStatement pst = null;
         String sql = "UPDATE INSUMOS SET NOMBRE_INSU = ?, COSTO = ?, UBICACION = ?, FECHA_VENCIMIENTO = ?"
-                + "WHERE ID_INSUMO = ?";
+                + "WHERE ID_INSUMOS = ?";
         try {
             pst = con.prepareStatement(sql);
             pst.setString(1, insumoEntity.getNombreInsumo());
@@ -64,7 +64,7 @@ public class InsumosDAO {
 
     public String eliminarInsumo(Connection con, int id) {
         PreparedStatement pst = null;
-        String sql = "DELETE FROM INSUMOS WHERE ID_INSUMO = ?";
+        String sql = "DELETE FROM INSUMOS WHERE ID_INSUMOS = ?";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, id);
@@ -83,7 +83,7 @@ public class InsumosDAO {
         String [] columnas = {"ID","INSUMO","COSTO","UBICACION","FECHA"};
         model = new DefaultTableModel(null, columnas);
         
-        String sql = "SELECT * FROM INSUMOS ORDER BY ID_INSUMO";
+        String sql = "SELECT * FROM INSUMOS ORDER BY ID_INSUMOS";
         
         String [] filas = new String[5];
         Statement st = null;
@@ -101,5 +101,24 @@ public class InsumosDAO {
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
         }
+    }
+    
+    public int getMaxID(Connection con) {
+        int id = 0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "SELECT MAX(ID_INSUMOS)+1 as id FROM INSUMOS";
+        try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            rs.close();
+            pst.close();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar id " + e.getMessage());
+        }
+        return id;
     }
 }

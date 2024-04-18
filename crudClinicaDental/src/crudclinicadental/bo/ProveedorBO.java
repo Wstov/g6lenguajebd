@@ -4,9 +4,9 @@
  */
 package crudclinicadental.bo;
 
-import crudclinicadental.dao.ComentariosDAO;
+import crudclinicadental.dao.ProveedoresDAO;
 import crudclinicadental.db.Conexion;
-import crudclinicadental.entity.ComentariosEntity;
+import crudclinicadental.entity.ProveedoresEntity;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.JTable;
@@ -15,15 +15,15 @@ import javax.swing.JTable;
  *
  * @author Wstov
  */
-public class ComentariosBO {
+public class ProveedorBO {
     
     private String mensaje = "";
-    private ComentariosDAO comentariosDAO = new ComentariosDAO();
+    private ProveedoresDAO preveedorDAO = new ProveedoresDAO();
 
-    public String agregarComentario(ComentariosEntity comen) {
+    public String agregarProveedor(ProveedoresEntity preve) {
         Connection conn = Conexion.getConnection();
         try {
-            mensaje = comentariosDAO.agregarComentario(conn, comen);
+            mensaje = preveedorDAO.agregarProveedores(conn, preve);
             
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -40,10 +40,10 @@ public class ComentariosBO {
         return mensaje;
     }
 
-    public String modificarComentario(ComentariosEntity comen) {
+    public String modificarProveedor(ProveedoresEntity preve) {
                 Connection conn = Conexion.getConnection();
         try {
-            mensaje = comentariosDAO.modificarComentario(conn, comen);
+            mensaje = preveedorDAO.modificarProveedores(conn, preve);
            
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -60,10 +60,10 @@ public class ComentariosBO {
         return mensaje;
     }
 
-    public String eliminarComentario(int id) {
+    public String eliminarProveedor(int id) {
            Connection conn = Conexion.getConnection();
         try {
-            mensaje = comentariosDAO.eliminarComentario(conn, id);
+            mensaje = preveedorDAO.eliminarProveedores(conn, id);
             
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -74,25 +74,25 @@ public class ComentariosBO {
                     conn.close();
                 }
             } catch (Exception e) {
-                mensaje = mensaje + " " +e.getMessage();
+                mensaje = mensaje + " " + e.getMessage();
             }
         }
         return mensaje;
     }
 
-    public void listarComentario(JTable tabla) {
+    public void listarProveedor(JTable tabla) {
         Connection conn = Conexion.getConnection();
-        comentariosDAO.listarComentario(conn, tabla);
+        preveedorDAO.listarProveedores(conn, tabla);
         try {
             conn.close();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
         }
     }
-    
+
     public int getMaxID() {
         Connection conn = Conexion.getConnection();
-        int id = comentariosDAO.getMaxID(conn);
+        int id = preveedorDAO.getMaxID(conn);
         try {
             conn.close();
         } catch (SQLException ex) {
