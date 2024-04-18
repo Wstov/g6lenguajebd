@@ -7,7 +7,11 @@ package crudclinicadental.dao;
 import crudclinicadental.entity.MedicamentosEntity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -74,5 +78,26 @@ public class MedicamentosDAO {
     }
 
     public void listarMedicamentos(Connection Con, JTable tabla) {
+                DefaultTableModel model;
+        String [] columnas = {"ID","NOMBRE","TIPO","DOSIS","DESCRIPCION","ID PROVEEDOR"};
+        model = new DefaultTableModel(null, columnas);
+        
+        String sql = "SELECT * FROM MEDICAMENTOS ORDER BY MEDICAMENTOID";
+        
+        String [] filas = new String[6];
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                for (int i = 0; i < 6; i++) {
+                    filas[i] = rs.getString(i+1);
+                }
+                model.addRow(filas);
+            }
+            tabla.setModel(model);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
     }
 }
