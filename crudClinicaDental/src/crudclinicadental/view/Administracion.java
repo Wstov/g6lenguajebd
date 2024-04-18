@@ -21,6 +21,9 @@ public class Administracion extends javax.swing.JFrame {
         initComponents();
         listarMedico();
         idMax();
+        setTitle("CLINICA DENTAL");
+        setLocationRelativeTo(null);
+        setResizable(false);
     }
     
     public void listarMedico(){
