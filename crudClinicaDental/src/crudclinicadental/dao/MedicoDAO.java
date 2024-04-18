@@ -4,6 +4,7 @@
  */
 package crudclinicadental.dao;
 
+import crudclinicadental.db.Conexion;
 import crudclinicadental.entity.MedicoEntity;
 import java.sql.Connection;
 import java.sql.*;
@@ -21,15 +22,16 @@ public class MedicoDAO {
     public String agregarMedico(Connection con, MedicoEntity med){
         PreparedStatement pst = null;
         String sql = "INSERT INTO MEDICOS (ID_MEDICO, NOM_MEDICO, APELLIDOS_MEDICO, CED_MEDICO, TELEFONO_M,TURNO,ESPECIALIDAD) "
-                + "VALUES(MEDICOS_SEQ.NEXTVAL,?,?,?,?,?,?)";
+                + "VALUES(?,?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1, med.getNombre());
-            pst.setString(2, med.getApellido());
-            pst.setInt(3, med.getCedula());
-            pst.setInt(4, med.getTelefono());
-            pst.setString(5, med.getTurno());
-            pst.setString(6, med.getEspecialidad());
+            pst.setInt(1, med.getIdMedico());
+            pst.setString(2, med.getNombre());
+            pst.setString(3, med.getApellido());
+            pst.setInt(4, med.getCedula());
+            pst.setInt(5, med.getTelefono());
+            pst.setString(6, med.getTurno());
+            pst.setString(7, med.getEspecialidad());
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
@@ -101,4 +103,26 @@ public class MedicoDAO {
             JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
         }
     }
+    
+    public int getMaxID(Connection con) {
+        int id = 0;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        String sql = "SELECT MAX(ID_MEDICO)+1 as id FROM MEDICOS";
+        try {
+            pst = con.prepareStatement(sql);
+            rs = pst.executeQuery();
+            if (rs.next()) {
+                id = rs.getInt(1);
+            }
+            rs.close();
+            pst.close();
+        } catch (SQLException e) {
+            System.out.println("Error al mostrar id " + e.getMessage());
+        }
+        return id;
+    }
+
+
+
 }
