@@ -4,9 +4,9 @@
  */
 package crudclinicadental.bo;
 
-import crudclinicadental.dao.CitasDAO;
+import crudclinicadental.dao.ComentariosDAO;
 import crudclinicadental.db.Conexion;
-import crudclinicadental.entity.CitasEntity;
+import crudclinicadental.entity.ComentariosEntity;
 import java.sql.Connection;
 import java.sql.SQLException;
 import javax.swing.JTable;
@@ -15,14 +15,15 @@ import javax.swing.JTable;
  *
  * @author Wstov
  */
-public class CitasBO {
+public class ComentariosBO {
+    
     private String mensaje = "";
-    private CitasDAO citasDAO = new CitasDAO();
+    private ComentariosDAO comentariosDAO = new ComentariosDAO();
 
-    public String agregarCitas(CitasEntity med) {
+    public String agregarComentario(ComentariosEntity comen) {
         Connection conn = Conexion.getConnection();
         try {
-            mensaje = citasDAO.agregarCita(conn, med);
+            mensaje = comentariosDAO.agregarComentario(conn, comen);
             
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -39,10 +40,10 @@ public class CitasBO {
         return mensaje;
     }
 
-    public String modificarCita(CitasEntity med) {
+    public String modificarComentario(ComentariosEntity comen) {
                 Connection conn = Conexion.getConnection();
         try {
-            mensaje = citasDAO.modificarCita(conn, med);
+            mensaje = comentariosDAO.modificarComentario(conn, comen);
            
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -59,10 +60,10 @@ public class CitasBO {
         return mensaje;
     }
 
-    public String eliminarCita(int id) {
+    public String eliminarComentario(int id) {
            Connection conn = Conexion.getConnection();
         try {
-            mensaje = citasDAO.eliminarCita(conn, id);
+            mensaje = comentariosDAO.eliminarComentario(conn, id);
             
         } catch (Exception e) {
             mensaje = mensaje + " " +e.getMessage();
@@ -79,9 +80,9 @@ public class CitasBO {
         return mensaje;
     }
 
-    public void listarCitas(JTable tabla) {
+    public void listarComentario(JTable tabla) {
         Connection conn = Conexion.getConnection();
-        citasDAO.listarCita(conn, tabla);
+        comentariosDAO.listarComentario(conn, tabla);
         try {
             conn.close();
         } catch (SQLException ex) {

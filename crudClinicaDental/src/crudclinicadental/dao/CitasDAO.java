@@ -73,7 +73,7 @@ public class CitasDAO {
         return mensaje;
     }
 
-    public void listarMedico(Connection con, JTable tabla) {
+    public void listarCita(Connection con, JTable tabla) {
         DefaultTableModel model;
         String [] columnas = {"ID","HORA","FECHA","CONSULTORIO","ID PACIENTE","ID MEDICO"};
         model = new DefaultTableModel(null, columnas);

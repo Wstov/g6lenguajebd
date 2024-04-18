@@ -4,7 +4,6 @@
  */
 package crudclinicadental.dao;
 
-import crudclinicadental.entity.MedicoEntity;
 import crudclinicadental.entity.TratamientoEntity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
