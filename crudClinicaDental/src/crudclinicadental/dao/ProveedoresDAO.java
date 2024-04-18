@@ -8,7 +8,11 @@ package crudclinicadental.dao;
 import crudclinicadental.entity.ProveedoresEntity;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -74,6 +78,29 @@ public class ProveedoresDAO {
         return mensaje;
     }
 
-    public void listarProveedores(Connection Con, JTable tabla) {
+    public void listarProveedores(Connection con, JTable tabla) {
+                DefaultTableModel model;
+        String [] columnas = {"ID","NOMBRE","TELEFONO","DIRECCION","EMAIL"};
+        model = new DefaultTableModel(null, columnas);
+        
+        String sql = "SELECT * FROM PROVEEDORES ORDER BY PROVEEDORESID";
+        
+        String [] filas = new String[5];
+        Statement st = null;
+        ResultSet rs = null;
+        try {
+            st = con.createStatement();
+            rs = st.executeQuery(sql);
+            while (rs.next()) {
+                for (int i = 0; i < 5; i++) {
+                    filas[i] = rs.getString(i+1);
+                }
+                model.addRow(filas);
+            }
+            tabla.setModel(model);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+        }
     }
+    
 }
