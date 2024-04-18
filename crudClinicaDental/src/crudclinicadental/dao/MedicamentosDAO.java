@@ -99,5 +99,6 @@ public class MedicamentosDAO {
             tabla.setModel(model);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+        }
     }
 }
