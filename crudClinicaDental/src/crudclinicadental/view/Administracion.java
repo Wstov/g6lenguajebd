@@ -18,6 +18,8 @@ import crudclinicadental.entity.MedicoEntity;
 import crudclinicadental.entity.PagoEntity;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
 
 /**
@@ -116,39 +118,39 @@ public class Administracion extends javax.swing.JFrame {
     }
 
     public void idMaxPacientes() {
-        jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
+        jTextFieldIDPaciente.setText(pacienteBO.getMaxID() + "");
     }
 
     public void idMaxCitas() {
-        jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
+        jTextFieldIDCitas.setText(citasBO.getMaxID() + "");
     }
 
     public void idMaxComentarios() {
-        jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
+        jTextFieldIDComentarios.setText(comentariosBO.getMaxID() + "");
     }
 
     public void idMaxExamenes() {
-        jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
+        jTextFieldIDExamenes.setText(examenesBO.getMaxID() + "");
     }
 
     public void idMaxMedicamentos() {
-        jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
+        jTextFieldIDMedicamentos.setText(medicamentosBO.getMaxID() + "");
     }
 
     public void idMaxPagos() {
-        jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
+        jTextFieldIDPago.setText(pagoBO.getMaxID() + "");
     }
 
     public void idMaxInsumos() {
-        jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
+        jTextFieldIDInsumos.setText(insumosBO.getMaxID() + "");
     }
 
     public void idMaxTratamientos() {
-        jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
+        jTextFieldIDTratamiento.setText(tratamientoBO.getMaxID() + "");
     }
 
     public void idMaxProveedores() {
-        jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
+        jTextFieldIDProveedor.setText(proveedorBO.getMaxID() + "");
     }
     
 
@@ -1021,6 +1023,11 @@ public class Administracion extends javax.swing.JFrame {
 
             }
         ));
+        jTblPago.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTblPagoMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(jTblPago);
 
         jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -2518,8 +2525,9 @@ public class Administracion extends javax.swing.JFrame {
         // agregar pagos
                 if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
                 || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
-                || jTextFieldEspecialidad.getText().isEmpty()|| jTextFieldIDInsumoPago.getText().isEmpty()|| jTextFieldPago.getText().isEmpty()) {
+                || jTextFieldIDInsumoPago.getText().isEmpty() || jTextFieldPago.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+
 
         } else {
             PagoEntity pagoEntity = new PagoEntity();
@@ -2541,26 +2549,56 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarPagoActionPerformed
         // MODIFICAR PAGOS
-                        if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
-                || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
-                || jTextFieldEspecialidad.getText().isEmpty()|| jTextFieldIDInsumoPago.getText().isEmpty()|| jTextFieldPago.getText().isEmpty()) {
+//                if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
+//                || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
+//                || jTextFieldIDInsumoPago.getText().isEmpty() || jTextFieldPago.getText().isEmpty()) {
+//            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+//
+//
+//        } else {
+//            PagoEntity pagoEntity = new PagoEntity();
+//            pagoEntity.setIdPago(Integer.parseInt(jTextFieldIDPago.getText()));
+//            pagoEntity.setFecha(LocalDate.parse(jTextFieldFechaPago.getText()));
+//            pagoEntity.setHora(LocalTime.parse(jTextFieldHoraPago.getText()));
+//            pagoEntity.setIdPaciente(Integer.parseInt(jTextFieldIDPacientePago.getText()));
+//            pagoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedicoPago.getText()));
+//            pagoEntity.setIdCita(Integer.parseInt(jTextFieldIDCitaPago.getText()));
+//            pagoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumoPago.getText()));
+//            pagoEntity.setPago(Double.parseDouble(jTextFieldPago.getText()));
+//
+//            String mensaje = pagoBO.modificarPago(pagoEntity);
+//            JOptionPane.showMessageDialog(null, mensaje);
+//            limpiarPagos();
+//            listarPagos();
+//        }
+
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
+                || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty()
+                || jTextFieldIDCitaPago.getText().isEmpty() || jTextFieldIDInsumoPago.getText().isEmpty()
+                || jTextFieldPago.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-
         } else {
-            PagoEntity pagoEntity = new PagoEntity();
-            pagoEntity.setIdPago(Integer.parseInt(jTextFieldIDPago.getText()));
-            pagoEntity.setFecha(LocalDate.parse(jTextFieldFechaPago.getText()));
-            pagoEntity.setHora(LocalTime.parse(jTextFieldHoraPago.getText()));
-            pagoEntity.setIdPaciente(Integer.parseInt(jTextFieldIDPacientePago.getText()));
-            pagoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedicoPago.getText()));
-            pagoEntity.setIdCita(Integer.parseInt(jTextFieldIDCitaPago.getText()));
-            pagoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumoPago.getText()));
-            pagoEntity.setPago(Double.parseDouble(jTextFieldPago.getText()));
+            try {
+                PagoEntity pagoEntity = new PagoEntity();
+                pagoEntity.setIdPago(Integer.parseInt(jTextFieldIDPago.getText()));
+                pagoEntity.setFecha(LocalDate.parse(jTextFieldFechaPago.getText(), dateFormatter));
+                pagoEntity.setHora(LocalTime.parse(jTextFieldHoraPago.getText(), timeFormatter));
+                pagoEntity.setIdPaciente(Integer.parseInt(jTextFieldIDPacientePago.getText()));
+                pagoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedicoPago.getText()));
+                pagoEntity.setIdCita(Integer.parseInt(jTextFieldIDCitaPago.getText()));
+                pagoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumoPago.getText()));
+                pagoEntity.setPago(Double.parseDouble(jTextFieldPago.getText()));
 
-            String mensaje = pagoBO.modificarPago(pagoEntity);
-            JOptionPane.showMessageDialog(null, mensaje);
-            limpiarPagos();
-            listarPagos();
+                String mensaje = pagoBO.modificarPago(pagoEntity);
+                JOptionPane.showMessageDialog(null, mensaje);
+                limpiarPagos();
+                listarPagos();
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(null, "Formato de fecha u hora incorrecto. Utilice el formato adecuado. ERROR:"+ e );
+            }
         }
     }//GEN-LAST:event_jBtnModificarPagoActionPerformed
 
@@ -2725,7 +2763,7 @@ public class Administracion extends javax.swing.JFrame {
         // EIMINAR PAGO
                 if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
                 || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
-                || jTextFieldEspecialidad.getText().isEmpty() || jTextFieldIDInsumoPago.getText().isEmpty() || jTextFieldPago.getText().isEmpty()) {
+                || jTextFieldIDInsumoPago.getText().isEmpty() || jTextFieldPago.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
         } else {
@@ -2736,6 +2774,19 @@ public class Administracion extends javax.swing.JFrame {
             listarPagos();
         }
     }//GEN-LAST:event_jBtnEliminarPagoActionPerformed
+
+    private void jTblPagoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblPagoMouseClicked
+        // mouse click pagos
+        int seleccion = jTblPago.rowAtPoint(evt.getPoint());
+        jTextFieldIDPago.setText(jTblPago.getValueAt(seleccion, 0) + "");
+        jTextFieldFechaPago.setText(jTblPago.getValueAt(seleccion, 1) + "");
+        jTextFieldHoraPago.setText(jTblPago.getValueAt(seleccion, 2) + "");
+        jTextFieldIDPacientePago.setText(jTblPago.getValueAt(seleccion, 3) + "");
+        jTextFieldIDMedicoPago.setText(jTblPago.getValueAt(seleccion, 4) + "");
+        jTextFieldIDCitaPago.setText(jTblPago.getValueAt(seleccion, 5) + "");
+        jTextFieldIDInsumoPago.setText(jTblPago.getValueAt(seleccion, 6) + "");
+        jTextFieldPago.setText(jTblPago.getValueAt(seleccion, 7) + "");
+    }//GEN-LAST:event_jTblPagoMouseClicked
 
     public void limpiarMedico() {
         jTextFieldIDMedico.setText("");
