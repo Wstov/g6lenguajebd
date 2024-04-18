@@ -77,7 +77,7 @@ public class MedicamentosDAO {
         return mensaje;
     }
 
-    public void listarMedicamentos(Connection Con, JTable tabla) {
+    public void listarMedicamentos(Connection con, JTable tabla) {
                 DefaultTableModel model;
         String [] columnas = {"ID","NOMBRE","TIPO","DOSIS","DESCRIPCION","ID PROVEEDOR"};
         model = new DefaultTableModel(null, columnas);
