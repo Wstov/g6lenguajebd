@@ -14,6 +14,7 @@ import crudclinicadental.bo.PacienteBO;
 import crudclinicadental.bo.PagoBO;
 import crudclinicadental.bo.ProveedorBO;
 import crudclinicadental.bo.TratamientoBO;
+import crudclinicadental.entity.MedicamentosEntity;
 import crudclinicadental.entity.MedicoEntity;
 import crudclinicadental.entity.PagoEntity;
 import java.time.LocalDate;
@@ -2435,7 +2436,6 @@ public class Administracion extends javax.swing.JFrame {
         }else{
             MedicoEntity medicoEntity = new MedicoEntity();
             medicoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedico.getText()));
-            medicoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedico.getText()));
             medicoEntity.setNombre(jTextFieldNombre.getText());
             medicoEntity.setApellido(jTextFieldApellido.getText());
             medicoEntity.setCedula(Integer.parseInt(jTextFieldCedula.getText()));
@@ -2513,15 +2513,57 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnGuardarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarMedicamentosActionPerformed
         // MEDICAMENTOS AGREGAR
+        if(jTextFieldMedicamentos.getText().isEmpty() || jTextFieldMedicamentosTipo.getText().isEmpty()
+                 || jTextFieldDosisMedicamentos.getText().isEmpty() || jTextFieldDescriMedicamentos.getText().isEmpty() || jTextFieldProveedorIDMed.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+        
+        }else{
+            MedicamentosEntity medicamentosEntity = new MedicamentosEntity();
+            medicamentosEntity.setIdMedicamentos(Integer.parseInt(jTextFieldIDMedicamentos.getText()));
+            medicamentosEntity.setNombre(jTextFieldMedicamentos.getText());
+            medicamentosEntity.setTipo(jTextFieldMedicamentosTipo.getText());
+            medicamentosEntity.setDosis(jTextFieldDosisMedicamentos.getText());
+            medicamentosEntity.setDescripcion(jTextFieldDescriMedicamentos.getText());
+            medicamentosEntity.setIdproveedor(Integer.parseInt(jTextFieldProveedorIDMed.getText()));
+
+
+            String mensaje = medicamentosBO.agregarMedicamento(medicamentosEntity);
+            JOptionPane.showMessageDialog(null, mensaje);
+            limpiarMedicamentos();
+            listarMedicamentos();
+        }
+        
         
     }//GEN-LAST:event_jBtnGuardarMedicamentosActionPerformed
 
     private void jBtnModificarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarMedicamentosActionPerformed
-        // TODO add your handling code here:
+        // MODIFICAR MEDICAMENTOS
+        if(jTextFieldMedicamentos.getText().isEmpty() || jTextFieldMedicamentosTipo.getText().isEmpty()
+                 || jTextFieldDosisMedicamentos.getText().isEmpty() || jTextFieldDescriMedicamentos.getText().isEmpty() || jTextFieldProveedorIDMed.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+        
+        }else{
+            MedicamentosEntity medicamentosEntity = new MedicamentosEntity();
+            medicamentosEntity.setIdMedicamentos(Integer.parseInt(jTextFieldIDMedicamentos.getText()));
+            medicamentosEntity.setNombre(jTextFieldMedicamentos.getText());
+            medicamentosEntity.setTipo(jTextFieldMedicamentosTipo.getText());
+            medicamentosEntity.setDosis(jTextFieldDosisMedicamentos.getText());
+            medicamentosEntity.setDescripcion(jTextFieldDescriMedicamentos.getText());
+            medicamentosEntity.setIdproveedor(Integer.parseInt(jTextFieldProveedorIDMed.getText()));
+
+
+            String mensaje = medicamentosBO.modificarMedicamento(medicamentosEntity);
+            JOptionPane.showMessageDialog(null, mensaje);
+            limpiarMedicamentos();
+            listarMedicamentos();
+        }
+        
+        
     }//GEN-LAST:event_jBtnModificarMedicamentosActionPerformed
 
     private void jBtnLimpiarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLimpiarMedicamentosActionPerformed
-        // TODO add your handling code here:
+        // LIMPIAR MEDICAMENTOS
+        limpiarMedicamentos();
     }//GEN-LAST:event_jBtnLimpiarMedicamentosActionPerformed
 
     private void jTextFieldIDMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIDMedicamentosActionPerformed
@@ -2801,19 +2843,39 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnEliminarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarMedicamentosActionPerformed
         // MEDICAMENTOS ELIMINAR
+        if(jTextFieldMedicamentos.getText().isEmpty() || jTextFieldMedicamentosTipo.getText().isEmpty()
+                 || jTextFieldDosisMedicamentos.getText().isEmpty() || jTextFieldDescriMedicamentos.getText().isEmpty() || jTextFieldProveedorIDMed.getText().isEmpty()){
+            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+        
+        }else{
+            MedicamentosEntity medicamentosEntity = new MedicamentosEntity();
+            medicamentosEntity.setIdMedicamentos(Integer.parseInt(jTextFieldIDMedicamentos.getText()));
+            medicamentosEntity.setNombre(jTextFieldMedicamentos.getText());
+            medicamentosEntity.setTipo(jTextFieldMedicamentosTipo.getText());
+            medicamentosEntity.setDosis(jTextFieldDosisMedicamentos.getText());
+            medicamentosEntity.setDescripcion(jTextFieldDescriMedicamentos.getText());
+            medicamentosEntity.setIdproveedor(Integer.parseInt(jTextFieldProveedorIDMed.getText()));
+
+
+            String mensaje = medicamentosBO.eliminarMedicamento(Integer.parseInt(jTextFieldIDMedicamentos.getText()));
+            JOptionPane.showMessageDialog(null, mensaje);
+            limpiarMedicamentos();
+            listarMedicamentos();
+        }
+        
     }//GEN-LAST:event_jBtnEliminarMedicamentosActionPerformed
 
     private void jTblMedicamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblMedicamentosMouseClicked
         // MEDICAMENTOS EVENTO MOUSE
         int seleccion = jTblMedicamentos.rowAtPoint(evt.getPoint());
         jTextFieldIDMedicamentos.setText(jTblMedicamentos.getValueAt(seleccion, 0) + "");
-        jTextFieldFechaPago.setText(jTblMedicamentos.getValueAt(seleccion, 1) + "");
-        jTextFieldHoraPago.setText(jTblMedicamentos.getValueAt(seleccion, 2) + "");
-        jTextFieldIDPacientePago.setText(jTblMedicamentos.getValueAt(seleccion, 3) + "");
-        jTextFieldIDMedicoPago.setText(jTblMedicamentos.getValueAt(seleccion, 4) + "");
-        jTextFieldIDCitaPago.setText(jTblMedicamentos.getValueAt(seleccion, 5) + "");
-        jTextFieldIDInsumoPago.setText(jTblMedicamentos.getValueAt(seleccion, 6) + "");
-        jTextFieldPago.setText(jTblMedicamentos.getValueAt(seleccion, 7) + "");
+        jTextFieldMedicamentos.setText(jTblMedicamentos.getValueAt(seleccion, 1) + "");
+        jTextFieldMedicamentosTipo.setText(jTblMedicamentos.getValueAt(seleccion, 2) + "");
+        jTextFieldDosisMedicamentos.setText(jTblMedicamentos.getValueAt(seleccion, 3) + "");
+        jTextFieldDescriMedicamentos.setText(jTblMedicamentos.getValueAt(seleccion, 4) + "");
+        jTextFieldProveedorIDMed.setText(jTblMedicamentos.getValueAt(seleccion, 5) + "");
+        
+
     }//GEN-LAST:event_jTblMedicamentosMouseClicked
 
     public void limpiarMedico() {

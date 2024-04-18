@@ -54,6 +54,7 @@ public class MedicamentosDAO {
             pst.setString(3, medicamentosEntity.getDosis());
             pst.setString(4, medicamentosEntity.getDescripcion());
             pst.setInt(5, medicamentosEntity.getIdproveedor());
+            pst.setInt(6, medicamentosEntity.getIdMedicamentos());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();
             pst.close();
