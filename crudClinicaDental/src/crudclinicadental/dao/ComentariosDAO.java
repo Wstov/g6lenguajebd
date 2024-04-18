@@ -32,7 +32,7 @@ public class ComentariosDAO {
             pst = con.prepareStatement(sql);
             pst.setInt(1, comen.getIdCita());
             pst.setInt(2, comen.getIdPaciente());
-            pst.setDate(2, Date.valueOf(comen.getFecha()));
+            pst.setDate(3, Date.valueOf(comen.getFecha()));
             pst.setString(4, comen.getComentario());
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
@@ -49,9 +49,9 @@ public class ComentariosDAO {
                 + "WHERE ID_COMENTARIO = ?";
         try {
             pst = con.prepareStatement(sql);
-            pst.setInt(1, comen.getIdCita());
+             pst.setInt(1, comen.getIdCita());
             pst.setInt(2, comen.getIdPaciente());
-            pst.setDate(2, Date.valueOf(comen.getFecha()));
+            pst.setDate(3, Date.valueOf(comen.getFecha()));
             pst.setString(4, comen.getComentario());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();

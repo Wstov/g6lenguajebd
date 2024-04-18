@@ -5,7 +5,6 @@
 package crudclinicadental.dao;
 
 import crudclinicadental.entity.ExamenesEntity;
-import crudclinicadental.entity.MedicoEntity;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -32,7 +31,7 @@ public class ExamenesDAO {
             pst = con.prepareStatement(sql);
             pst.setString(1, exa.getTipoExamen());
             pst.setString(2, exa.getResultado());
-            pst.setDate(2, Date.valueOf(exa.getFecha()));
+            pst.setDate(3, Date.valueOf(exa.getFecha()));
             pst.setInt(4, exa.getIdPaciente());
 
             mensaje = "GUARDADO CORRECTAMENTE";
@@ -52,7 +51,7 @@ public class ExamenesDAO {
             pst = con.prepareStatement(sql);
             pst.setString(1, exa.getTipoExamen());
             pst.setString(2, exa.getResultado());
-            pst.setDate(2, Date.valueOf(exa.getFecha()));
+            pst.setDate(3, Date.valueOf(exa.getFecha()));
             pst.setInt(4, exa.getIdPaciente());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();
