@@ -2540,11 +2540,33 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnGuardarPagoActionPerformed
 
     private void jBtnModificarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarPagoActionPerformed
-        // TODO add your handling code here:
+        // MODIFICAR PAGOS
+                        if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
+                || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
+                || jTextFieldEspecialidad.getText().isEmpty()|| jTextFieldIDInsumoPago.getText().isEmpty()|| jTextFieldPago.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+
+        } else {
+            PagoEntity pagoEntity = new PagoEntity();
+            pagoEntity.setIdPago(Integer.parseInt(jTextFieldIDPago.getText()));
+            pagoEntity.setFecha(LocalDate.parse(jTextFieldFechaPago.getText()));
+            pagoEntity.setHora(LocalTime.parse(jTextFieldHoraPago.getText()));
+            pagoEntity.setIdPaciente(Integer.parseInt(jTextFieldIDPacientePago.getText()));
+            pagoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedicoPago.getText()));
+            pagoEntity.setIdCita(Integer.parseInt(jTextFieldIDCitaPago.getText()));
+            pagoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumoPago.getText()));
+            pagoEntity.setPago(Double.parseDouble(jTextFieldPago.getText()));
+
+            String mensaje = pagoBO.modificarPago(pagoEntity);
+            JOptionPane.showMessageDialog(null, mensaje);
+            limpiarPagos();
+            listarPagos();
+        }
     }//GEN-LAST:event_jBtnModificarPagoActionPerformed
 
     private void jBtnLimpiarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLimpiarPagoActionPerformed
-        // TODO add your handling code here:
+        // LIMPIAR PAGOS
+        limpiarPagos();
     }//GEN-LAST:event_jBtnLimpiarPagoActionPerformed
 
     private void jTextFieldIDPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIDPagoActionPerformed
@@ -2701,17 +2723,17 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnEliminarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarPagoActionPerformed
         // EIMINAR PAGO
-        if (jTextFieldNombre.getText().isEmpty() || jTextFieldApellido.getText().isEmpty()
-                || jTextFieldCedula.getText().isEmpty() || jTextFieldTelefono.getText().isEmpty() || jTextFieldTurno.getText().isEmpty()
-                || jTextFieldEspecialidad.getText().isEmpty()) {
+                if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
+                || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
+                || jTextFieldEspecialidad.getText().isEmpty() || jTextFieldIDInsumoPago.getText().isEmpty() || jTextFieldPago.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
         } else {
 
-            String mensaje = medicoBO.eliminarMedico(Integer.parseInt(jTextFieldIDMedico.getText()));
+            String mensaje = pagoBO.eliminarPago(Integer.parseInt(jTextFieldIDPago.getText()));
             JOptionPane.showMessageDialog(null, mensaje);
-            limpiarMedico();
-            listarMedico();
+            limpiarPagos();
+            listarPagos();
         }
     }//GEN-LAST:event_jBtnEliminarPagoActionPerformed
 
