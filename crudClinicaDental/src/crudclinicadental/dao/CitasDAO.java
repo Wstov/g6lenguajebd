@@ -20,14 +20,15 @@ public class CitasDAO {
     public String agregarCita(Connection con, CitasEntity citasEntity){
         PreparedStatement pst = null;
         String sql = "INSERT INTO REGISTRO_CITAS (ID_CITA, HORA, FECHA, CONSULTORIO, ID_PACIENTE, ID_MEDICO) "
-                + "VALUES(CITAS_SEQ.NEXTVAL,?,?,?,?,?)";
+                + "VALUES(?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setTimestamp(1, Timestamp.valueOf(citasEntity.getHora()));
-            pst.setDate(2, Date.valueOf(citasEntity.getFecha()));
-            pst.setString(3, citasEntity.getConsultorio());
-            pst.setInt(4, citasEntity.getIdpaciente());
-            pst.setInt(5, citasEntity.getIdMedico());
+            pst.setInt(1, citasEntity.getIdCita());
+            pst.setTimestamp(2, Timestamp.valueOf(citasEntity.getHora()));
+            pst.setDate(3, Date.valueOf(citasEntity.getFecha()));
+            pst.setString(4, citasEntity.getConsultorio());
+            pst.setInt(5, citasEntity.getIdpaciente());
+            pst.setInt(6, citasEntity.getIdMedico());
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();

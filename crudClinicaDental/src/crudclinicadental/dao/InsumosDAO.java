@@ -27,13 +27,14 @@ public class InsumosDAO {
     public String agregarInsumo(Connection con, InsumoEntity insumoEntity){
         PreparedStatement pst = null;
         String sql = "INSERT INTO INSUMOS (ID_INSUMOS, NOMBRE_INSU, COSTO, UBICACION, FECHA_VENCIMIENTO) "
-                + "VALUES(INSUMO_SEQ.NEXTVAL,?,?,?,?)";
+                + "VALUES(?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1, insumoEntity.getNombreInsumo());
-            pst.setInt(2, insumoEntity.getCosto());
-            pst.setString(3, insumoEntity.getUbicacion());
-            pst.setDate(4, Date.valueOf(insumoEntity.getFechaVencimiento()));
+            pst.setInt(1, insumoEntity.getIdInsumo());
+            pst.setString(2, insumoEntity.getNombreInsumo());
+            pst.setInt(3, insumoEntity.getCosto());
+            pst.setString(4, insumoEntity.getUbicacion());
+            pst.setDate(5, Date.valueOf(insumoEntity.getFechaVencimiento()));
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();

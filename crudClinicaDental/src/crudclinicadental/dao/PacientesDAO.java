@@ -25,16 +25,17 @@ public class PacientesDAO {
     public String agregarPaciente(Connection con, PacienteEntiy pacienteEntity){
         PreparedStatement pst = null;
         String sql = "INSERT INTO PACIENTE (ID_PACIENTE, NUM_CEDULA, NOM_PACIENTE, APELLIDOS_PACIENTE, DIRECCION, TELEFONO_P, ALERGIAS, ENFERM_CRONICAS) "
-                + "VALUES(SECUENCIAPACIENTES.NEXTVAL,?,?,?,?,?,?,?)";
+                + "VALUES(?,?,?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setInt(1, pacienteEntity.getCedula());
-            pst.setString(2, pacienteEntity.getNombre());
-            pst.setString(3, pacienteEntity.getApellidos());
-            pst.setString(4, pacienteEntity.getDireccion());
-            pst.setInt(5, pacienteEntity.getTelefono());
-            pst.setString(6, pacienteEntity.getAlegias());
-            pst.setString(7, pacienteEntity.getEnfermedad());
+            pst.setInt(1, pacienteEntity.getIdPaciente());
+            pst.setInt(2, pacienteEntity.getCedula());
+            pst.setString(3, pacienteEntity.getNombre());
+            pst.setString(4, pacienteEntity.getApellidos());
+            pst.setString(5, pacienteEntity.getDireccion());
+            pst.setInt(6, pacienteEntity.getTelefono());
+            pst.setString(7, pacienteEntity.getAlegias());
+            pst.setString(8, pacienteEntity.getEnfermedad());
             mensaje = "PACIENTE GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();

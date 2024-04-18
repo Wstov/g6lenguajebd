@@ -26,13 +26,14 @@ public class ProveedoresDAO {
     public String agregarProveedores(Connection con, ProveedoresEntity proveeEntity) {
         PreparedStatement pst = null;
         String sql = "INSERT INTO PROVEEDORES (PROVEEDORID, NOMBRE, TELÉFONO, DIRECCIÓN, EMAIL) "
-                + "VALUES(PROVEE_SEQ.NEXTVAL,?,?,?,?)";
+                + "VALUES(?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1, proveeEntity.getNombre());
-            pst.setString(2, proveeEntity.getTelefono());
-            pst.setString(3, proveeEntity.getDireccion());
-            pst.setString(4, proveeEntity.getEmail());
+            pst.setInt(1, proveeEntity.getIdProveedor());
+            pst.setString(2, proveeEntity.getNombre());
+            pst.setString(3, proveeEntity.getTelefono());
+            pst.setString(4, proveeEntity.getDireccion());
+            pst.setString(5, proveeEntity.getEmail());
 
             mensaje = "EL PROVEEDOR GUARDADO CORRECTAMENTE";
             pst.execute();

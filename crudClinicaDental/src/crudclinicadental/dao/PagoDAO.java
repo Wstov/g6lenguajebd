@@ -30,14 +30,15 @@ public class PagoDAO {
                 + "VALUES(?,?,?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setInt(1, pagoEntity.getIdMedico());
-            pst.setDate(2, Date.valueOf(pagoEntity.getFecha()));
-            pst.setTime(3, Time.valueOf(pagoEntity.getHora()));
-            pst.setInt(4, pagoEntity.getIdPaciente());
-            pst.setInt(5, pagoEntity.getIdMedico());
-            pst.setInt(6, pagoEntity.getIdCita());
-            pst.setInt(7, pagoEntity.getIdInsumo());
-            pst.setDouble(8, pagoEntity.getPago());
+            pst.setInt(1, pagoEntity.getIdPago());
+            pst.setInt(2, pagoEntity.getIdMedico());
+            pst.setDate(3, Date.valueOf(pagoEntity.getFecha()));
+            pst.setTime(4, Time.valueOf(pagoEntity.getHora()));
+            pst.setInt(5, pagoEntity.getIdPaciente());
+            pst.setInt(6, pagoEntity.getIdMedico());
+            pst.setInt(7, pagoEntity.getIdCita());
+            pst.setInt(8, pagoEntity.getIdInsumo());
+            pst.setDouble(9, pagoEntity.getPago());
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();

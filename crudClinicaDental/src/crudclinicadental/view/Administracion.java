@@ -823,6 +823,11 @@ public class Administracion extends javax.swing.JFrame {
 
             }
         ));
+        jTblMedicamentos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTblMedicamentosMouseClicked(evt);
+            }
+        });
         jScrollPane4.setViewportView(jTblMedicamentos);
 
         jLabel17.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -873,6 +878,11 @@ public class Administracion extends javax.swing.JFrame {
 
         jBtnEliminarMedicamentos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jBtnEliminarMedicamentos.setText("Eliminar");
+        jBtnEliminarMedicamentos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnEliminarMedicamentosActionPerformed(evt);
+            }
+        });
 
         jBtnLimpiarMedicamentos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jBtnLimpiarMedicamentos.setText("Limpiar");
@@ -2502,7 +2512,8 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldMedicamentosActionPerformed
 
     private void jBtnGuardarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarMedicamentosActionPerformed
-        // TODO add your handling code here:
+        // MEDICAMENTOS AGREGAR
+        
     }//GEN-LAST:event_jBtnGuardarMedicamentosActionPerformed
 
     private void jBtnModificarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarMedicamentosActionPerformed
@@ -2787,6 +2798,23 @@ public class Administracion extends javax.swing.JFrame {
         jTextFieldIDInsumoPago.setText(jTblPago.getValueAt(seleccion, 6) + "");
         jTextFieldPago.setText(jTblPago.getValueAt(seleccion, 7) + "");
     }//GEN-LAST:event_jTblPagoMouseClicked
+
+    private void jBtnEliminarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarMedicamentosActionPerformed
+        // MEDICAMENTOS ELIMINAR
+    }//GEN-LAST:event_jBtnEliminarMedicamentosActionPerformed
+
+    private void jTblMedicamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblMedicamentosMouseClicked
+        // MEDICAMENTOS EVENTO MOUSE
+        int seleccion = jTblMedicamentos.rowAtPoint(evt.getPoint());
+        jTextFieldIDMedicamentos.setText(jTblMedicamentos.getValueAt(seleccion, 0) + "");
+        jTextFieldFechaPago.setText(jTblMedicamentos.getValueAt(seleccion, 1) + "");
+        jTextFieldHoraPago.setText(jTblMedicamentos.getValueAt(seleccion, 2) + "");
+        jTextFieldIDPacientePago.setText(jTblMedicamentos.getValueAt(seleccion, 3) + "");
+        jTextFieldIDMedicoPago.setText(jTblMedicamentos.getValueAt(seleccion, 4) + "");
+        jTextFieldIDCitaPago.setText(jTblMedicamentos.getValueAt(seleccion, 5) + "");
+        jTextFieldIDInsumoPago.setText(jTblMedicamentos.getValueAt(seleccion, 6) + "");
+        jTextFieldPago.setText(jTblMedicamentos.getValueAt(seleccion, 7) + "");
+    }//GEN-LAST:event_jTblMedicamentosMouseClicked
 
     public void limpiarMedico() {
         jTextFieldIDMedico.setText("");

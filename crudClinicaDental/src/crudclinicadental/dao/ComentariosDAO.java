@@ -5,7 +5,6 @@
 package crudclinicadental.dao;
 
 import crudclinicadental.entity.ComentariosEntity;
-import crudclinicadental.entity.MedicoEntity;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -27,13 +26,14 @@ public class ComentariosDAO {
     public String agregarComentario(Connection con, ComentariosEntity comen){
         PreparedStatement pst = null;
         String sql = "INSERT INTO COMENTARIOS_CITA (ID_COMENTARIO, ID_CITA, ID_PACIENTE, FECHA, COMENTARIO) "
-                + "VALUES(COMENTARIOS_SEQ.NEXTVAL,?,?,?,?)";
+                + "VALUES(?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setInt(1, comen.getIdCita());
-            pst.setInt(2, comen.getIdPaciente());
-            pst.setDate(3, Date.valueOf(comen.getFecha()));
-            pst.setString(4, comen.getComentario());
+            pst.setInt(1, comen.getIdComentario());
+            pst.setInt(2, comen.getIdCita());
+            pst.setInt(3, comen.getIdPaciente());
+            pst.setDate(4, Date.valueOf(comen.getFecha()));
+            pst.setString(5, comen.getComentario());
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();

@@ -26,13 +26,14 @@ public class ExamenesDAO {
     public String agregarExamen(Connection con, ExamenesEntity exa){
         PreparedStatement pst = null;
         String sql = "INSERT INTO REGISTRO_EXAMENES (ID_EXAMEN, TIPO_EXAMEN, RESULTADOS, FECHA, ID_PACIENTE) "
-                + "VALUES(EXAMENES_SEQ.NEXTVAL,?,?,?,?)";
+                + "VALUES(?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1, exa.getTipoExamen());
-            pst.setString(2, exa.getResultado());
-            pst.setDate(3, Date.valueOf(exa.getFecha()));
-            pst.setInt(4, exa.getIdPaciente());
+            pst.setInt(1, exa.getIdExamenes());
+            pst.setString(2, exa.getTipoExamen());
+            pst.setString(3, exa.getResultado());
+            pst.setDate(4, Date.valueOf(exa.getFecha()));
+            pst.setInt(5, exa.getIdPaciente());
 
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();

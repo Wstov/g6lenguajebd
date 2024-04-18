@@ -25,13 +25,14 @@ public class TratamientosDAO {
     public String agregarTratamiento(Connection con, TratamientoEntity trata){
         PreparedStatement pst = null;
         String sql = "INSERT INTO TRATAMIENTOS (ID_TRATAMIENTO, NOMBRE, DESCRIPCION, COSTO, ID_INSUMO) "
-                + "VALUES(TRATA_SEQ.NEXTVAL,?,?,?,?)";
+                + "VALUES(?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
-            pst.setString(1, trata.getNombre());
-            pst.setString(2, trata.getDescripcion());
-            pst.setDouble(3, trata.getCosto());
-            pst.setInt(4, trata.getIdInsumo());
+            pst.setInt(1, trata.getIdTratamiento());
+            pst.setString(2, trata.getNombre());
+            pst.setString(3, trata.getDescripcion());
+            pst.setDouble(4, trata.getCosto());
+            pst.setInt(5, trata.getIdInsumo());
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
