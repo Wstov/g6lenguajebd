@@ -21,8 +21,7 @@ public class MedicoDAO {
     
     public String agregarMedico(Connection con, MedicoEntity med){
         PreparedStatement pst = null;
-        String sql = "INSERT INTO MEDICOS (ID_MEDICO, NOM_MEDICO, APELLIDOS_MEDICO, CED_MEDICO, TELEFONO_M,TURNO,ESPECIALIDAD) "
-                + "VALUES(?,?,?,?,?,?,?)";
+        String sql = "{ call Insertar_Medico(?,?,?,?,?,?,?) }";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, med.getIdMedico());
