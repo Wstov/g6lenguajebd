@@ -26,8 +26,7 @@ public class InsumosDAO {
     
     public String agregarInsumo(Connection con, InsumoEntity insumoEntity){
         PreparedStatement pst = null;
-        String sql = "INSERT INTO INSUMOS (ID_INSUMOS, NOMBRE_INSU, COSTO, UBICACION, FECHA_VENCIMIENTO) "
-                + "VALUES(?,?,?,?,?)";
+        String sql = "{ call Insertar_Insumos(?,?,?,?,?) }";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, insumoEntity.getIdInsumo());
