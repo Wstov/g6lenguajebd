@@ -63,21 +63,39 @@ public class InsumosDAO {
         return mensaje;
     }
 
-    public String eliminarInsumo(Connection con, int id) {
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM INSUMOS WHERE ID_INSUMOS = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
+    public String eliminarInsumo(Connection con, int idInsumo) {
+    CallableStatement cst = null;
+    String mensaje = "";
 
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        String call = "{ call Eliminar_Insumo(?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, idInsumo); // Establecer el ID del insumo como parámetro
+
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+
+        // Verificar si el procedimiento ha afectado alguna fila
+        if (cst.getUpdateCount() > 0) {
             mensaje = "ELIMINADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (SQLException  e) {
-            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+        } else {
+            mensaje = "SE ELIMINO EL INSUMO CON EL ID " + idInsumo;
         }
-        return mensaje;
+    } catch (SQLException e) {
+        mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
+    } finally {
+        try {
+            if (cst != null) {
+                cst.close(); // Asegurarse de cerrar el CallableStatement
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+    return mensaje;
+}
 
     public void listarInsumo(Connection con, JTable tabla) {
         DefaultTableModel model;
