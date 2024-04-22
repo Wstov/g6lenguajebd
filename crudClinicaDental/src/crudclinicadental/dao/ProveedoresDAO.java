@@ -65,21 +65,51 @@ public class ProveedoresDAO {
         return mensaje;
     }
 
-    public String eliminarProveedores(Connection con, int id) {
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM PROVEEDORES WHERE PROVEEDORID = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
+   public String eliminarProveedores(Connection con, int idProveedor) {
+    CallableStatement cst = null;
+    String mensaje = "";
 
-            mensaje = "EL PROVEEDORES SE HA ELIMINADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (Exception e) {
-            mensaje = "EL PROVEEDORES NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+    try {
+        // Llamar al procedimiento almacenado para verificar el proveedor
+        String call = "{ call Verificar_Proveedor(?, ?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, idProveedor); // Establecer el ID del proveedor a verificar
+        cst.registerOutParameter(2, Types.INTEGER); // Parámetro de salida para el resultado
+
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+
+        // Obtener el resultado del procedimiento almacenado
+        int resultado = cst.getInt(2);
+
+        // Imprimir el resultado para depuración
+        System.out.println("" + resultado);
+        if (resultado == 1) {
+            mensaje = "No se puede eliminar el proveedor dado que está vinculado a otros datos.\n"
+                    + "Por favor, revise los datos en medicamentos u otras tablas relacionadas.";
+        } else {
+            // Llamar al procedimiento almacenado para eliminar el proveedor
+            String eliminarCall = "{ call Eliminar_Proveedor(?) }";
+            CallableStatement eliminarCst = con.prepareCall(eliminarCall);
+            eliminarCst.setInt(1, idProveedor); // Establecer el ID del proveedor a eliminar
+            eliminarCst.execute();
+            eliminarCst.close();
+            mensaje = "ELIMINADO CORRECTAMENTE";
         }
-        return mensaje;
+    } catch (SQLException e) {
+        mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
+    } finally {
+        try {
+            if (cst != null) {
+                cst.close(); // Asegurarse de cerrar el CallableStatement
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+    return mensaje;
+}
 
     public void listarProveedores(Connection con, JTable tabla) {
                 DefaultTableModel model;
