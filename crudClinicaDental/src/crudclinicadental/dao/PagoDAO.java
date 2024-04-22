@@ -86,7 +86,7 @@ public class PagoDAO {
         mensaje = "ELIMINADO CORRECTAMENTE";
 
     } catch (SQLException e) {
-        mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
+        mensaje = "NO SE ELIMINÓ CORRECTAMENTE. \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) {
