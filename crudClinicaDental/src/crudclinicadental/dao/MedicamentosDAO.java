@@ -64,21 +64,34 @@ public class MedicamentosDAO {
         return mensaje;
     }
 
-    public String eliminarMedicamentos(Connection con, int id) {
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM MEDICAMENTOS WHERE MEDICAMENTOID = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
+ public String eliminarMedicamentos(Connection con, int idMedicamento) {
+    CallableStatement cst = null;
+    String mensaje = "";
 
-            mensaje = "ELIMINADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (Exception e) {
-            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        String call = "{ call Eliminar_Medicamento(?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, idMedicamento); // Pasar el ID del medicamento como parámetro
+
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+        mensaje = "ELIMINADO CORRECTAMENTE";
+    } catch (SQLException e) {
+        mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
+    } finally {
+        try {
+            if (cst != null) {
+                cst.close(); // Asegurarse de cerrar el CallableStatement
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return mensaje;
     }
+
+    return mensaje;
+}
+
 
     public void listarMedicamentos(Connection con, JTable tabla) {
                 DefaultTableModel model;
