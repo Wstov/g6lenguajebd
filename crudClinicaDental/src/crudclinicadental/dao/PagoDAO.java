@@ -16,6 +16,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import java.sql.*;
 
 /**
  *
@@ -70,22 +71,34 @@ public class PagoDAO {
         return mensaje;
     }
 
-    public String eliminarPago(Connection con, int id) {
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM PAGO WHERE ID_RECIBO = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
+    public String eliminarPago(Connection con, int idRecibo) {
+    CallableStatement cst = null;
+    String mensaje = "";
 
-            mensaje = "ELIMINADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (SQLException  e) {
-            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+    try {
+        // Prepare the call to the stored procedure
+        String call = "{ call Eliminar_Pago(?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, idRecibo); // Set the ID of the receipt to delete
+
+        // Execute the stored procedure
+        cst.execute();
+        mensaje = "ELIMINADO CORRECTAMENTE";
+
+    } catch (SQLException e) {
+        mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
+    } finally {
+        try {
+            if (cst != null) {
+                cst.close(); // Ensure the CallableStatement is closed
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return mensaje;
     }
 
+    return mensaje;
+}
     public void listarPago(Connection con, JTable tabla) {
         DefaultTableModel model;
         String [] columnas = {"ID","FECHA","HORA","ID PACIENTE","ID MEDICO","ID CITA","ID INSUMOS","PAGO"};
