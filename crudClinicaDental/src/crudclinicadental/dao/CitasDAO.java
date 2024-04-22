@@ -59,21 +59,39 @@ public class CitasDAO {
         return mensaje;
     }
 
-    public String eliminarCita(Connection con, int id) {
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM REGISTRO_CITAS WHERE ID_CITA = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
+   public String eliminarCita(Connection con, int idCita) {
+    CallableStatement cst = null;
+    String mensaje = "";
 
-            mensaje = "ELIMINADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (SQLException  e) {
-            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        String call = "{ call Eliminar_Cita(?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, idCita); // Establecer el ID de la cita como parámetro
+
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+
+        // Verificar si el procedimiento ha afectado alguna fila
+        if (cst.getUpdateCount() > 0) {
+            mensaje = "ELIMINADA CORRECTAMENTE";
+        } else {
+            mensaje = "NO SE ENCONTRÓ NINGUNA CITA CON ID " + idCita;
         }
-        return mensaje;
+    } catch (SQLException e) {
+        mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
+    } finally {
+        try {
+            if (cst != null) {
+                cst.close(); // Asegurarse de cerrar el CallableStatement
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+
+    return mensaje;
+}
 
     public void listarCita(Connection con, JTable tabla) {
         DefaultTableModel model;
