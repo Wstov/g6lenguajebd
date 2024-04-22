@@ -24,6 +24,7 @@ import crudclinicadental.entity.PacienteEntiy;
 import crudclinicadental.entity.PagoEntity;
 import crudclinicadental.entity.ProveedoresEntity;
 import crudclinicadental.entity.TratamientoEntity;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -2882,7 +2883,15 @@ public class Administracion extends javax.swing.JFrame {
                 examenesEntity.setIdExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
                 examenesEntity.setTipoExamen(jTextFieldExamen.getText());
                 examenesEntity.setResultado(jTextFieldResultadoExamen.getText());
-                examenesEntity.setFecha(LocalDate.parse(jTextFieldCedula.getText()));
+                
+                // Convertir el texto de la fecha al formato 'yyyy-MM-dd'
+        String fechaTexto = jTextFieldFechaExamen.getText();
+        DateTimeFormatter formatterEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatterSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fecha = LocalDate.parse(fechaTexto, formatterEntrada);
+        String fechaFormateada = fecha.format(formatterSalida);
+                
+                
                 examenesEntity.setIdPaciente(Integer.parseInt(jTextFieldPacienteExamen.getText()));
 
                 String mensaje = examenesBO.agregarExamenes(examenesEntity);
@@ -2901,25 +2910,36 @@ public class Administracion extends javax.swing.JFrame {
         // modificar examenes:
          
         if(jTextFieldIDExamenes.getText().isEmpty() || jTextFieldExamen.getText().isEmpty()
-                 || jTextFieldResultadoExamen.getText().isEmpty() || jTextFieldFechaExamen.getText().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()
-                 ){
-            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+         || jTextFieldResultadoExamen.getText().isEmpty() || jTextFieldFechaExamen.getText().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()
+         ){
+    JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+
+}else{
+    try {
+        ExamenesEntity examenesEntity = new ExamenesEntity();
+        examenesEntity.setIdExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
+        examenesEntity.setTipoExamen(jTextFieldExamen.getText());
+        examenesEntity.setResultado(jTextFieldResultadoExamen.getText());
         
-        }else{
-            ExamenesEntity examenesEntity = new ExamenesEntity();
-            examenesEntity.setIdExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
-            examenesEntity.setTipoExamen(jTextFieldExamen.getText());
-            examenesEntity.setResultado(jTextFieldResultadoExamen.getText());
-            examenesEntity.setFecha(LocalDate.parse(jTextFieldCedula.getText()));
-            examenesEntity.setIdPaciente(Integer.parseInt(jTextFieldPacienteExamen.getText()));
-            
+        // Convertir el texto de la fecha al formato 'yyyy-MM-dd'
+        String fechaTexto = jTextFieldFechaExamen.getText();
+        DateTimeFormatter formatterEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter formatterSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fecha = LocalDate.parse(fechaTexto, formatterEntrada);
+        String fechaFormateada = fecha.format(formatterSalida);
+        
+        examenesEntity.setFecha(Date.valueOf(fechaFormateada));
+        examenesEntity.setIdPaciente(Integer.parseInt(jTextFieldPacienteExamen.getText()));
+        
+        String mensaje = examenesBO.modificarExamenes(examenesEntity);
+        JOptionPane.showMessageDialog(null, mensaje);
+        limpiarExamenes();
+        listarExamenes();
+    } catch (DateTimeParseException e) {
+        JOptionPane.showMessageDialog(null, "Formato de fecha u hora incorrecto. Utilice el formato adecuado. ERROR:" + e);
+    }
+}
 
-
-            String mensaje = examenesBO.modificarExamenes(examenesEntity);
-            JOptionPane.showMessageDialog(null, mensaje);
-            limpiarExamenes();
-            listarExamenes();
-        }
     }//GEN-LAST:event_jBtnModificarExamenesActionPerformed
 
     private void jBtnLimpiarExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLimpiarExamenesActionPerformed

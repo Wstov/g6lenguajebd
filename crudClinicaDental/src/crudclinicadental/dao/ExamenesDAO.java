@@ -32,7 +32,7 @@ public class ExamenesDAO {
             pst.setInt(1, exa.getIdExamenes());
             pst.setString(2, exa.getTipoExamen());
             pst.setString(3, exa.getResultado());
-            pst.setDate(4, Date.valueOf(exa.getFecha()));
+            pst.setDate(4, (Date)(exa.getFecha()));
             pst.setInt(5, exa.getIdPaciente());
 
             mensaje = "GUARDADO CORRECTAMENTE";
@@ -52,7 +52,7 @@ public class ExamenesDAO {
             pst = con.prepareStatement(sql);
             pst.setString(1, exa.getTipoExamen());
             pst.setString(2, exa.getResultado());
-            pst.setDate(3, Date.valueOf(exa.getFecha()));
+            pst.setDate(3, (Date) exa.getFecha());
             pst.setInt(4, exa.getIdPaciente());
             pst.setInt(5, exa.getIdExamenes());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
