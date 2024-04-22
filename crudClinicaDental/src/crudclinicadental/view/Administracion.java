@@ -1285,7 +1285,7 @@ public class Administracion extends javax.swing.JFrame {
                     .addGap(0, 0, Short.MAX_VALUE)))
         );
 
-        Medicos.addTab("Pago", jPanel5);
+        Medicos.addTab("Pagos", jPanel5);
 
         jTblCitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

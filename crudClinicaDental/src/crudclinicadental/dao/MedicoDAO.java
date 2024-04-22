@@ -10,6 +10,7 @@ import java.sql.Connection;
 import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.SpringLayout;
 import javax.swing.table.DefaultTableModel;
 /**
  *
@@ -62,21 +63,22 @@ public class MedicoDAO {
         return mensaje;
     }
 
-    public String eliminarMedico(Connection con, int id) {
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM MEDICOS WHERE ID_MEDICO = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
-
-            mensaje = "ELIMINADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (SQLException  e) {
-            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
-        }
-        return mensaje;
-    }
+//    public String eliminarMedico(Connection con, int id) {
+//        PreparedStatement pst = null;
+//        String sql = "DELETE FROM MEDICOS WHERE ID_MEDICO = ?";
+//        try {
+//            pst = con.prepareStatement(sql);
+//            pst.setInt(1, id);
+//
+//            mensaje = "ELIMINADO CORRECTAMENTE";
+//            pst.execute();
+//            pst.close();
+//        } catch (SQLException  e) {
+//            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+//            
+//        }
+//        return mensaje;
+//    }
 
     public void listarMedico(Connection con, JTable tabla) {
         DefaultTableModel model;
@@ -121,7 +123,117 @@ public class MedicoDAO {
         }
         return id;
     }
+    
+    
+//    public String eliminarMedicoPrueba(Connection con, int id) {
+//        CallableStatement cst = null;
+//        boolean existe = false;
+//        try {
+//            // Preparar la llamada al procedimiento almacenado Verificar_Medico
+//            String call = "{ call Verificar_Medico(?, ?) }";
+//            cst = con.prepareCall(call);
+//            cst.setInt(1, id); // Establecer el ID del médico a verificar
+//            cst.registerOutParameter(2, Types.INTEGER); // Parámetro de salida para el resultado
+//
+//            // Ejecutar el procedimiento almacenado
+//            cst.execute();
+//
+//            // Obtener el resultado del procedimiento almacenado
+//            int resultado = cst.getInt(2);
+//
+//            // Verificar el resultado
+//            if (resultado == 1) {
+//                existe = true; // El médico existe en la tabla
+//            }
+//        } finally {
+//            if (cst != null) {
+//                cst.close(); // Asegúrate de cerrar el CallableStatement
+//            }
+//        }
+//        return mensaje;
+//    }
+    
+    public String eliminarMedico3(Connection con, int id) {
+        CallableStatement cst = null;
+        boolean existe = false;
+        
+//        PreparedStatement pst = null;
+        
+        try {
+            String call = "{ call Verificar_Medico(?, ?) }";
+            cst = con.prepareCall(call);
+            cst.setInt(1, id); // Establecer el ID del médico a verificar
+            cst.registerOutParameter(2, Types.INTEGER); // Parámetro de salida para el resultado
+            
+            // Ejecutar el procedimiento almacenado
+            cst.execute();
+            
+            // Obtener el resultado del procedimiento almacenado
+            int resultado = cst.getInt(2);
+            System.out.println(resultado);
+            // Verificar el resultado
+            if (resultado == 1) {
+//                existe = true; // El médico existe en la tabla
+            JOptionPane.showMessageDialog(null, "No se puede eliminar el medico dado a que esta vinculado a otros datos "
+                    + "n/Revisar los datos en Citas y Pagos");
+            }else{
+            mensaje = "ELIMINADO CORRECTAMENTE";
+                System.out.println("Se ejecuto el else");
+            }
 
+            
+//            pst.execute();
+//            pst.close();
+        } catch (SQLException  e) {
+            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+            
+        }
+        return mensaje;
+    }
 
+    
+    public String eliminarMedico(Connection con, int id) {
+        CallableStatement cst = null;
+        String mensaje = "";
 
+        try {
+            String call = "{ call Verificar_Medico(?, ?) }";
+            cst = con.prepareCall(call);
+            cst.setInt(1, id); // Establecer el ID del médico a verificar
+            cst.registerOutParameter(2, Types.INTEGER); // Parámetro de salida para el resultado
+
+            // Ejecutar el procedimiento almacenado
+            cst.execute();
+
+            // Obtener el resultado del procedimiento almacenado
+            int resultado = cst.getInt(2);
+
+            // Verificar el resultado
+            System.out.println("" + resultado);
+            if (resultado == 1) {
+                mensaje = "No se puede eliminar el médico dado que está vinculado a otros datos.\n"
+                        + "Por favor, revise los datos en Registro Citas y Pagos.";
+            } else {
+                // Llamar al procedimiento almacenado para eliminar al médico
+                String eliminarCall = "{ call Eliminar_Medico(?) }";
+                CallableStatement eliminarCst = con.prepareCall(eliminarCall);
+                eliminarCst.setInt(1, id); // Establecer el ID del médico a eliminar
+                eliminarCst.execute();
+                eliminarCst.close();
+                // ... Código para eliminar al médico ...
+                mensaje = "ELIMINADO CORRECTAMENTE";
+            }
+        } catch (SQLException e) {
+            mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
+        } finally {
+            try {
+                if (cst != null) {
+                    cst.close(); // Asegúrate de cerrar el CallableStatement
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        return mensaje;
+    }
 }
