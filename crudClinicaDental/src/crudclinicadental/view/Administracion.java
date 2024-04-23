@@ -369,7 +369,6 @@ public class Administracion extends javax.swing.JFrame {
         jLabel67 = new javax.swing.JLabel();
         jLabel68 = new javax.swing.JLabel();
         jTextFieldPaciComen = new javax.swing.JTextField();
-        jTextFieldFechaComen = new javax.swing.JTextField();
         jTextFieldComen = new javax.swing.JTextField();
         jBtnGuardarComen = new javax.swing.JButton();
         jBtnModificarComen = new javax.swing.JButton();
@@ -377,6 +376,7 @@ public class Administracion extends javax.swing.JFrame {
         jBtnLimpiarComen = new javax.swing.JButton();
         jLabel71 = new javax.swing.JLabel();
         jTextFieldIDComentarios = new javax.swing.JTextField();
+        jDateChooserComenta = new com.toedter.calendar.JDateChooser();
         jLabel72 = new javax.swing.JLabel();
         jPanel11 = new javax.swing.JPanel();
         jPanel28 = new javax.swing.JPanel();
@@ -2134,8 +2134,6 @@ public class Administracion extends javax.swing.JFrame {
 
         jTextFieldPaciComen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jTextFieldFechaComen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
         jTextFieldComen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jBtnGuardarComen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -2181,6 +2179,8 @@ public class Administracion extends javax.swing.JFrame {
             }
         });
 
+        jDateChooserComenta.setDateFormatString("dd/MM/yyyy");
+
         javax.swing.GroupLayout jPanel27Layout = new javax.swing.GroupLayout(jPanel27);
         jPanel27.setLayout(jPanel27Layout);
         jPanel27Layout.setHorizontalGroup(
@@ -2210,7 +2210,7 @@ public class Administracion extends javax.swing.JFrame {
                             .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextFieldPaciComen, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                                 .addComponent(jTextFieldComen)
-                                .addComponent(jTextFieldFechaComen)))))
+                                .addComponent(jDateChooserComenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel27Layout.setVerticalGroup(
@@ -2229,14 +2229,14 @@ public class Administracion extends javax.swing.JFrame {
                     .addComponent(jLabel66)
                     .addComponent(jTextFieldPaciComen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel67)
-                    .addComponent(jTextFieldFechaComen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooserComenta, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel68)
                     .addComponent(jTextFieldComen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
                 .addGroup(jPanel27Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnGuardarComen)
                     .addComponent(jBtnModificarComen)
@@ -3026,7 +3026,8 @@ public class Administracion extends javax.swing.JFrame {
         // TODO add your handling code here:
         
          if(jTextFieldIDInsumos.getText().isEmpty() || jTextFieldNombreInsumos.getText().isEmpty()
-                 || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty()
+                 || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty() || 
+                 jDateChooserInsumo.getDateFormatString().isEmpty()
                  ){
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
         
@@ -3062,7 +3063,7 @@ public class Administracion extends javax.swing.JFrame {
     private void jBtnGuardarComenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarComenActionPerformed
         // AGREGAR COMENTARIOS
         if (jTextFieldCitaComen.getText().isEmpty() || jTextFieldPaciComen.getText().isEmpty()
-                || jTextFieldFechaComen.getText().isEmpty() || jTextFieldComen.getText().isEmpty()) {
+                || jDateChooserComenta.getDateFormatString().isEmpty() || jTextFieldComen.getText().isEmpty()) {
         JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
         } else {
@@ -3071,9 +3072,10 @@ public class Administracion extends javax.swing.JFrame {
                 cone.setIdComentario(Integer.parseInt(jTextFieldIDComentarios.getText()));
                 cone.setIdCita(Integer.parseInt(jTextFieldCitaComen.getText()));
                 cone.setIdPaciente(Integer.parseInt(jTextFieldPaciComen.getText()));
-                cone.setFecha(LocalDate.parse(jTextFieldFechaComen.getText()));
+                cone.setFecha(jDateChooserComenta.getDate());
                 cone.setComentario(jTextFieldComen.getText());
 
+                
                 String mensaje = comentariosBO.agregarComentario(cone);
                 JOptionPane.showMessageDialog(null, mensaje);
                 limpiarComentarios();
@@ -3087,7 +3089,7 @@ public class Administracion extends javax.swing.JFrame {
     private void jBtnModificarComenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarComenActionPerformed
         // MODIFICAR COMENTARIOS
         if (jTextFieldCitaComen.getText().isEmpty() || jTextFieldPaciComen.getText().isEmpty()
-                || jTextFieldFechaComen.getText().isEmpty() || jTextFieldComen.getText().isEmpty()) {
+                || jDateChooserComenta.getDateFormatString().isEmpty() || jTextFieldComen.getText().isEmpty()) {
         JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
         } else {
@@ -3096,7 +3098,7 @@ public class Administracion extends javax.swing.JFrame {
                 cone.setIdComentario(Integer.parseInt(jTextFieldIDComentarios.getText()));
                 cone.setIdCita(Integer.parseInt(jTextFieldCitaComen.getText()));
                 cone.setIdPaciente(Integer.parseInt(jTextFieldPaciComen.getText()));
-                cone.setFecha(LocalDate.parse(jTextFieldFechaComen.getText()));
+                cone.setFecha(jDateChooserComenta.getDate());
                 cone.setComentario(jTextFieldComen.getText());
 
                 String mensaje = comentariosBO.modificarComentario(cone);
@@ -3378,7 +3380,7 @@ public class Administracion extends javax.swing.JFrame {
     private void jBtnEliminarComenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarComenActionPerformed
         // ELIMINAR COMENTARIOS
         if (jTextFieldCitaComen.getText().isEmpty() || jTextFieldPaciComen.getText().isEmpty()
-                || jTextFieldFechaComen.getText().isEmpty() || jTextFieldComen.getText().isEmpty()) {
+                || jDateChooserComenta.getDateFormatString().isEmpty() || jTextFieldComen.getText().isEmpty()) {
         JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
         } else {
@@ -3395,13 +3397,17 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnEliminarComenActionPerformed
 
     private void jTblComenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblComenMouseClicked
-        // CLICKED COMENTARIOS
-        int seleccion = jTblComen.rowAtPoint(evt.getPoint());
-        jTextFieldIDComentarios.setText(jTblComen.getValueAt(seleccion, 0) + "");
-        jTextFieldCitaComen.setText(jTblComen.getValueAt(seleccion, 1) + "");
-        jTextFieldPaciComen.setText(jTblComen.getValueAt(seleccion, 2) + "");
-        jTextFieldFechaComen.setText(jTblComen.getValueAt(seleccion, 3) + "");
-        jTextFieldComen.setText(jTblComen.getValueAt(seleccion, 4) + "");
+        try {
+            // CLICKED COMENTARIOS
+            int seleccion = jTblComen.rowAtPoint(evt.getPoint());
+            jTextFieldIDComentarios.setText(jTblComen.getValueAt(seleccion, 0) + "");
+            jTextFieldCitaComen.setText(jTblComen.getValueAt(seleccion, 1) + "");
+            jTextFieldPaciComen.setText(jTblComen.getValueAt(seleccion, 2) + "");
+            jDateChooserComenta.setDate(ff.parse(jTblComen.getValueAt(seleccion, 3)+""));
+            jTextFieldComen.setText(jTblComen.getValueAt(seleccion, 4) + "");
+        } catch (ParseException ex) {
+            Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
     }//GEN-LAST:event_jTblComenMouseClicked
 
@@ -3516,7 +3522,7 @@ public class Administracion extends javax.swing.JFrame {
         jTextFieldIDComentarios.setText("");
         jTextFieldCitaComen.setText("");
         jTextFieldPaciComen.setText("");
-        jTextFieldFechaComen.setText("");
+        jDateChooserComenta.setDate(null);
         jTextFieldComen.setText("");
         idMaxComentarios();
     }
@@ -3664,6 +3670,7 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JButton jBtnModificarPago;
     private javax.swing.JButton jBtnModificarProvee;
     private javax.swing.JButton jBtnModificarTrata;
+    private com.toedter.calendar.JDateChooser jDateChooserComenta;
     private com.toedter.calendar.JDateChooser jDateChooserExam;
     private com.toedter.calendar.JDateChooser jDateChooserInsumo;
     private javax.swing.JLabel jLabel1;
@@ -3805,7 +3812,6 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldEspecialidad;
     private javax.swing.JTextField jTextFieldExamen;
     private javax.swing.JTextField jTextFieldFechaCita;
-    private javax.swing.JTextField jTextFieldFechaComen;
     private javax.swing.JTextField jTextFieldFechaPago;
     private javax.swing.JTextField jTextFieldHoraCita;
     private javax.swing.JTextField jTextFieldHoraPago;

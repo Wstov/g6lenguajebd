@@ -2914,7 +2914,7 @@
                                           <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="jTextFieldPaciComen" alignment="0" pref="316" max="32767" attributes="0"/>
                                               <Component id="jTextFieldComen" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jTextFieldFechaComen" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="jDateChooserComenta" alignment="0" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -2942,16 +2942,16 @@
                                   <Component id="jTextFieldPaciComen" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel67" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextFieldFechaComen" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="1" attributes="0">
+                                  <Component id="jLabel67" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jDateChooserComenta" min="-2" pref="27" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel68" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jTextFieldComen" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="226" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jBtnGuardarComen" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jBtnModificarComen" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -3007,13 +3007,6 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="jTextFieldPaciComen">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Segoe UI" size="14" style="0"/>
-                        </Property>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextFieldFechaComen">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="14" style="0"/>
@@ -3089,6 +3082,11 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldIDComentariosActionPerformed"/>
                       </Events>
+                    </Component>
+                    <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserComenta">
+                      <Properties>
+                        <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
+                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>

@@ -32,7 +32,13 @@ public class ComentariosDAO {
             pst.setInt(1, comen.getIdComentario());
             pst.setInt(2, comen.getIdCita());
             pst.setInt(3, comen.getIdPaciente());
-            pst.setDate(4, Date.valueOf(comen.getFecha()));
+//            pst.setDate(4, Date.valueOf(comen.getFecha()));
+            
+            java.util.Date fechaUtil = comen.getFecha();
+            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(4, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
+            
             pst.setString(5, comen.getComentario());
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
@@ -51,7 +57,13 @@ public class ComentariosDAO {
             pst = con.prepareStatement(sql);
              pst.setInt(1, comen.getIdCita());
             pst.setInt(2, comen.getIdPaciente());
-            pst.setDate(3, Date.valueOf(comen.getFecha()));
+//            pst.setDate(3, Date.valueOf(comen.getFecha()));
+            
+            java.util.Date fechaUtil = comen.getFecha();
+            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(3, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
+            
             pst.setString(4, comen.getComentario());
             pst.setInt(5, comen.getIdComentario());
             mensaje = "ACTUALIZADO CORRECTAMENTE";

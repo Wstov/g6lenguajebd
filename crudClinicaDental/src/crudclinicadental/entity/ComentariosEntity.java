@@ -4,7 +4,7 @@
  */
 package crudclinicadental.entity;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -14,13 +14,13 @@ public class ComentariosEntity {
     private int idComentario;
     private int idCita;
     private int idPaciente;
-    private LocalDate fecha;
+    private Date fecha;
     private String comentario;
 
     public ComentariosEntity() {
     }
 
-    public ComentariosEntity(int idComentario, int idCita, int idPaciente, LocalDate fecha, String comentario) {
+    public ComentariosEntity(int idComentario, int idCita, int idPaciente, Date fecha, String comentario) {
         this.idComentario = idComentario;
         this.idCita = idCita;
         this.idPaciente = idPaciente;
@@ -52,11 +52,11 @@ public class ComentariosEntity {
         this.idPaciente = idPaciente;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
