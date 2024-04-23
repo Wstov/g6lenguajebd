@@ -5,6 +5,7 @@
 package crudclinicadental.entity;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -15,12 +16,12 @@ public class InsumoEntity {
     private String nombreInsumo;
     private int costo;
     private String ubicacion;
-    private LocalDate fechaVencimiento;
+    private Date fechaVencimiento;
 
     public InsumoEntity() {
     }
 
-    public InsumoEntity(int idInsumo, String nombreInsumo, int costo, String ubicacion, LocalDate fechaVencimiento) {
+    public InsumoEntity(int idInsumo, String nombreInsumo, int costo, String ubicacion, Date fechaVencimiento) {
         this.idInsumo = idInsumo;
         this.nombreInsumo = nombreInsumo;
         this.costo = costo;
@@ -60,11 +61,11 @@ public class InsumoEntity {
         this.ubicacion = ubicacion;
     }
 
-    public LocalDate getFechaVencimiento() {
+    public Date getFechaVencimiento() {
         return fechaVencimiento;
     }
 
-    public void setFechaVencimiento(LocalDate fechaVencimiento) {
+    public void setFechaVencimiento(Date fechaVencimiento) {
         this.fechaVencimiento = fechaVencimiento;
     }
 

@@ -32,7 +32,13 @@ public class InsumosDAO {
             pst.setString(2, insumoEntity.getNombreInsumo());
             pst.setInt(3, insumoEntity.getCosto());
             pst.setString(4, insumoEntity.getUbicacion());
-            pst.setDate(5, Date.valueOf(insumoEntity.getFechaVencimiento()));
+//            pst.setDate(5, insumoEntity.getFechaVencimiento());
+
+            java.util.Date fechaUtil = insumoEntity.getFechaVencimiento();
+            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(5, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
+            
             mensaje = "GUARDADO CORRECTAMENTE";
             pst.execute();
             pst.close();
@@ -51,7 +57,11 @@ public class InsumosDAO {
             pst.setString(1, insumoEntity.getNombreInsumo());
             pst.setInt(2, insumoEntity.getCosto());
             pst.setString(3, insumoEntity.getUbicacion());
-            pst.setDate(4, Date.valueOf(insumoEntity.getFechaVencimiento()));
+//            pst.setDate(4, Date.valueOf(insumoEntity.getFechaVencimiento()));
+            java.util.Date fechaUtil = insumoEntity.getFechaVencimiento();
+            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            java.sql.Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(4, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
             pst.setInt(5, insumoEntity.getIdInsumo());
             mensaje = "ACTUALIZADO CORRECTAMENTE";
             pst.execute();

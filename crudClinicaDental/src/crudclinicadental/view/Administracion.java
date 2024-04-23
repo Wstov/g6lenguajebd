@@ -352,6 +352,7 @@ public class Administracion extends javax.swing.JFrame {
         jBtnLimpiarInsumos = new javax.swing.JButton();
         jLabel63 = new javax.swing.JLabel();
         jTextFieldIDInsumos = new javax.swing.JTextField();
+        jDateChooserInsumo = new com.toedter.calendar.JDateChooser();
         jLabel64 = new javax.swing.JLabel();
         jPanel10 = new javax.swing.JPanel();
         jPanel26 = new javax.swing.JPanel();
@@ -1934,6 +1935,11 @@ public class Administracion extends javax.swing.JFrame {
         jTextFieldUbiInsumos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jTextFieldVenciInsumos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jTextFieldVenciInsumos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldVenciInsumosActionPerformed(evt);
+            }
+        });
 
         jBtnGuardarInsumos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jBtnGuardarInsumos.setText("Agregar");
@@ -1978,6 +1984,8 @@ public class Administracion extends javax.swing.JFrame {
             }
         });
 
+        jDateChooserInsumo.setDateFormatString("dd/MM/yyyy");
+
         javax.swing.GroupLayout jPanel25Layout = new javax.swing.GroupLayout(jPanel25);
         jPanel25.setLayout(jPanel25Layout);
         jPanel25Layout.setHorizontalGroup(
@@ -2001,13 +2009,13 @@ public class Administracion extends javax.swing.JFrame {
                             .addComponent(jLabel59)
                             .addComponent(jLabel60, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldIDInsumos, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldNombreInsumos, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextFieldCostoInsumos, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                                .addComponent(jTextFieldVenciInsumos)
-                                .addComponent(jTextFieldUbiInsumos)))))
+                        .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldIDInsumos, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                            .addComponent(jTextFieldNombreInsumos, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                            .addComponent(jTextFieldCostoInsumos, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                            .addComponent(jTextFieldVenciInsumos)
+                            .addComponent(jTextFieldUbiInsumos)
+                            .addComponent(jDateChooserInsumo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel25Layout.setVerticalGroup(
@@ -2030,9 +2038,11 @@ public class Administracion extends javax.swing.JFrame {
                     .addComponent(jLabel59)
                     .addComponent(jTextFieldUbiInsumos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel60)
-                    .addComponent(jTextFieldVenciInsumos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooserInsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jTextFieldVenciInsumos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnGuardarInsumos)
@@ -2078,9 +2088,9 @@ public class Administracion extends javax.swing.JFrame {
             .addGap(0, 1383, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel9Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 25, Short.MAX_VALUE)
                     .addComponent(jPanel24, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 26, Short.MAX_VALUE)))
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -3006,27 +3016,7 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnLimpiarTrataActionPerformed
 
     private void jTextFieldIDTratamientoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldIDTratamientoActionPerformed
-        // TODO add your handling code here:
-        if(jTextFieldIDInsumos.getText().isEmpty() || jTextFieldNombreInsumos.getText().isEmpty()
-                 || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty() || jTextFieldVenciInsumos.getText().isEmpty()
-                 ){
-            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
-            InsumoEntity insumoEntity = new InsumoEntity();
-            insumoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumos.getText()));
-            insumoEntity.setNombreInsumo(jTextFieldNombreInsumos.getText());
-            insumoEntity.setCosto(Integer.parseInt(jTextFieldCostoInsumos.getText()));
-            insumoEntity.setUbicacion(jTextFieldUbiInsumos.getText());
-            insumoEntity.setFechaVencimiento(LocalDate.parse(jTextFieldVenciInsumos.getText()));
-           
 
-
-            String mensaje = insumosBO.agregarInsumo(insumoEntity);
-            JOptionPane.showMessageDialog(null, mensaje);
-            limpiarInsumos();
-            listarInsumos();
-        }
     }//GEN-LAST:event_jTextFieldIDTratamientoActionPerformed
 
     private void jTextFieldNombreInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreInsumosActionPerformed
@@ -3035,6 +3025,32 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnGuardarInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarInsumosActionPerformed
         // TODO add your handling code here:
+        java.util.Date date = jDateChooserInsumo.getDate();
+        long d = date.getTime();
+        
+        Date fecha = new Date(d);
+        JOptionPane.showMessageDialog(null, fecha);
+        
+        if(jTextFieldNombreInsumos.getText().isEmpty() || jTextFieldCostoInsumos.getText().isEmpty()
+                 || jTextFieldUbiInsumos.getText().isEmpty() || jDateChooserInsumo.getDate().equals("")){
+            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+        
+        }else{
+            InsumoEntity insumoEntity = new InsumoEntity();
+            insumoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumos.getText()));
+            insumoEntity.setNombreInsumo(jTextFieldNombreInsumos.getText());
+            insumoEntity.setCosto(Integer.parseInt(jTextFieldCostoInsumos.getText()));
+            insumoEntity.setUbicacion(jTextFieldUbiInsumos.getText());
+            insumoEntity.setFechaVencimiento(fecha);
+            
+            
+
+
+            String mensaje = insumosBO.agregarInsumo(insumoEntity);
+            JOptionPane.showMessageDialog(null, mensaje);
+            limpiarInsumos();
+            listarInsumos();
+        }
     }//GEN-LAST:event_jBtnGuardarInsumosActionPerformed
 
     private void jBtnModificarInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarInsumosActionPerformed
@@ -3050,9 +3066,8 @@ public class Administracion extends javax.swing.JFrame {
             insumoEntity.setNombreInsumo(jTextFieldNombreInsumos.getText());
             insumoEntity.setCosto(Integer.parseInt(jTextFieldCostoInsumos.getText()));
             insumoEntity.setUbicacion(jTextFieldUbiInsumos.getText());
-            insumoEntity.setFechaVencimiento(LocalDate.parse(jTextFieldVenciInsumos.getText()));
+            insumoEntity.setFechaVencimiento(jDateChooserInsumo.getDate());
            
-
 
             String mensaje = insumosBO.modificarInsumo(insumoEntity);
             JOptionPane.showMessageDialog(null, mensaje);
@@ -3486,6 +3501,10 @@ public class Administracion extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBtnEliminarExamenesActionPerformed
 
+    private void jTextFieldVenciInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldVenciInsumosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldVenciInsumosActionPerformed
+
     public void limpiarMedico() {
         jTextFieldIDMedico.setText("");
         jTextFieldNombre.setText("");
@@ -3671,6 +3690,7 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JButton jBtnModificarPago;
     private javax.swing.JButton jBtnModificarProvee;
     private javax.swing.JButton jBtnModificarTrata;
+    private com.toedter.calendar.JDateChooser jDateChooserInsumo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
