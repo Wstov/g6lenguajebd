@@ -25,11 +25,15 @@ import crudclinicadental.entity.PagoEntity;
 import crudclinicadental.entity.ProveedoresEntity;
 import crudclinicadental.entity.TratamientoEntity;
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -47,6 +51,7 @@ public class Administracion extends javax.swing.JFrame {
     private PagoBO pagoBO = new PagoBO();
     private ProveedorBO proveedorBO = new ProveedorBO();
     private TratamientoBO tratamientoBO = new TratamientoBO();
+    SimpleDateFormat ff = new SimpleDateFormat("yyyy-MM-dd");
     /**
      * Creates new form Administracion
      */
@@ -304,7 +309,6 @@ public class Administracion extends javax.swing.JFrame {
         jLabel43 = new javax.swing.JLabel();
         jLabel44 = new javax.swing.JLabel();
         jTextFieldResultadoExamen = new javax.swing.JTextField();
-        jTextFieldFechaExamen = new javax.swing.JTextField();
         jTextFieldPacienteExamen = new javax.swing.JTextField();
         jBtnGuardarExamenes = new javax.swing.JButton();
         jBtnModificarExamenes = new javax.swing.JButton();
@@ -312,6 +316,7 @@ public class Administracion extends javax.swing.JFrame {
         jBtnLimpiarExamenes = new javax.swing.JButton();
         jLabel47 = new javax.swing.JLabel();
         jTextFieldIDExamenes = new javax.swing.JTextField();
+        jDateChooserExam = new com.toedter.calendar.JDateChooser();
         jLabel48 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
@@ -345,7 +350,6 @@ public class Administracion extends javax.swing.JFrame {
         jLabel60 = new javax.swing.JLabel();
         jTextFieldCostoInsumos = new javax.swing.JTextField();
         jTextFieldUbiInsumos = new javax.swing.JTextField();
-        jTextFieldVenciInsumos = new javax.swing.JTextField();
         jBtnGuardarInsumos = new javax.swing.JButton();
         jBtnModificarInsumos = new javax.swing.JButton();
         jBtnEliminarInsumos = new javax.swing.JButton();
@@ -1534,8 +1538,6 @@ public class Administracion extends javax.swing.JFrame {
 
         jTextFieldResultadoExamen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jTextFieldFechaExamen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-
         jTextFieldPacienteExamen.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jBtnGuardarExamenes.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -1581,6 +1583,8 @@ public class Administracion extends javax.swing.JFrame {
             }
         });
 
+        jDateChooserExam.setDateFormatString("dd/MM/yyyy");
+
         javax.swing.GroupLayout jPanel21Layout = new javax.swing.GroupLayout(jPanel21);
         jPanel21.setLayout(jPanel21Layout);
         jPanel21Layout.setHorizontalGroup(
@@ -1610,7 +1614,7 @@ public class Administracion extends javax.swing.JFrame {
                             .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(jTextFieldResultadoExamen, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                                 .addComponent(jTextFieldPacienteExamen)
-                                .addComponent(jTextFieldFechaExamen)))))
+                                .addComponent(jDateChooserExam, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel21Layout.setVerticalGroup(
@@ -1629,14 +1633,14 @@ public class Administracion extends javax.swing.JFrame {
                     .addComponent(jLabel42)
                     .addComponent(jTextFieldResultadoExamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel43)
-                    .addComponent(jTextFieldFechaExamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooserExam, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel44)
                     .addComponent(jTextFieldPacienteExamen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 226, Short.MAX_VALUE)
                 .addGroup(jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnGuardarExamenes)
                     .addComponent(jBtnModificarExamenes)
@@ -1934,13 +1938,6 @@ public class Administracion extends javax.swing.JFrame {
 
         jTextFieldUbiInsumos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
-        jTextFieldVenciInsumos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextFieldVenciInsumos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldVenciInsumosActionPerformed(evt);
-            }
-        });
-
         jBtnGuardarInsumos.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jBtnGuardarInsumos.setText("Agregar");
         jBtnGuardarInsumos.addActionListener(new java.awt.event.ActionListener() {
@@ -2013,7 +2010,6 @@ public class Administracion extends javax.swing.JFrame {
                             .addComponent(jTextFieldIDInsumos, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                             .addComponent(jTextFieldNombreInsumos, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
                             .addComponent(jTextFieldCostoInsumos, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                            .addComponent(jTextFieldVenciInsumos)
                             .addComponent(jTextFieldUbiInsumos)
                             .addComponent(jDateChooserInsumo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(51, Short.MAX_VALUE))
@@ -2041,8 +2037,6 @@ public class Administracion extends javax.swing.JFrame {
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel60)
                     .addComponent(jDateChooserInsumo, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jTextFieldVenciInsumos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel25Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnGuardarInsumos)
@@ -2884,27 +2878,19 @@ public class Administracion extends javax.swing.JFrame {
     private void jBtnGuardarExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarExamenesActionPerformed
         // Guardar Examenes:
         if (jTextFieldIDExamenes.getText().isEmpty() || jTextFieldExamen.getText().isEmpty()
-                || jTextFieldResultadoExamen.getText().isEmpty() || jTextFieldFechaExamen.getText().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()) {
+                || jTextFieldResultadoExamen.getText().isEmpty() || jDateChooserExam.getDateFormatString().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
         } else {
             try {
-                ExamenesEntity examenesEntity = new ExamenesEntity();
-                examenesEntity.setIdExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
-                examenesEntity.setTipoExamen(jTextFieldExamen.getText());
-                examenesEntity.setResultado(jTextFieldResultadoExamen.getText());
-                
-                // Convertir el texto de la fecha al formato 'yyyy-MM-dd'
-        String fechaTexto = jTextFieldFechaExamen.getText();
-        DateTimeFormatter formatterEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter formatterSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fecha = LocalDate.parse(fechaTexto, formatterEntrada);
-        String fechaFormateada = fecha.format(formatterSalida);
-                
-                
-                examenesEntity.setIdPaciente(Integer.parseInt(jTextFieldPacienteExamen.getText()));
+            ExamenesEntity examEntity = new ExamenesEntity();
+            examEntity.setIdExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
+            examEntity.setTipoExamen(jTextFieldExamen.getText());
+            examEntity.setResultado(jTextFieldResultadoExamen.getText());
+            examEntity.setFecha(jDateChooserExam.getDate());
+            examEntity.setIdPaciente(Integer.parseInt(jTextFieldPacienteExamen.getText()));
 
-                String mensaje = examenesBO.agregarExamenes(examenesEntity);
+                String mensaje = examenesBO.agregarExamenes(examEntity);
                 JOptionPane.showMessageDialog(null, mensaje);
                 limpiarExamenes();
                 listarExamenes();
@@ -2918,37 +2904,28 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarExamenesActionPerformed
         // modificar examenes:
-         
-        if(jTextFieldIDExamenes.getText().isEmpty() || jTextFieldExamen.getText().isEmpty()
-         || jTextFieldResultadoExamen.getText().isEmpty() || jTextFieldFechaExamen.getText().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()
-         ){
-    JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
-}else{
-    try {
-        ExamenesEntity examenesEntity = new ExamenesEntity();
-        examenesEntity.setIdExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
-        examenesEntity.setTipoExamen(jTextFieldExamen.getText());
-        examenesEntity.setResultado(jTextFieldResultadoExamen.getText());
-        
-        // Convertir el texto de la fecha al formato 'yyyy-MM-dd'
-        String fechaTexto = jTextFieldFechaExamen.getText();
-        DateTimeFormatter formatterEntrada = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter formatterSalida = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fecha = LocalDate.parse(fechaTexto, formatterEntrada);
-        String fechaFormateada = fecha.format(formatterSalida);
-        
-        examenesEntity.setFecha(Date.valueOf(fechaFormateada));
-        examenesEntity.setIdPaciente(Integer.parseInt(jTextFieldPacienteExamen.getText()));
-        
-        String mensaje = examenesBO.modificarExamenes(examenesEntity);
-        JOptionPane.showMessageDialog(null, mensaje);
-        limpiarExamenes();
-        listarExamenes();
-    } catch (DateTimeParseException e) {
-        JOptionPane.showMessageDialog(null, "Formato de fecha u hora incorrecto. Utilice el formato adecuado. ERROR:" + e);
-    }
-}
+        if (jTextFieldIDExamenes.getText().isEmpty() || jTextFieldExamen.getText().isEmpty()
+                || jTextFieldResultadoExamen.getText().isEmpty() || jDateChooserExam.getDateFormatString().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+
+        } else {
+            try {
+                ExamenesEntity examEntity = new ExamenesEntity();
+                examEntity.setIdExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
+                examEntity.setTipoExamen(jTextFieldExamen.getText());
+                examEntity.setResultado(jTextFieldResultadoExamen.getText());
+                examEntity.setFecha(jDateChooserExam.getDate());
+                examEntity.setIdPaciente(Integer.parseInt(jTextFieldPacienteExamen.getText()));
+
+                String mensaje = examenesBO.modificarExamenes(examEntity);
+                JOptionPane.showMessageDialog(null, mensaje);
+                limpiarExamenes();
+                listarExamenes();
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(null, "Formato de fecha u hora incorrecto. Utilice el formato adecuado. ERROR:" + e);
+            }
+        }
 
     }//GEN-LAST:event_jBtnModificarExamenesActionPerformed
 
@@ -3025,14 +3002,9 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnGuardarInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarInsumosActionPerformed
         // TODO add your handling code here:
-        java.util.Date date = jDateChooserInsumo.getDate();
-        long d = date.getTime();
-        
-        Date fecha = new Date(d);
-        JOptionPane.showMessageDialog(null, fecha);
         
         if(jTextFieldNombreInsumos.getText().isEmpty() || jTextFieldCostoInsumos.getText().isEmpty()
-                 || jTextFieldUbiInsumos.getText().isEmpty() || jDateChooserInsumo.getDate().equals("")){
+                 || jTextFieldUbiInsumos.getText().isEmpty() || jDateChooserInsumo.getDateFormatString().isEmpty()){
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
         
         }else{
@@ -3041,11 +3013,8 @@ public class Administracion extends javax.swing.JFrame {
             insumoEntity.setNombreInsumo(jTextFieldNombreInsumos.getText());
             insumoEntity.setCosto(Integer.parseInt(jTextFieldCostoInsumos.getText()));
             insumoEntity.setUbicacion(jTextFieldUbiInsumos.getText());
-            insumoEntity.setFechaVencimiento(fecha);
-            
-            
-
-
+            insumoEntity.setFechaVencimiento(jDateChooserInsumo.getDate());
+           
             String mensaje = insumosBO.agregarInsumo(insumoEntity);
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarInsumos();
@@ -3055,8 +3024,9 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarInsumosActionPerformed
         // TODO add your handling code here:
+        
          if(jTextFieldIDInsumos.getText().isEmpty() || jTextFieldNombreInsumos.getText().isEmpty()
-                 || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty() || jTextFieldVenciInsumos.getText().isEmpty()
+                 || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty()
                  ){
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
         
@@ -3337,8 +3307,7 @@ public class Administracion extends javax.swing.JFrame {
         // TODO add your handling code here:
       
          if(jTextFieldIDInsumos.getText().isEmpty() || jTextFieldNombreInsumos.getText().isEmpty()
-                 || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty() || jTextFieldVenciInsumos.getText().isEmpty()
-                 ){
+                 || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty()){
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
         
         }else{
@@ -3464,23 +3433,32 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnEliminarProveeActionPerformed
 
     private void jTblInsumosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblInsumosMouseClicked
-        int seleccion = jTblInsumos.rowAtPoint(evt.getPoint());
-        jTextFieldIDInsumos.setText(jTblInsumos.getValueAt(seleccion, 0)+"");
-        jTextFieldNombreInsumos.setText(jTblInsumos.getValueAt(seleccion, 1)+"");
-        jTextFieldCostoInsumos.setText(jTblInsumos.getValueAt(seleccion, 2)+"");
-        jTextFieldUbiInsumos.setText(jTblInsumos.getValueAt(seleccion, 3)+"");
-        jTextFieldVenciInsumos.setText(jTblInsumos.getValueAt(seleccion, 4)+"");
+        try {
+            int seleccion = jTblInsumos.rowAtPoint(evt.getPoint());
+            jTextFieldIDInsumos.setText(jTblInsumos.getValueAt(seleccion, 0)+"");
+            jTextFieldNombreInsumos.setText(jTblInsumos.getValueAt(seleccion, 1)+"");
+            jTextFieldCostoInsumos.setText(jTblInsumos.getValueAt(seleccion, 2)+"");
+            jTextFieldUbiInsumos.setText(jTblInsumos.getValueAt(seleccion, 3)+"");
+            jDateChooserInsumo.setDate(ff.parse(jTblInsumos.getValueAt(seleccion, 4)+""));
+        } catch (ParseException ex) {
+            Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jTblInsumosMouseClicked
 
     private void jTblExamenesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblExamenesMouseClicked
-        // TODO add your handling code here:
-        // visualizacion de Examenes:
-         int seleccion = jTblExamenes.rowAtPoint(evt.getPoint());
-        jTextFieldIDExamenes.setText(jTblExamenes.getValueAt(seleccion, 0)+"");
-        jTextFieldExamen.setText(jTblExamenes.getValueAt(seleccion, 1)+"");
-        jTextFieldResultadoExamen.setText(jTblExamenes.getValueAt(seleccion, 2)+"");
-        jTextFieldFechaExamen.setText(jTblExamenes.getValueAt(seleccion, 3)+"");
-        jTextFieldPacienteExamen.setText(jTblExamenes.getValueAt(seleccion, 4)+"");
+        try {
+            // TODO add your handling code here:
+            // visualizacion de Examenes:
+            
+            int seleccion = jTblExamenes.rowAtPoint(evt.getPoint());
+            jTextFieldIDExamenes.setText(jTblExamenes.getValueAt(seleccion, 0)+"");
+            jTextFieldExamen.setText(jTblExamenes.getValueAt(seleccion, 1)+"");
+            jTextFieldResultadoExamen.setText(jTblExamenes.getValueAt(seleccion, 2)+"");
+            jDateChooserExam.setDate(ff.parse(jTblExamenes.getValueAt(seleccion, 3)+""));
+            jTextFieldPacienteExamen.setText(jTblExamenes.getValueAt(seleccion, 4)+"");
+        } catch (ParseException ex) {
+            Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jTblExamenesMouseClicked
 
     private void jBtnEliminarExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarExamenesActionPerformed
@@ -3488,7 +3466,7 @@ public class Administracion extends javax.swing.JFrame {
          
          
         if(jTextFieldIDExamenes.getText().isEmpty() || jTextFieldExamen.getText().isEmpty()
-                 || jTextFieldResultadoExamen.getText().isEmpty() || jTextFieldFechaExamen.getText().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()
+                 || jTextFieldResultadoExamen.getText().isEmpty() || jDateChooserInsumo.getDateFormatString().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()
                  ){
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
         
@@ -3500,10 +3478,6 @@ public class Administracion extends javax.swing.JFrame {
             listarExamenes();
         }
     }//GEN-LAST:event_jBtnEliminarExamenesActionPerformed
-
-    private void jTextFieldVenciInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldVenciInsumosActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldVenciInsumosActionPerformed
 
     public void limpiarMedico() {
         jTextFieldIDMedico.setText("");
@@ -3551,7 +3525,7 @@ public class Administracion extends javax.swing.JFrame {
         jTextFieldIDExamenes.setText("");
         jTextFieldExamen.setText("");
         jTextFieldResultadoExamen.setText("");
-        jTextFieldFechaExamen.setText("");
+        jDateChooserExam.setDate(null);
         jTextFieldPacienteExamen.setText("");
         idMaxExamenes();
     }
@@ -3561,7 +3535,7 @@ public class Administracion extends javax.swing.JFrame {
         jTextFieldNombreInsumos.setText("");
         jTextFieldCostoInsumos.setText("");
         jTextFieldUbiInsumos.setText("");
-        jTextFieldVenciInsumos.setText("");
+        jDateChooserInsumo.setDate(null);
         idMaxInsumos();
     }
 
@@ -3690,6 +3664,7 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JButton jBtnModificarPago;
     private javax.swing.JButton jBtnModificarProvee;
     private javax.swing.JButton jBtnModificarTrata;
+    private com.toedter.calendar.JDateChooser jDateChooserExam;
     private com.toedter.calendar.JDateChooser jDateChooserInsumo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -3831,7 +3806,6 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldExamen;
     private javax.swing.JTextField jTextFieldFechaCita;
     private javax.swing.JTextField jTextFieldFechaComen;
-    private javax.swing.JTextField jTextFieldFechaExamen;
     private javax.swing.JTextField jTextFieldFechaPago;
     private javax.swing.JTextField jTextFieldHoraCita;
     private javax.swing.JTextField jTextFieldHoraPago;
@@ -3869,6 +3843,5 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldTelefonoProvee;
     private javax.swing.JTextField jTextFieldTurno;
     private javax.swing.JTextField jTextFieldUbiInsumos;
-    private javax.swing.JTextField jTextFieldVenciInsumos;
     // End of variables declaration//GEN-END:variables
 }

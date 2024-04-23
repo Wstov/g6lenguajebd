@@ -25,9 +25,9 @@ public class Conexion {
             conn = DriverManager.getConnection(url, login, pass);
             conn.setAutoCommit(false);
             if (conn != null) {
-                System.out.println("Conexion Exitosa");
+                System.out.println("Conexión Exitosa");
             }else{
-                System.out.println("Conexion Erronea");
+                System.out.println("Conexión Erronea");
             }
         } catch (ClassNotFoundException | SQLException e) {
             JOptionPane.showMessageDialog(null, "Conexion Erronea"+ e.getMessage());

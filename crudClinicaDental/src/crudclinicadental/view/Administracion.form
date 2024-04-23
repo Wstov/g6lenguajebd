@@ -1966,7 +1966,7 @@
                                           <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
                                               <Component id="jTextFieldResultadoExamen" alignment="0" pref="316" max="32767" attributes="0"/>
                                               <Component id="jTextFieldPacienteExamen" alignment="0" max="32767" attributes="0"/>
-                                              <Component id="jTextFieldFechaExamen" alignment="0" max="32767" attributes="0"/>
+                                              <Component id="jDateChooserExam" alignment="1" max="32767" attributes="0"/>
                                           </Group>
                                       </Group>
                                   </Group>
@@ -1994,16 +1994,16 @@
                                   <Component id="jTextFieldResultadoExamen" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="jLabel43" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="jTextFieldFechaExamen" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="jLabel43" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jDateChooserExam" min="-2" pref="27" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jLabel44" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jTextFieldPacienteExamen" alignment="3" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace pref="226" max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jBtnGuardarExamenes" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="jBtnModificarExamenes" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -2059,13 +2059,6 @@
                       </Properties>
                     </Component>
                     <Component class="javax.swing.JTextField" name="jTextFieldResultadoExamen">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Segoe UI" size="14" style="0"/>
-                        </Property>
-                      </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextFieldFechaExamen">
                       <Properties>
                         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                           <Font name="Segoe UI" size="14" style="0"/>
@@ -2141,6 +2134,11 @@
                       <Events>
                         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldIDExamenesActionPerformed"/>
                       </Events>
+                    </Component>
+                    <Component class="com.toedter.calendar.JDateChooser" name="jDateChooserExam">
+                      <Properties>
+                        <Property name="dateFormatString" type="java.lang.String" value="dd/MM/yyyy"/>
+                      </Properties>
                     </Component>
                   </SubComponents>
                 </Container>
@@ -2600,7 +2598,6 @@
                                           <Component id="jTextFieldIDInsumos" alignment="0" pref="316" max="32767" attributes="0"/>
                                           <Component id="jTextFieldNombreInsumos" alignment="0" pref="316" max="32767" attributes="0"/>
                                           <Component id="jTextFieldCostoInsumos" alignment="0" pref="316" max="32767" attributes="0"/>
-                                          <Component id="jTextFieldVenciInsumos" alignment="0" max="32767" attributes="0"/>
                                           <Component id="jTextFieldUbiInsumos" alignment="0" max="32767" attributes="0"/>
                                           <Component id="jDateChooserInsumo" alignment="0" max="32767" attributes="0"/>
                                       </Group>
@@ -2638,8 +2635,6 @@
                                   <Component id="jLabel60" min="-2" max="-2" attributes="0"/>
                                   <Component id="jDateChooserInsumo" min="-2" pref="27" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="jTextFieldVenciInsumos" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="32767" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="jBtnGuardarInsumos" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -2708,16 +2703,6 @@
                           <Font name="Segoe UI" size="14" style="0"/>
                         </Property>
                       </Properties>
-                    </Component>
-                    <Component class="javax.swing.JTextField" name="jTextFieldVenciInsumos">
-                      <Properties>
-                        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                          <Font name="Segoe UI" size="14" style="0"/>
-                        </Property>
-                      </Properties>
-                      <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldVenciInsumosActionPerformed"/>
-                      </Events>
                     </Component>
                     <Component class="javax.swing.JButton" name="jBtnGuardarInsumos">
                       <Properties>
