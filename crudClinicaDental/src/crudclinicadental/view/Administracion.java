@@ -282,12 +282,10 @@ public class Administracion extends javax.swing.JFrame {
         jTblCitas = new javax.swing.JTable();
         jPanel19 = new javax.swing.JPanel();
         jLabel33 = new javax.swing.JLabel();
-        jTextFieldHoraCita = new javax.swing.JTextField();
         jLabel34 = new javax.swing.JLabel();
         jLabel35 = new javax.swing.JLabel();
         jLabel36 = new javax.swing.JLabel();
         jLabel37 = new javax.swing.JLabel();
-        jTextFieldFechaCita = new javax.swing.JTextField();
         jTextFieldConsultorioCita = new javax.swing.JTextField();
         jTextFieldIDPacienteCita = new javax.swing.JTextField();
         jTextFieldIDMedicoCita = new javax.swing.JTextField();
@@ -297,6 +295,8 @@ public class Administracion extends javax.swing.JFrame {
         jBtnLimpiarCitas = new javax.swing.JButton();
         jLabel39 = new javax.swing.JLabel();
         jTextFieldIDCitas = new javax.swing.JTextField();
+        jDateChooserFechaCitas = new com.toedter.calendar.JDateChooser();
+        jDateChooserHoraCitas = new com.toedter.calendar.JDateChooser();
         jLabel40 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
@@ -1304,13 +1304,6 @@ public class Administracion extends javax.swing.JFrame {
         jLabel33.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel33.setText("Hora:");
 
-        jTextFieldHoraCita.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextFieldHoraCita.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldHoraCitaActionPerformed(evt);
-            }
-        });
-
         jLabel34.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel34.setText("Fecha:");
 
@@ -1322,8 +1315,6 @@ public class Administracion extends javax.swing.JFrame {
 
         jLabel37.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel37.setText("ID Medico:");
-
-        jTextFieldFechaCita.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jTextFieldConsultorioCita.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -1374,6 +1365,10 @@ public class Administracion extends javax.swing.JFrame {
             }
         });
 
+        jDateChooserFechaCitas.setDateFormatString("dd/MM/yyyy");
+
+        jDateChooserHoraCitas.setDateFormatString("dd/MM/yyyy HH:mm:ss");
+
         javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
         jPanel19.setLayout(jPanel19Layout);
         jPanel19Layout.setHorizontalGroup(
@@ -1394,18 +1389,17 @@ public class Administracion extends javax.swing.JFrame {
                             .addComponent(jLabel35)
                             .addComponent(jLabel36)
                             .addComponent(jLabel37)
+                            .addComponent(jLabel39)
                             .addComponent(jLabel34)
-                            .addComponent(jLabel33)
-                            .addComponent(jLabel39))
+                            .addComponent(jLabel33))
                         .addGap(31, 31, 31)
-                        .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldIDCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldHoraCita, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(jTextFieldFechaCita)
-                                .addComponent(jTextFieldIDPacienteCita)
-                                .addComponent(jTextFieldIDMedicoCita, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                                .addComponent(jTextFieldConsultorioCita)))))
+                        .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldIDCitas, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                            .addComponent(jDateChooserFechaCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jTextFieldIDPacienteCita)
+                            .addComponent(jTextFieldIDMedicoCita, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                            .addComponent(jTextFieldConsultorioCita)
+                            .addComponent(jDateChooserHoraCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel19Layout.setVerticalGroup(
@@ -1416,14 +1410,16 @@ public class Administracion extends javax.swing.JFrame {
                     .addComponent(jLabel39)
                     .addComponent(jTextFieldIDCitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel33)
-                    .addComponent(jTextFieldHoraCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel19Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(jLabel33, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jDateChooserHoraCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jDateChooserFechaCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel34))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel34)
-                    .addComponent(jTextFieldFechaCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel35)
                     .addComponent(jTextFieldConsultorioCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -1435,7 +1431,7 @@ public class Administracion extends javax.swing.JFrame {
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel37)
                     .addComponent(jTextFieldIDMedicoCita, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
                 .addGroup(jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnGuardarCitas)
                     .addComponent(jBtnModificarCitas)
@@ -1480,9 +1476,9 @@ public class Administracion extends javax.swing.JFrame {
             .addGap(0, 1383, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 25, Short.MAX_VALUE)
                     .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 26, Short.MAX_VALUE)))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2772,13 +2768,9 @@ public class Administracion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldIDPagoActionPerformed
 
-    private void jTextFieldHoraCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHoraCitaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldHoraCitaActionPerformed
-
     private void jBtnGuardarCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarCitasActionPerformed
         // CITAS AGREGAR
-        if (jTextFieldHoraCita.getText().isEmpty() || jTextFieldFechaCita.getText().isEmpty()
+        if (jDateChooserHoraCitas.getDateFormatString().isEmpty() || jDateChooserFechaCitas.getDateFormatString().isEmpty()
                 || jTextFieldConsultorioCita.getText().isEmpty() || jTextFieldIDPacienteCita.getText().isEmpty() || jTextFieldIDMedicoCita.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
@@ -2786,8 +2778,8 @@ public class Administracion extends javax.swing.JFrame {
             try {
                 CitasEntity ce = new CitasEntity();
                 ce.setIdCita(Integer.parseInt(jTextFieldIDCitas.getText()));
-                ce.setHora(LocalDateTime.parse(jTextFieldHoraCita.getText()));
-                ce.setFecha(LocalDate.parse(jTextFieldFechaCita.getText()));
+                ce.setFecha(jDateChooserHoraCitas.getDate());
+                ce.setHora(jDateChooserFechaCitas.getDate());
                 ce.setConsultorio(jTextFieldConsultorioCita.getText());
                 ce.setIdpaciente(Integer.parseInt(jTextFieldIDPacienteCita.getText()));
                 ce.setIdMedico(Integer.parseInt(jTextFieldIDMedicoCita.getText()));
@@ -2804,7 +2796,7 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarCitasActionPerformed
         // MODIFICAR CITAS
-        if (jTextFieldHoraCita.getText().isEmpty() || jTextFieldFechaCita.getText().isEmpty()
+        if (jDateChooserHoraCitas.getDateFormatString().isEmpty() || jDateChooserFechaCitas.getDateFormatString().isEmpty()
                 || jTextFieldConsultorioCita.getText().isEmpty() || jTextFieldIDPacienteCita.getText().isEmpty() || jTextFieldIDMedicoCita.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
@@ -2813,8 +2805,8 @@ public class Administracion extends javax.swing.JFrame {
 
                 CitasEntity ce = new CitasEntity();
                 ce.setIdCita(Integer.parseInt(jTextFieldIDCitas.getText()));
-                ce.setHora(LocalDateTime.parse(jTextFieldHoraCita.getText()));
-                ce.setFecha(LocalDate.parse(jTextFieldFechaCita.getText()));
+                ce.setHora(jDateChooserHoraCitas.getDate());
+                ce.setFecha(jDateChooserFechaCitas.getDate());
                 ce.setConsultorio(jTextFieldConsultorioCita.getText());
                 ce.setIdpaciente(Integer.parseInt(jTextFieldIDPacienteCita.getText()));
                 ce.setIdMedico(Integer.parseInt(jTextFieldIDMedicoCita.getText()));
@@ -3239,7 +3231,7 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnEliminarCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarCitasActionPerformed
         // Eliminar CITAS
-        if (jTextFieldHoraCita.getText().isEmpty() || jTextFieldFechaCita.getText().isEmpty()
+        if (jDateChooserHoraCitas.getDateFormatString().isEmpty() || jDateChooserFechaCitas.getDateFormatString().isEmpty()
                 || jTextFieldConsultorioCita.getText().isEmpty() || jTextFieldIDPacienteCita.getText().isEmpty() || jTextFieldIDMedicoCita.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
@@ -3253,14 +3245,20 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnEliminarCitasActionPerformed
 
     private void jTblCitasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblCitasMouseClicked
-        // CLICKED CITAS
-        int seleccion = jTblCitas.rowAtPoint(evt.getPoint());
-        jTextFieldIDCitas.setText(jTblCitas.getValueAt(seleccion, 0) + "");
-        jTextFieldHoraCita.setText(jTblCitas.getValueAt(seleccion, 1) + "");
-        jTextFieldFechaCita.setText(jTblCitas.getValueAt(seleccion, 2) + "");
-        jTextFieldConsultorioCita.setText(jTblCitas.getValueAt(seleccion, 3) + "");
-        jTextFieldIDPacienteCita.setText(jTblCitas.getValueAt(seleccion, 4) + "");
-        jTextFieldIDMedicoCita.setText(jTblCitas.getValueAt(seleccion, 5) + "");
+        try {
+            // CLICKED CITAS
+            int seleccion = jTblCitas.rowAtPoint(evt.getPoint());
+            jTextFieldIDCitas.setText(jTblCitas.getValueAt(seleccion, 0) + "");
+            jDateChooserHoraCitas.setDate(sdf.parse(jTblCitas.getValueAt(seleccion, 1) + ""));
+            jDateChooserFechaCitas.setDate(ff.parse(jTblCitas.getValueAt(seleccion, 2) + ""));
+            jTextFieldConsultorioCita.setText(jTblCitas.getValueAt(seleccion, 3) + "");
+            jTextFieldIDPacienteCita.setText(jTblCitas.getValueAt(seleccion, 4) + "");
+            jTextFieldIDMedicoCita.setText(jTblCitas.getValueAt(seleccion, 5) + "");
+        } catch (ParseException ex) {
+            Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+      
 
     }//GEN-LAST:event_jTblCitasMouseClicked
 
@@ -3466,8 +3464,8 @@ public class Administracion extends javax.swing.JFrame {
 
     public void limpiarCitas() {
         jTextFieldIDCitas.setText("");
-        jTextFieldHoraCita.setText("");
-        jTextFieldFechaCita.setText("");
+        jDateChooserHoraCitas.setDate(null);
+        jDateChooserFechaCitas.setDate(null);
         jTextFieldConsultorioCita.setText("");
         jTextFieldIDPacienteCita.setText("");
         jTextFieldIDMedicoCita.setText("");
@@ -3622,7 +3620,9 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JButton jBtnModificarTrata;
     private com.toedter.calendar.JDateChooser jDateChooserComenta;
     private com.toedter.calendar.JDateChooser jDateChooserExam;
+    private com.toedter.calendar.JDateChooser jDateChooserFechaCitas;
     private com.toedter.calendar.JDateChooser jDateChooserFechaPagos;
+    private com.toedter.calendar.JDateChooser jDateChooserHoraCitas;
     private com.toedter.calendar.JDateChooser jDateChooserHoraPagos;
     private com.toedter.calendar.JDateChooser jDateChooserInsumo;
     private javax.swing.JLabel jLabel1;
@@ -3763,8 +3763,6 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldEmailProvee;
     private javax.swing.JTextField jTextFieldEspecialidad;
     private javax.swing.JTextField jTextFieldExamen;
-    private javax.swing.JTextField jTextFieldFechaCita;
-    private javax.swing.JTextField jTextFieldHoraCita;
     private javax.swing.JTextField jTextFieldIDCitaPago;
     private javax.swing.JTextField jTextFieldIDCitas;
     private javax.swing.JTextField jTextFieldIDComentarios;

@@ -15,17 +15,26 @@ import javax.swing.table.DefaultTableModel;
  */
 public class CitasDAO {
         
-    private String mensaje="";
-    
-    public String agregarCita(Connection con, CitasEntity citasEntity){
+    private String mensaje = "";
+
+    public String agregarCita(Connection con, CitasEntity citasEntity) {
         PreparedStatement pst = null;
         String sql = "INSERT INTO REGISTRO_CITAS (ID_CITA, HORA, FECHA, CONSULTORIO, ID_PACIENTE, ID_MEDICO) "
                 + "VALUES(?,?,?,?,?,?)";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, citasEntity.getIdCita());
-            pst.setTimestamp(2, Timestamp.valueOf(citasEntity.getHora()));
-            pst.setDate(3, Date.valueOf(citasEntity.getFecha()));
+
+            java.util.Date horaUtil = citasEntity.getHora();
+            long millisecondsHora = horaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            java.sql.Date horaSql = new java.sql.Date(millisecondsHora); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(2, horaSql); // Establecer el java.sql.Date en el PreparedStatement
+
+            java.util.Date fechaUtil = citasEntity.getFecha();
+            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            java.sql.Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(3, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
+
             pst.setString(4, citasEntity.getConsultorio());
             pst.setInt(5, citasEntity.getIdpaciente());
             pst.setInt(6, citasEntity.getIdMedico());
@@ -44,8 +53,17 @@ public class CitasDAO {
                 + "WHERE ID_CITA = ?";
         try {
             pst = con.prepareStatement(sql);
-            pst.setTimestamp(1, Timestamp.valueOf(citasEntity.getHora()));
-            pst.setDate(2, Date.valueOf(citasEntity.getFecha()));
+
+            java.util.Date horaUtil = citasEntity.getHora();
+            long millisecondsHora = horaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            java.sql.Date horaSql = new java.sql.Date(millisecondsHora); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(1, horaSql); // Establecer el java.sql.Date en el PreparedStatement
+
+            java.util.Date fechaUtil = citasEntity.getFecha();
+            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            java.sql.Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(2, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
+
             pst.setString(3, citasEntity.getConsultorio());
             pst.setInt(4, citasEntity.getIdpaciente());
             pst.setInt(5, citasEntity.getIdMedico());
