@@ -2778,8 +2778,8 @@ public class Administracion extends javax.swing.JFrame {
             try {
                 CitasEntity ce = new CitasEntity();
                 ce.setIdCita(Integer.parseInt(jTextFieldIDCitas.getText()));
-                ce.setFecha(jDateChooserHoraCitas.getDate());
-                ce.setHora(jDateChooserFechaCitas.getDate());
+                ce.setHora(jDateChooserHoraCitas.getDate());
+                ce.setFecha(jDateChooserFechaCitas.getDate());
                 ce.setConsultorio(jTextFieldConsultorioCita.getText());
                 ce.setIdpaciente(Integer.parseInt(jTextFieldIDPacienteCita.getText()));
                 ce.setIdMedico(Integer.parseInt(jTextFieldIDMedicoCita.getText()));
