@@ -4,9 +4,10 @@
  */
 package crudclinicadental.entity;
 
-import java.time.LocalDate;
+
+
+import java.util.Date;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 /**
  *
@@ -14,8 +15,8 @@ import java.time.LocalTime;
  */
 public class PagoEntity {
     private int idPago;
-    private LocalDate fecha;
-    private LocalTime hora;
+    private Date fecha;
+    private Date hora;
     private int idPaciente;
     private int idMedico;
     private int idCita;
@@ -25,7 +26,7 @@ public class PagoEntity {
     public PagoEntity() {
     }
 
-    public PagoEntity(int idPago, LocalDate fecha, LocalTime hora, int idPaciente, int idMedico, int idCita, int idInsumo, double pago) {
+    public PagoEntity(int idPago, Date fecha, Date hora, int idPaciente, int idMedico, int idCita, int idInsumo, double pago) {
         this.idPago = idPago;
         this.fecha = fecha;
         this.hora = hora;
@@ -44,19 +45,19 @@ public class PagoEntity {
         this.idPago = idPago;
     }
 
-    public LocalDate getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDate fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
-    public LocalTime getHora() {
+    public Date getHora() {
         return hora;
     }
 
-    public void setHora(LocalTime hora) {
+    public void setHora(Date hora) {
         this.hora = hora;
     }
 

@@ -32,8 +32,19 @@ public class PagoDAO {
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, pagoEntity.getIdPago());
-            pst.setDate(2, Date.valueOf(pagoEntity.getFecha()));
-            pst.setTime(3, Time.valueOf(pagoEntity.getHora()));
+//            pst.setDate(2, Date.valueOf(pagoEntity.getFecha()));
+//            pst.setTime(3, Time.valueOf(pagoEntity.getHora()));
+            
+            java.util.Date fechaUtil = pagoEntity.getFecha();
+            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            java.sql.Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(2, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
+
+            java.util.Date horaUtil = pagoEntity.getHora();
+            long millisecondsHora = horaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            java.sql.Date horaSql = new java.sql.Date(millisecondsHora); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(3, horaSql); // Establecer el java.sql.Date en el PreparedStatement
+
             pst.setInt(4, pagoEntity.getIdPaciente());
             pst.setInt(5, pagoEntity.getIdMedico());
             pst.setInt(6, pagoEntity.getIdCita());
@@ -54,8 +65,20 @@ public class PagoDAO {
                 + "WHERE ID_RECIBO = ?";
         try {
             pst = con.prepareStatement(sql);
-            pst.setDate(1, Date.valueOf(pagoEntity.getFecha()));
-            pst.setTime(2, Time.valueOf(pagoEntity.getHora()));
+//            pst.setDate(1, Date.valueOf(pagoEntity.getFecha()));
+//            pst.setTime(2, Time.valueOf(pagoEntity.getHora()));
+
+            java.util.Date fechaUtil = pagoEntity.getFecha();
+            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            java.sql.Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(1, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
+
+            java.util.Date horaUtil = pagoEntity.getHora();
+            long millisecondsHora = horaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+            java.sql.Date horaSql = new java.sql.Date(millisecondsHora); // Crear un java.sql.Date con los milisegundos
+            pst.setDate(2, horaSql); // Establecer el java.sql.Date en el PreparedStatement
+
+
             pst.setInt(3, pagoEntity.getIdPaciente());
             pst.setInt(4, pagoEntity.getIdMedico());
             pst.setInt(5, pagoEntity.getIdCita());

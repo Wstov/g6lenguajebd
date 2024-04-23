@@ -27,10 +27,11 @@ import crudclinicadental.entity.TratamientoEntity;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -41,6 +42,7 @@ import javax.swing.JOptionPane;
  * @author Wstov
  */
 public class Administracion extends javax.swing.JFrame {
+
     private MedicoBO medicoBO = new MedicoBO();
     private PacienteBO pacienteBO = new PacienteBO();
     private CitasBO citasBO = new CitasBO();
@@ -52,6 +54,8 @@ public class Administracion extends javax.swing.JFrame {
     private ProveedorBO proveedorBO = new ProveedorBO();
     private TratamientoBO tratamientoBO = new TratamientoBO();
     SimpleDateFormat ff = new SimpleDateFormat("yyyy-MM-dd");
+    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
     /**
      * Creates new form Administracion
      */
@@ -67,7 +71,7 @@ public class Administracion extends javax.swing.JFrame {
         listarProveedores();
         listarTratamientos();
         listarPagos();
-  
+
         idMaxMedico();
         idMaxCitas();
         idMaxComentarios();
@@ -78,14 +82,13 @@ public class Administracion extends javax.swing.JFrame {
         idMaxProveedores();
         idMaxPacientes();
         idMaxTratamientos();
-                                        
 
         setTitle("CLINICA DENTAL");
         setLocationRelativeTo(null);
         setResizable(false);
     }
-    
-    public void listarMedico(){
+
+    public void listarMedico() {
         medicoBO.listarMedico(jTblMedicos);
     }
 
@@ -122,11 +125,9 @@ public class Administracion extends javax.swing.JFrame {
     }
 
     public void listarTratamientos() {
-       tratamientoBO.listarTratamiento(jTblTratamientos);
+        tratamientoBO.listarTratamiento(jTblTratamientos);
     }
 
-    
-    
 //-------------id Max---------------------------
     public void idMaxMedico() {
         jTextFieldIDMedico.setText(medicoBO.getMaxID() + "");
@@ -167,7 +168,6 @@ public class Administracion extends javax.swing.JFrame {
     public void idMaxProveedores() {
         jTextFieldIDProveedor.setText(proveedorBO.getMaxID() + "");
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -256,13 +256,11 @@ public class Administracion extends javax.swing.JFrame {
         jTblPago = new javax.swing.JTable();
         jPanel17 = new javax.swing.JPanel();
         jLabel25 = new javax.swing.JLabel();
-        jTextFieldFechaPago = new javax.swing.JTextField();
         jLabel26 = new javax.swing.JLabel();
         jLabel27 = new javax.swing.JLabel();
         jLabel28 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
-        jTextFieldHoraPago = new javax.swing.JTextField();
         jTextFieldIDPacientePago = new javax.swing.JTextField();
         jTextFieldIDMedicoPago = new javax.swing.JTextField();
         jTextFieldIDCitaPago = new javax.swing.JTextField();
@@ -275,6 +273,8 @@ public class Administracion extends javax.swing.JFrame {
         jTextFieldIDPago = new javax.swing.JTextField();
         jLabel78 = new javax.swing.JLabel();
         jTextFieldPago = new javax.swing.JTextField();
+        jDateChooserFechaPagos = new com.toedter.calendar.JDateChooser();
+        jDateChooserHoraPagos = new com.toedter.calendar.JDateChooser();
         jLabel32 = new javax.swing.JLabel();
         jPanel6 = new javax.swing.JPanel();
         jPanel18 = new javax.swing.JPanel();
@@ -598,7 +598,7 @@ public class Administracion extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE))
-                .addContainerGap(62, Short.MAX_VALUE))
+                .addContainerGap(68, Short.MAX_VALUE))
         );
 
         Medicos.addTab("Medicos", jPanel2);
@@ -830,7 +830,7 @@ public class Administracion extends javax.swing.JFrame {
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
             .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel3Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1040,7 +1040,7 @@ public class Administracion extends javax.swing.JFrame {
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel4Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1068,13 +1068,6 @@ public class Administracion extends javax.swing.JFrame {
         jLabel25.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel25.setText("Fecha:");
 
-        jTextFieldFechaPago.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextFieldFechaPago.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldFechaPagoActionPerformed(evt);
-            }
-        });
-
         jLabel26.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel26.setText("Hora:");
 
@@ -1089,13 +1082,6 @@ public class Administracion extends javax.swing.JFrame {
 
         jLabel30.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel30.setText("ID Insumos:");
-
-        jTextFieldHoraPago.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTextFieldHoraPago.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldHoraPagoActionPerformed(evt);
-            }
-        });
 
         jTextFieldIDPacientePago.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
@@ -1153,6 +1139,10 @@ public class Administracion extends javax.swing.JFrame {
 
         jTextFieldPago.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
+        jDateChooserFechaPagos.setDateFormatString("dd/MM/yyyy");
+
+        jDateChooserHoraPagos.setDateFormatString("dd/MM/yyyy HH:mm:ss");
+
         javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
         jPanel17.setLayout(jPanel17Layout);
         jPanel17Layout.setHorizontalGroup(
@@ -1168,69 +1158,73 @@ public class Administracion extends javax.swing.JFrame {
                         .addComponent(jBtnEliminarPago)
                         .addGap(41, 41, 41)
                         .addComponent(jBtnLimpiarPago))
-                    .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel17Layout.createSequentialGroup()
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel25)
+                            .addComponent(jLabel29)
+                            .addComponent(jLabel28)
+                            .addComponent(jLabel27)
+                            .addComponent(jLabel26)
+                            .addComponent(jLabel31)
                             .addComponent(jLabel30)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextFieldIDInsumoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(jPanel17Layout.createSequentialGroup()
-                            .addComponent(jLabel78)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextFieldPago, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel17Layout.createSequentialGroup()
-                            .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel27)
-                                .addComponent(jLabel28)
-                                .addComponent(jLabel29)
-                                .addComponent(jLabel26)
-                                .addComponent(jLabel25)
-                                .addComponent(jLabel31))
-                            .addGap(31, 31, 31)
-                            .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextFieldIDPago, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextFieldFechaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextFieldHoraPago)
-                                    .addComponent(jTextFieldIDMedicoPago)
-                                    .addComponent(jTextFieldIDCitaPago, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
-                                    .addComponent(jTextFieldIDPacientePago))))))
+                            .addComponent(jLabel78))
+                        .addGap(35, 35, 35)
+                        .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jDateChooserFechaPagos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jDateChooserHoraPagos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel17Layout.createSequentialGroup()
+                                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jTextFieldIDCitaPago, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextFieldIDPago, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(jTextFieldIDMedicoPago, javax.swing.GroupLayout.DEFAULT_SIZE, 316, Short.MAX_VALUE)
+                                        .addComponent(jTextFieldIDPacientePago))
+                                    .addComponent(jTextFieldPago, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jTextFieldIDInsumoPago, javax.swing.GroupLayout.PREFERRED_SIZE, 316, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap(51, Short.MAX_VALUE))
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel17Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel31)
-                    .addComponent(jTextFieldIDPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel25)
-                    .addComponent(jTextFieldFechaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel26)
-                    .addComponent(jTextFieldHoraPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addGap(20, 20, 20)
+                        .addComponent(jTextFieldIDPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel17Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel31)))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jDateChooserFechaPagos, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel25))
+                .addGap(19, 19, 19)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jDateChooserHoraPagos, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel26))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel27)
-                    .addComponent(jTextFieldIDPacientePago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldIDPacientePago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel27))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel28)
-                    .addComponent(jTextFieldIDMedicoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel29)
-                    .addComponent(jTextFieldIDCitaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addComponent(jTextFieldIDMedicoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jTextFieldIDCitaPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addGap(6, 6, 6)
+                        .addComponent(jLabel28)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel29)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel30)
                     .addComponent(jTextFieldIDInsumoPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(23, 23, 23)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel78)
-                    .addComponent(jTextFieldPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldPago, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel78))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jBtnGuardarPago)
@@ -1265,7 +1259,7 @@ public class Administracion extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE))
+                    .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 480, Short.MAX_VALUE))
                 .addContainerGap(62, Short.MAX_VALUE))
         );
 
@@ -1276,13 +1270,13 @@ public class Administracion extends javax.swing.JFrame {
             .addGap(0, 1383, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
-                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addGap(0, 25, Short.MAX_VALUE)
                     .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(0, 0, Short.MAX_VALUE)))
+                    .addGap(0, 26, Short.MAX_VALUE)))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel5Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1492,7 +1486,7 @@ public class Administracion extends javax.swing.JFrame {
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
             .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel6Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1691,7 +1685,7 @@ public class Administracion extends javax.swing.JFrame {
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
             .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel7Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -1890,7 +1884,7 @@ public class Administracion extends javax.swing.JFrame {
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
             .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel8Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -2088,7 +2082,7 @@ public class Administracion extends javax.swing.JFrame {
         );
         jPanel9Layout.setVerticalGroup(
             jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
             .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel9Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -2287,7 +2281,7 @@ public class Administracion extends javax.swing.JFrame {
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
             .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel10Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -2486,7 +2480,7 @@ public class Administracion extends javax.swing.JFrame {
         );
         jPanel11Layout.setVerticalGroup(
             jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 596, Short.MAX_VALUE)
+            .addGap(0, 602, Short.MAX_VALUE)
             .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel11Layout.createSequentialGroup()
                     .addGap(0, 0, Short.MAX_VALUE)
@@ -2516,12 +2510,12 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarMedicoActionPerformed
         // TODO add your handling code here:
-        if(jTextFieldNombre.getText().isEmpty() || jTextFieldApellido.getText().isEmpty()
-                 || jTextFieldCedula.getText().isEmpty() || jTextFieldTelefono.getText().isEmpty() || jTextFieldTurno.getText().isEmpty()
-                 || jTextFieldEspecialidad.getText().isEmpty()){
+        if (jTextFieldNombre.getText().isEmpty() || jTextFieldApellido.getText().isEmpty()
+                || jTextFieldCedula.getText().isEmpty() || jTextFieldTelefono.getText().isEmpty() || jTextFieldTurno.getText().isEmpty()
+                || jTextFieldEspecialidad.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             MedicoEntity medicoEntity = new MedicoEntity();
             medicoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedico.getText()));
             medicoEntity.setNombre(jTextFieldNombre.getText());
@@ -2530,25 +2524,24 @@ public class Administracion extends javax.swing.JFrame {
             medicoEntity.setTelefono(Integer.parseInt(jTextFieldTelefono.getText()));
             medicoEntity.setTurno(jTextFieldTurno.getText());
             medicoEntity.setEspecialidad(jTextFieldEspecialidad.getText());
-
 
             String mensaje = medicoBO.modificarMedico(medicoEntity);
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarMedico();
             listarMedico();
         }
-        
+
     }//GEN-LAST:event_jBtnModificarMedicoActionPerformed
 
     private void jBtnGuardarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarMedicoActionPerformed
         // TODO add your handling code here:
-        
-        if(jTextFieldNombre.getText().isEmpty() || jTextFieldApellido.getText().isEmpty()
-                 || jTextFieldCedula.getText().isEmpty() || jTextFieldTelefono.getText().isEmpty() || jTextFieldTurno.getText().isEmpty()
-                 || jTextFieldEspecialidad.getText().isEmpty()){
+
+        if (jTextFieldNombre.getText().isEmpty() || jTextFieldApellido.getText().isEmpty()
+                || jTextFieldCedula.getText().isEmpty() || jTextFieldTelefono.getText().isEmpty() || jTextFieldTurno.getText().isEmpty()
+                || jTextFieldEspecialidad.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             MedicoEntity medicoEntity = new MedicoEntity();
             medicoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedico.getText()));
             medicoEntity.setNombre(jTextFieldNombre.getText());
@@ -2557,7 +2550,6 @@ public class Administracion extends javax.swing.JFrame {
             medicoEntity.setTelefono(Integer.parseInt(jTextFieldTelefono.getText()));
             medicoEntity.setTurno(jTextFieldTurno.getText());
             medicoEntity.setEspecialidad(jTextFieldEspecialidad.getText());
-
 
             String mensaje = medicoBO.agregarMedico(medicoEntity);
             JOptionPane.showMessageDialog(null, mensaje);
@@ -2581,14 +2573,14 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnGuardarMedico1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarMedico1ActionPerformed
         // AGREGAR PACIENTE   
-         if( jTextFieldCedulaPaciente.getText().isEmpty()
-                 || jTextFieldNombrePaciente.getText().isEmpty() || jTextFieldApellidoPaciente.getText().isEmpty() || jTextFieldDireccionPaciente.getText().isEmpty()
-                 || jTextFieldTelefonoPaciente.getText().isEmpty()
-                 || jTextFieldAlergiasPaciente.getText().isEmpty()
-                 || jTextFieldEfermedadPaciente.getText().isEmpty()){
+        if (jTextFieldCedulaPaciente.getText().isEmpty()
+                || jTextFieldNombrePaciente.getText().isEmpty() || jTextFieldApellidoPaciente.getText().isEmpty() || jTextFieldDireccionPaciente.getText().isEmpty()
+                || jTextFieldTelefonoPaciente.getText().isEmpty()
+                || jTextFieldAlergiasPaciente.getText().isEmpty()
+                || jTextFieldEfermedadPaciente.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             PacienteEntiy pacienteEntity = new PacienteEntiy();
             pacienteEntity.setIdPaciente(Integer.parseInt(jTextFieldIDPaciente.getText()));
             pacienteEntity.setCedula(Integer.parseInt(jTextFieldCedulaPaciente.getText()));
@@ -2598,7 +2590,6 @@ public class Administracion extends javax.swing.JFrame {
             pacienteEntity.setTelefono(Integer.parseInt(jTextFieldTelefonoPaciente.getText()));
             pacienteEntity.setAlegias(jTextFieldAlergiasPaciente.getText());
             pacienteEntity.setEnfermedad(jTextFieldEfermedadPaciente.getText());
-
 
             String mensaje = pacienteBO.agregarPaciente(pacienteEntity);
             JOptionPane.showMessageDialog(null, mensaje);
@@ -2650,11 +2641,11 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnGuardarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarMedicamentosActionPerformed
         // MEDICAMENTOS AGREGAR
-        if(jTextFieldMedicamentos.getText().isEmpty() || jTextFieldMedicamentosTipo.getText().isEmpty()
-                 || jTextFieldDosisMedicamentos.getText().isEmpty() || jTextFieldDescriMedicamentos.getText().isEmpty() || jTextFieldProveedorIDMed.getText().isEmpty()){
+        if (jTextFieldMedicamentos.getText().isEmpty() || jTextFieldMedicamentosTipo.getText().isEmpty()
+                || jTextFieldDosisMedicamentos.getText().isEmpty() || jTextFieldDescriMedicamentos.getText().isEmpty() || jTextFieldProveedorIDMed.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             MedicamentosEntity medicamentosEntity = new MedicamentosEntity();
             medicamentosEntity.setIdMedicamentos(Integer.parseInt(jTextFieldIDMedicamentos.getText()));
             medicamentosEntity.setNombre(jTextFieldMedicamentos.getText());
@@ -2662,24 +2653,23 @@ public class Administracion extends javax.swing.JFrame {
             medicamentosEntity.setDosis(jTextFieldDosisMedicamentos.getText());
             medicamentosEntity.setDescripcion(jTextFieldDescriMedicamentos.getText());
             medicamentosEntity.setIdproveedor(Integer.parseInt(jTextFieldProveedorIDMed.getText()));
-
 
             String mensaje = medicamentosBO.agregarMedicamento(medicamentosEntity);
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarMedicamentos();
             listarMedicamentos();
         }
-        
-        
+
+
     }//GEN-LAST:event_jBtnGuardarMedicamentosActionPerformed
 
     private void jBtnModificarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarMedicamentosActionPerformed
         // MODIFICAR MEDICAMENTOS
-        if(jTextFieldMedicamentos.getText().isEmpty() || jTextFieldMedicamentosTipo.getText().isEmpty()
-                 || jTextFieldDosisMedicamentos.getText().isEmpty() || jTextFieldDescriMedicamentos.getText().isEmpty() || jTextFieldProveedorIDMed.getText().isEmpty()){
+        if (jTextFieldMedicamentos.getText().isEmpty() || jTextFieldMedicamentosTipo.getText().isEmpty()
+                || jTextFieldDosisMedicamentos.getText().isEmpty() || jTextFieldDescriMedicamentos.getText().isEmpty() || jTextFieldProveedorIDMed.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             MedicamentosEntity medicamentosEntity = new MedicamentosEntity();
             medicamentosEntity.setIdMedicamentos(Integer.parseInt(jTextFieldIDMedicamentos.getText()));
             medicamentosEntity.setNombre(jTextFieldMedicamentos.getText());
@@ -2688,14 +2678,13 @@ public class Administracion extends javax.swing.JFrame {
             medicamentosEntity.setDescripcion(jTextFieldDescriMedicamentos.getText());
             medicamentosEntity.setIdproveedor(Integer.parseInt(jTextFieldProveedorIDMed.getText()));
 
-
             String mensaje = medicamentosBO.modificarMedicamento(medicamentosEntity);
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarMedicamentos();
             listarMedicamentos();
         }
-        
-        
+
+
     }//GEN-LAST:event_jBtnModificarMedicamentosActionPerformed
 
     private void jBtnLimpiarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLimpiarMedicamentosActionPerformed
@@ -2707,13 +2696,10 @@ public class Administracion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldIDMedicamentosActionPerformed
 
-    private void jTextFieldFechaPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldFechaPagoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldFechaPagoActionPerformed
-
     private void jBtnGuardarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarPagoActionPerformed
         // agregar pagos
-                if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
+
+        if (jDateChooserFechaPagos.getDateFormatString().isEmpty() || jDateChooserHoraPagos.getDateFormatString().isEmpty()
                 || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
                 || jTextFieldIDInsumoPago.getText().isEmpty() || jTextFieldPago.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
@@ -2723,8 +2709,9 @@ public class Administracion extends javax.swing.JFrame {
 
                 PagoEntity pagoEntity = new PagoEntity();
                 pagoEntity.setIdPago(Integer.parseInt(jTextFieldIDPago.getText()));
-                pagoEntity.setFecha(LocalDate.parse(jTextFieldFechaPago.getText()));
-                pagoEntity.setHora(LocalTime.parse(jTextFieldHoraPago.getText()));
+                pagoEntity.setFecha(jDateChooserFechaPagos.getDate());
+                pagoEntity.setHora(jDateChooserHoraPagos.getDate());
+
                 pagoEntity.setIdPaciente(Integer.parseInt(jTextFieldIDPacientePago.getText()));
                 pagoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedicoPago.getText()));
                 pagoEntity.setIdCita(Integer.parseInt(jTextFieldIDCitaPago.getText()));
@@ -2743,33 +2730,10 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarPagoActionPerformed
         // MODIFICAR PAGOS
-//                if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
-//                || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
-//                || jTextFieldIDInsumoPago.getText().isEmpty() || jTextFieldPago.getText().isEmpty()) {
-//            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-//
-//
-//        } else {
-//            PagoEntity pagoEntity = new PagoEntity();
-//            pagoEntity.setIdPago(Integer.parseInt(jTextFieldIDPago.getText()));
-//            pagoEntity.setFecha(LocalDate.parse(jTextFieldFechaPago.getText()));
-//            pagoEntity.setHora(LocalTime.parse(jTextFieldHoraPago.getText()));
-//            pagoEntity.setIdPaciente(Integer.parseInt(jTextFieldIDPacientePago.getText()));
-//            pagoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedicoPago.getText()));
-//            pagoEntity.setIdCita(Integer.parseInt(jTextFieldIDCitaPago.getText()));
-//            pagoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumoPago.getText()));
-//            pagoEntity.setPago(Double.parseDouble(jTextFieldPago.getText()));
-//
-//            String mensaje = pagoBO.modificarPago(pagoEntity);
-//            JOptionPane.showMessageDialog(null, mensaje);
-//            limpiarPagos();
-//            listarPagos();
-//        }
+        java.util.Date horaSeleccionada = jDateChooserHoraPagos.getDate(); // Obtener la hora seleccionada del JDateChooserHoraPagos
+        java.time.LocalDateTime horaLocalDateTime = null;
 
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-        if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
+        if (jDateChooserFechaPagos.getDateFormatString().isEmpty() || jDateChooserHoraPagos.getDateFormatString().isEmpty()
                 || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty()
                 || jTextFieldIDCitaPago.getText().isEmpty() || jTextFieldIDInsumoPago.getText().isEmpty()
                 || jTextFieldPago.getText().isEmpty()) {
@@ -2778,8 +2742,11 @@ public class Administracion extends javax.swing.JFrame {
             try {
                 PagoEntity pagoEntity = new PagoEntity();
                 pagoEntity.setIdPago(Integer.parseInt(jTextFieldIDPago.getText()));
-                pagoEntity.setFecha(LocalDate.parse(jTextFieldFechaPago.getText(), dateFormatter));
-                pagoEntity.setHora(LocalTime.parse(jTextFieldHoraPago.getText(), timeFormatter));
+                pagoEntity.setFecha(jDateChooserFechaPagos.getDate());
+                if (horaSeleccionada != null) { // Verificar si se seleccionó una hora
+                    // Convertir la hora seleccionada a LocalDateTime
+                    horaLocalDateTime = horaSeleccionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+                }
                 pagoEntity.setIdPaciente(Integer.parseInt(jTextFieldIDPacientePago.getText()));
                 pagoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedicoPago.getText()));
                 pagoEntity.setIdCita(Integer.parseInt(jTextFieldIDCitaPago.getText()));
@@ -2791,7 +2758,7 @@ public class Administracion extends javax.swing.JFrame {
                 limpiarPagos();
                 listarPagos();
             } catch (DateTimeParseException e) {
-                JOptionPane.showMessageDialog(null, "Formato de fecha u hora incorrecto. Utilice el formato adecuado. ERROR:"+ e );
+                JOptionPane.showMessageDialog(null, "Formato de fecha u hora incorrecto. Utilice el formato adecuado. ERROR:" + e);
             }
         }
     }//GEN-LAST:event_jBtnModificarPagoActionPerformed
@@ -2837,7 +2804,7 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarCitasActionPerformed
         // MODIFICAR CITAS
-                if (jTextFieldHoraCita.getText().isEmpty() || jTextFieldFechaCita.getText().isEmpty()
+        if (jTextFieldHoraCita.getText().isEmpty() || jTextFieldFechaCita.getText().isEmpty()
                 || jTextFieldConsultorioCita.getText().isEmpty() || jTextFieldIDPacienteCita.getText().isEmpty() || jTextFieldIDMedicoCita.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
@@ -2883,12 +2850,12 @@ public class Administracion extends javax.swing.JFrame {
 
         } else {
             try {
-            ExamenesEntity examEntity = new ExamenesEntity();
-            examEntity.setIdExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
-            examEntity.setTipoExamen(jTextFieldExamen.getText());
-            examEntity.setResultado(jTextFieldResultadoExamen.getText());
-            examEntity.setFecha(jDateChooserExam.getDate());
-            examEntity.setIdPaciente(Integer.parseInt(jTextFieldPacienteExamen.getText()));
+                ExamenesEntity examEntity = new ExamenesEntity();
+                examEntity.setIdExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
+                examEntity.setTipoExamen(jTextFieldExamen.getText());
+                examEntity.setResultado(jTextFieldResultadoExamen.getText());
+                examEntity.setFecha(jDateChooserExam.getDate());
+                examEntity.setIdPaciente(Integer.parseInt(jTextFieldPacienteExamen.getText()));
 
                 String mensaje = examenesBO.agregarExamenes(examEntity);
                 JOptionPane.showMessageDialog(null, mensaje);
@@ -2898,7 +2865,7 @@ public class Administracion extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "Formato de fecha u hora incorrecto. Utilice el formato adecuado. ERROR:" + e);
             }
         }
-        
+
 
     }//GEN-LAST:event_jBtnGuardarExamenesActionPerformed
 
@@ -2944,18 +2911,17 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnGuardarTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarTrataActionPerformed
         // AGREGAR TRATAMIENTO
-        if(jTextFieldNombreTrata.getText().isEmpty() || jTextFieldDescripcionTrata.getText().isEmpty()
-                 || jTextFieldCostoTrata.getText().isEmpty() || jTextFieldIDInsumoTrata.getText().isEmpty() ){
+        if (jTextFieldNombreTrata.getText().isEmpty() || jTextFieldDescripcionTrata.getText().isEmpty()
+                || jTextFieldCostoTrata.getText().isEmpty() || jTextFieldIDInsumoTrata.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             TratamientoEntity tratamientoEntity = new TratamientoEntity();
             tratamientoEntity.setIdTratamiento(Integer.parseInt(jTextFieldIDTratamiento.getText()));
             tratamientoEntity.setNombre(jTextFieldNombreTrata.getText());
             tratamientoEntity.setDescripcion(jTextFieldDescripcionTrata.getText());
             tratamientoEntity.setCosto(Integer.parseInt(jTextFieldCostoTrata.getText()));
             tratamientoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumoTrata.getText()));
-
 
             String mensaje = tratamientoBO.agregarTratamiento(tratamientoEntity);
             JOptionPane.showMessageDialog(null, mensaje);
@@ -2966,18 +2932,17 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarTrataActionPerformed
         // MODIFICAR TRATAMIENTO
-        if(jTextFieldNombreTrata.getText().isEmpty() || jTextFieldDescripcionTrata.getText().isEmpty()
-                 || jTextFieldCostoTrata.getText().isEmpty() || jTextFieldIDInsumoTrata.getText().isEmpty() ){
+        if (jTextFieldNombreTrata.getText().isEmpty() || jTextFieldDescripcionTrata.getText().isEmpty()
+                || jTextFieldCostoTrata.getText().isEmpty() || jTextFieldIDInsumoTrata.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             TratamientoEntity tratamientoEntity = new TratamientoEntity();
             tratamientoEntity.setIdTratamiento(Integer.parseInt(jTextFieldIDTratamiento.getText()));
             tratamientoEntity.setNombre(jTextFieldNombreTrata.getText());
             tratamientoEntity.setDescripcion(jTextFieldDescripcionTrata.getText());
             tratamientoEntity.setCosto(Double.parseDouble(jTextFieldCostoTrata.getText()));
             tratamientoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumoTrata.getText()));
-
 
             String mensaje = tratamientoBO.modificarTratamiento(tratamientoEntity);
             JOptionPane.showMessageDialog(null, mensaje);
@@ -2987,7 +2952,7 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnModificarTrataActionPerformed
 
     private void jBtnLimpiarTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnLimpiarTrataActionPerformed
-        
+
         // limpiar tratamiento
         limpiarTratamientos();
     }//GEN-LAST:event_jBtnLimpiarTrataActionPerformed
@@ -3002,19 +2967,19 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnGuardarInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarInsumosActionPerformed
         // TODO add your handling code here:
-        
-        if(jTextFieldNombreInsumos.getText().isEmpty() || jTextFieldCostoInsumos.getText().isEmpty()
-                 || jTextFieldUbiInsumos.getText().isEmpty() || jDateChooserInsumo.getDateFormatString().isEmpty()){
+
+        if (jTextFieldNombreInsumos.getText().isEmpty() || jTextFieldCostoInsumos.getText().isEmpty()
+                || jTextFieldUbiInsumos.getText().isEmpty() || jDateChooserInsumo.getDateFormatString().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             InsumoEntity insumoEntity = new InsumoEntity();
             insumoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumos.getText()));
             insumoEntity.setNombreInsumo(jTextFieldNombreInsumos.getText());
             insumoEntity.setCosto(Integer.parseInt(jTextFieldCostoInsumos.getText()));
             insumoEntity.setUbicacion(jTextFieldUbiInsumos.getText());
             insumoEntity.setFechaVencimiento(jDateChooserInsumo.getDate());
-           
+
             String mensaje = insumosBO.agregarInsumo(insumoEntity);
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarInsumos();
@@ -3024,21 +2989,19 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarInsumosActionPerformed
         // TODO add your handling code here:
-        
-         if(jTextFieldIDInsumos.getText().isEmpty() || jTextFieldNombreInsumos.getText().isEmpty()
-                 || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty() || 
-                 jDateChooserInsumo.getDateFormatString().isEmpty()
-                 ){
+
+        if (jTextFieldIDInsumos.getText().isEmpty() || jTextFieldNombreInsumos.getText().isEmpty()
+                || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty()
+                || jDateChooserInsumo.getDateFormatString().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             InsumoEntity insumoEntity = new InsumoEntity();
             insumoEntity.setIdInsumo(Integer.parseInt(jTextFieldIDInsumos.getText()));
             insumoEntity.setNombreInsumo(jTextFieldNombreInsumos.getText());
             insumoEntity.setCosto(Integer.parseInt(jTextFieldCostoInsumos.getText()));
             insumoEntity.setUbicacion(jTextFieldUbiInsumos.getText());
             insumoEntity.setFechaVencimiento(jDateChooserInsumo.getDate());
-           
 
             String mensaje = insumosBO.modificarInsumo(insumoEntity);
             JOptionPane.showMessageDialog(null, mensaje);
@@ -3064,7 +3027,7 @@ public class Administracion extends javax.swing.JFrame {
         // AGREGAR COMENTARIOS
         if (jTextFieldCitaComen.getText().isEmpty() || jTextFieldPaciComen.getText().isEmpty()
                 || jDateChooserComenta.getDateFormatString().isEmpty() || jTextFieldComen.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
         } else {
             try {
@@ -3075,7 +3038,6 @@ public class Administracion extends javax.swing.JFrame {
                 cone.setFecha(jDateChooserComenta.getDate());
                 cone.setComentario(jTextFieldComen.getText());
 
-                
                 String mensaje = comentariosBO.agregarComentario(cone);
                 JOptionPane.showMessageDialog(null, mensaje);
                 limpiarComentarios();
@@ -3090,7 +3052,7 @@ public class Administracion extends javax.swing.JFrame {
         // MODIFICAR COMENTARIOS
         if (jTextFieldCitaComen.getText().isEmpty() || jTextFieldPaciComen.getText().isEmpty()
                 || jDateChooserComenta.getDateFormatString().isEmpty() || jTextFieldComen.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
         } else {
             try {
@@ -3121,25 +3083,24 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextFieldIDComentariosActionPerformed
 
     private void jTextFieldNombreProveeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreProveeActionPerformed
-        
+
 
     }//GEN-LAST:event_jTextFieldNombreProveeActionPerformed
 
     private void jBtnGuardarPreveeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnGuardarPreveeActionPerformed
         // AGREGAR PROEEEDEOR:
-        if(jTextFieldIDProveedor.getText().isEmpty() || jTextFieldNombreProvee.getText().isEmpty()
-                 || jTextFieldTelefonoProvee.getText().isEmpty() || jTextFieldDireccionProvee.getText().isEmpty() || jTextFieldEmailProvee.getText().isEmpty()
-                 ){
+        if (jTextFieldIDProveedor.getText().isEmpty() || jTextFieldNombreProvee.getText().isEmpty()
+                || jTextFieldTelefonoProvee.getText().isEmpty() || jTextFieldDireccionProvee.getText().isEmpty() || jTextFieldEmailProvee.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             ProveedoresEntity proveedoresEntity = new ProveedoresEntity();
             proveedoresEntity.setIdProveedor(Integer.parseInt(jTextFieldIDProveedor.getText()));
-            proveedoresEntity.setNombre(jTextFieldNombreProvee.getText());            
+            proveedoresEntity.setNombre(jTextFieldNombreProvee.getText());
             proveedoresEntity.setTelefono(jTextFieldTelefonoProvee.getText());
             proveedoresEntity.setDireccion(jTextFieldDireccionProvee.getText());
             proveedoresEntity.setEmail(jTextFieldEmailProvee.getText());
-         
+
             String mensaje = proveedorBO.agregarProveedor(proveedoresEntity);
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarProveedores();
@@ -3149,20 +3110,19 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarProveeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarProveeActionPerformed
         // MODIFICAR PROVEEDORES
-        
-         if(jTextFieldIDProveedor.getText().isEmpty() || jTextFieldNombreProvee.getText().isEmpty()
-                 || jTextFieldTelefonoProvee.getText().isEmpty() || jTextFieldDireccionProvee.getText().isEmpty() || jTextFieldEmailProvee.getText().isEmpty()
-                 ){
+
+        if (jTextFieldIDProveedor.getText().isEmpty() || jTextFieldNombreProvee.getText().isEmpty()
+                || jTextFieldTelefonoProvee.getText().isEmpty() || jTextFieldDireccionProvee.getText().isEmpty() || jTextFieldEmailProvee.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             ProveedoresEntity proveedoresEntity = new ProveedoresEntity();
             proveedoresEntity.setIdProveedor(Integer.parseInt(jTextFieldIDProveedor.getText()));
-            proveedoresEntity.setNombre(jTextFieldNombreProvee.getText());            
+            proveedoresEntity.setNombre(jTextFieldNombreProvee.getText());
             proveedoresEntity.setTelefono(jTextFieldTelefonoProvee.getText());
             proveedoresEntity.setDireccion(jTextFieldDireccionProvee.getText());
             proveedoresEntity.setEmail(jTextFieldEmailProvee.getText());
-         
+
             String mensaje = proveedorBO.modificarProveedor(proveedoresEntity);
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarProveedores();
@@ -3182,12 +3142,12 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnEliminarMedicoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarMedicoActionPerformed
         // TODO add your handling code here:
-                if(jTextFieldNombre.getText().isEmpty() || jTextFieldApellido.getText().isEmpty()
-                 || jTextFieldCedula.getText().isEmpty() || jTextFieldTelefono.getText().isEmpty() || jTextFieldTurno.getText().isEmpty()
-                 || jTextFieldEspecialidad.getText().isEmpty()){
+        if (jTextFieldNombre.getText().isEmpty() || jTextFieldApellido.getText().isEmpty()
+                || jTextFieldCedula.getText().isEmpty() || jTextFieldTelefono.getText().isEmpty() || jTextFieldTurno.getText().isEmpty()
+                || jTextFieldEspecialidad.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
 
             String mensaje = medicoBO.eliminarMedico(Integer.parseInt(jTextFieldIDMedico.getText()));
             JOptionPane.showMessageDialog(null, mensaje);
@@ -3199,18 +3159,18 @@ public class Administracion extends javax.swing.JFrame {
     private void jTblMedicosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblMedicosMouseClicked
         // TODO add your handling code here:
         int seleccion = jTblMedicos.rowAtPoint(evt.getPoint());
-        jTextFieldIDMedico.setText(jTblMedicos.getValueAt(seleccion, 0)+"");
-        jTextFieldNombre.setText(jTblMedicos.getValueAt(seleccion, 1)+"");
-        jTextFieldApellido.setText(jTblMedicos.getValueAt(seleccion, 2)+"");
-        jTextFieldCedula.setText(jTblMedicos.getValueAt(seleccion, 3)+"");
-        jTextFieldTelefono.setText(jTblMedicos.getValueAt(seleccion, 4)+"");
-        jTextFieldTurno.setText(jTblMedicos.getValueAt(seleccion, 5)+"");
-        jTextFieldEspecialidad.setText(jTblMedicos.getValueAt(seleccion, 6)+"");
+        jTextFieldIDMedico.setText(jTblMedicos.getValueAt(seleccion, 0) + "");
+        jTextFieldNombre.setText(jTblMedicos.getValueAt(seleccion, 1) + "");
+        jTextFieldApellido.setText(jTblMedicos.getValueAt(seleccion, 2) + "");
+        jTextFieldCedula.setText(jTblMedicos.getValueAt(seleccion, 3) + "");
+        jTextFieldTelefono.setText(jTblMedicos.getValueAt(seleccion, 4) + "");
+        jTextFieldTurno.setText(jTblMedicos.getValueAt(seleccion, 5) + "");
+        jTextFieldEspecialidad.setText(jTblMedicos.getValueAt(seleccion, 6) + "");
     }//GEN-LAST:event_jTblMedicosMouseClicked
 
     private void jBtnEliminarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarPagoActionPerformed
         // EIMINAR PAGO
-                if (jTextFieldFechaPago.getText().isEmpty() || jTextFieldHoraPago.getText().isEmpty()
+        if (jDateChooserFechaPagos.getDateFormatString().isEmpty() || jDateChooserHoraPagos.getDateFormatString().isEmpty()
                 || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
                 || jTextFieldIDInsumoPago.getText().isEmpty() || jTextFieldPago.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
@@ -3225,25 +3185,29 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnEliminarPagoActionPerformed
 
     private void jTblPagoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblPagoMouseClicked
-        // mouse click pagos
-        int seleccion = jTblPago.rowAtPoint(evt.getPoint());
-        jTextFieldIDPago.setText(jTblPago.getValueAt(seleccion, 0) + "");
-        jTextFieldFechaPago.setText(jTblPago.getValueAt(seleccion, 1) + "");
-        jTextFieldHoraPago.setText(jTblPago.getValueAt(seleccion, 2) + "");
-        jTextFieldIDPacientePago.setText(jTblPago.getValueAt(seleccion, 3) + "");
-        jTextFieldIDMedicoPago.setText(jTblPago.getValueAt(seleccion, 4) + "");
-        jTextFieldIDCitaPago.setText(jTblPago.getValueAt(seleccion, 5) + "");
-        jTextFieldIDInsumoPago.setText(jTblPago.getValueAt(seleccion, 6) + "");
-        jTextFieldPago.setText(jTblPago.getValueAt(seleccion, 7) + "");
+        try {
+            // mouse click pagos
+            int seleccion = jTblPago.rowAtPoint(evt.getPoint());
+            jTextFieldIDPago.setText(jTblPago.getValueAt(seleccion, 0) + "");
+            jDateChooserFechaPagos.setDate(ff.parse(jTblPago.getValueAt(seleccion, 1) + ""));
+            jDateChooserHoraPagos.setDate(sdf.parse(jTblPago.getValueAt(seleccion, 2) + ""));
+            jTextFieldIDPacientePago.setText(jTblPago.getValueAt(seleccion, 3) + "");
+            jTextFieldIDMedicoPago.setText(jTblPago.getValueAt(seleccion, 4) + "");
+            jTextFieldIDCitaPago.setText(jTblPago.getValueAt(seleccion, 5) + "");
+            jTextFieldIDInsumoPago.setText(jTblPago.getValueAt(seleccion, 6) + "");
+            jTextFieldPago.setText(jTblPago.getValueAt(seleccion, 7) + "");
+        } catch (ParseException ex) {
+            Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_jTblPagoMouseClicked
 
     private void jBtnEliminarMedicamentosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarMedicamentosActionPerformed
         // MEDICAMENTOS ELIMINAR
-        if(jTextFieldMedicamentos.getText().isEmpty() || jTextFieldMedicamentosTipo.getText().isEmpty()
-                 || jTextFieldDosisMedicamentos.getText().isEmpty() || jTextFieldDescriMedicamentos.getText().isEmpty() || jTextFieldProveedorIDMed.getText().isEmpty()){
+        if (jTextFieldMedicamentos.getText().isEmpty() || jTextFieldMedicamentosTipo.getText().isEmpty()
+                || jTextFieldDosisMedicamentos.getText().isEmpty() || jTextFieldDescriMedicamentos.getText().isEmpty() || jTextFieldProveedorIDMed.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             MedicamentosEntity medicamentosEntity = new MedicamentosEntity();
             medicamentosEntity.setIdMedicamentos(Integer.parseInt(jTextFieldIDMedicamentos.getText()));
             medicamentosEntity.setNombre(jTextFieldMedicamentos.getText());
@@ -3252,13 +3216,12 @@ public class Administracion extends javax.swing.JFrame {
             medicamentosEntity.setDescripcion(jTextFieldDescriMedicamentos.getText());
             medicamentosEntity.setIdproveedor(Integer.parseInt(jTextFieldProveedorIDMed.getText()));
 
-
             String mensaje = medicamentosBO.eliminarMedicamento(Integer.parseInt(jTextFieldIDMedicamentos.getText()));
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarMedicamentos();
             listarMedicamentos();
         }
-        
+
     }//GEN-LAST:event_jBtnEliminarMedicamentosActionPerformed
 
     private void jTblMedicamentosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblMedicamentosMouseClicked
@@ -3270,13 +3233,9 @@ public class Administracion extends javax.swing.JFrame {
         jTextFieldDosisMedicamentos.setText(jTblMedicamentos.getValueAt(seleccion, 3) + "");
         jTextFieldDescriMedicamentos.setText(jTblMedicamentos.getValueAt(seleccion, 4) + "");
         jTextFieldProveedorIDMed.setText(jTblMedicamentos.getValueAt(seleccion, 5) + "");
-        
+
 
     }//GEN-LAST:event_jTblMedicamentosMouseClicked
-
-    private void jTextFieldHoraPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldHoraPagoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldHoraPagoActionPerformed
 
     private void jBtnEliminarCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarCitasActionPerformed
         // Eliminar CITAS
@@ -3296,24 +3255,24 @@ public class Administracion extends javax.swing.JFrame {
     private void jTblCitasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblCitasMouseClicked
         // CLICKED CITAS
         int seleccion = jTblCitas.rowAtPoint(evt.getPoint());
-        jTextFieldIDCitas.setText(jTblCitas.getValueAt(seleccion, 0)+"");
-        jTextFieldHoraCita.setText(jTblCitas.getValueAt(seleccion, 1)+"");
-        jTextFieldFechaCita.setText(jTblCitas.getValueAt(seleccion, 2)+"");
-        jTextFieldConsultorioCita.setText(jTblCitas.getValueAt(seleccion, 3)+"");
-        jTextFieldIDPacienteCita.setText(jTblCitas.getValueAt(seleccion, 4)+"");
-        jTextFieldIDMedicoCita.setText(jTblCitas.getValueAt(seleccion, 5)+"");
-        
+        jTextFieldIDCitas.setText(jTblCitas.getValueAt(seleccion, 0) + "");
+        jTextFieldHoraCita.setText(jTblCitas.getValueAt(seleccion, 1) + "");
+        jTextFieldFechaCita.setText(jTblCitas.getValueAt(seleccion, 2) + "");
+        jTextFieldConsultorioCita.setText(jTblCitas.getValueAt(seleccion, 3) + "");
+        jTextFieldIDPacienteCita.setText(jTblCitas.getValueAt(seleccion, 4) + "");
+        jTextFieldIDMedicoCita.setText(jTblCitas.getValueAt(seleccion, 5) + "");
+
     }//GEN-LAST:event_jTblCitasMouseClicked
 
     private void jBtnEliminarInsumosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarInsumosActionPerformed
         // TODO add your handling code here:
-      
-         if(jTextFieldIDInsumos.getText().isEmpty() || jTextFieldNombreInsumos.getText().isEmpty()
-                 || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty()){
+
+        if (jTextFieldIDInsumos.getText().isEmpty() || jTextFieldNombreInsumos.getText().isEmpty()
+                || jTextFieldCostoInsumos.getText().isEmpty() || jTextFieldUbiInsumos.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
-                
+
+        } else {
+
             String mensaje = insumosBO.eliminarInsumo(Integer.parseInt(jTextFieldIDInsumos.getText()));
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarInsumos();
@@ -3324,21 +3283,21 @@ public class Administracion extends javax.swing.JFrame {
     private void jTblTratamientosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblTratamientosMouseClicked
         // CLICKED DE TRATAMIENTO
         int seleccion = jTblTratamientos.rowAtPoint(evt.getPoint());
-        jTextFieldIDTratamiento.setText(jTblTratamientos.getValueAt(seleccion, 0)+"");
-        jTextFieldNombreTrata.setText(jTblTratamientos.getValueAt(seleccion, 1)+"");
-        jTextFieldDescripcionTrata.setText(jTblTratamientos.getValueAt(seleccion, 2)+"");
-        jTextFieldCostoTrata.setText(jTblTratamientos.getValueAt(seleccion, 3)+"");
-        jTextFieldIDInsumoTrata.setText(jTblTratamientos.getValueAt(seleccion, 4)+"");
-        
+        jTextFieldIDTratamiento.setText(jTblTratamientos.getValueAt(seleccion, 0) + "");
+        jTextFieldNombreTrata.setText(jTblTratamientos.getValueAt(seleccion, 1) + "");
+        jTextFieldDescripcionTrata.setText(jTblTratamientos.getValueAt(seleccion, 2) + "");
+        jTextFieldCostoTrata.setText(jTblTratamientos.getValueAt(seleccion, 3) + "");
+        jTextFieldIDInsumoTrata.setText(jTblTratamientos.getValueAt(seleccion, 4) + "");
+
     }//GEN-LAST:event_jTblTratamientosMouseClicked
 
     private void jBtnEliminarTrataActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarTrataActionPerformed
         // ELIMINAR TRATAMIENTO
-                if(jTextFieldNombreTrata.getText().isEmpty() || jTextFieldDescripcionTrata.getText().isEmpty()
-                 || jTextFieldCostoTrata.getText().isEmpty() || jTextFieldIDInsumoTrata.getText().isEmpty() ){
+        if (jTextFieldNombreTrata.getText().isEmpty() || jTextFieldDescripcionTrata.getText().isEmpty()
+                || jTextFieldCostoTrata.getText().isEmpty() || jTextFieldIDInsumoTrata.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
 
             String mensaje = tratamientoBO.eliminarTratamiento(Integer.parseInt(jTextFieldIDTratamiento.getText()));
             JOptionPane.showMessageDialog(null, mensaje);
@@ -3348,7 +3307,7 @@ public class Administracion extends javax.swing.JFrame {
     }//GEN-LAST:event_jBtnEliminarTrataActionPerformed
 
     private void jTblPacienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblPacienteMouseClicked
-         // PACIENTE EVENTO MOUSE
+        // PACIENTE EVENTO MOUSE
         int seleccion = jTblPaciente.rowAtPoint(evt.getPoint());
         jTextFieldIDPaciente.setText(jTblPaciente.getValueAt(seleccion, 0) + "");
         jTextFieldCedulaPaciente.setText(jTblPaciente.getValueAt(seleccion, 1) + "");
@@ -3362,14 +3321,14 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnEliminarMedico1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarMedico1ActionPerformed
         // ELIMINAR PACIENTE
-        if(jTextFieldCedulaPaciente.getText().isEmpty()
-                 || jTextFieldNombrePaciente.getText().isEmpty() || jTextFieldApellidoPaciente.getText().isEmpty() || jTextFieldDireccionPaciente.getText().isEmpty()
-                 || jTextFieldTelefonoPaciente.getText().isEmpty()
-                 || jTextFieldAlergiasPaciente.getText().isEmpty()
-                 || jTextFieldEfermedadPaciente.getText().isEmpty()){
+        if (jTextFieldCedulaPaciente.getText().isEmpty()
+                || jTextFieldNombrePaciente.getText().isEmpty() || jTextFieldApellidoPaciente.getText().isEmpty() || jTextFieldDireccionPaciente.getText().isEmpty()
+                || jTextFieldTelefonoPaciente.getText().isEmpty()
+                || jTextFieldAlergiasPaciente.getText().isEmpty()
+                || jTextFieldEfermedadPaciente.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
+
+        } else {
             String mensaje = pacienteBO.eliminarPaciente(Integer.parseInt(jTextFieldIDPaciente.getText()));
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarPaciente();
@@ -3381,7 +3340,7 @@ public class Administracion extends javax.swing.JFrame {
         // ELIMINAR COMENTARIOS
         if (jTextFieldCitaComen.getText().isEmpty() || jTextFieldPaciComen.getText().isEmpty()
                 || jDateChooserComenta.getDateFormatString().isEmpty() || jTextFieldComen.getText().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+            JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
 
         } else {
             try {
@@ -3403,34 +3362,33 @@ public class Administracion extends javax.swing.JFrame {
             jTextFieldIDComentarios.setText(jTblComen.getValueAt(seleccion, 0) + "");
             jTextFieldCitaComen.setText(jTblComen.getValueAt(seleccion, 1) + "");
             jTextFieldPaciComen.setText(jTblComen.getValueAt(seleccion, 2) + "");
-            jDateChooserComenta.setDate(ff.parse(jTblComen.getValueAt(seleccion, 3)+""));
+            jDateChooserComenta.setDate(ff.parse(jTblComen.getValueAt(seleccion, 3) + ""));
             jTextFieldComen.setText(jTblComen.getValueAt(seleccion, 4) + "");
         } catch (ParseException ex) {
             Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
     }//GEN-LAST:event_jTblComenMouseClicked
 
     private void jTblProveeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblProveeMouseClicked
         // CLICKED PROVEEDORES
         int seleccion = jTblProvee.rowAtPoint(evt.getPoint());
-        jTextFieldIDProveedor.setText(jTblProvee.getValueAt(seleccion, 0)+"");
-        jTextFieldNombreProvee.setText(jTblProvee.getValueAt(seleccion, 1)+"");
-        jTextFieldTelefonoProvee.setText(jTblProvee.getValueAt(seleccion, 2)+"");
-        jTextFieldDireccionProvee.setText(jTblProvee.getValueAt(seleccion, 3)+"");
-        jTextFieldEmailProvee.setText(jTblProvee.getValueAt(seleccion, 4)+"");
+        jTextFieldIDProveedor.setText(jTblProvee.getValueAt(seleccion, 0) + "");
+        jTextFieldNombreProvee.setText(jTblProvee.getValueAt(seleccion, 1) + "");
+        jTextFieldTelefonoProvee.setText(jTblProvee.getValueAt(seleccion, 2) + "");
+        jTextFieldDireccionProvee.setText(jTblProvee.getValueAt(seleccion, 3) + "");
+        jTextFieldEmailProvee.setText(jTblProvee.getValueAt(seleccion, 4) + "");
     }//GEN-LAST:event_jTblProveeMouseClicked
 
     private void jBtnEliminarProveeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarProveeActionPerformed
         // ELIMINAR PROVEEDOR
-        
-        if(jTextFieldIDProveedor.getText().isEmpty() || jTextFieldNombreProvee.getText().isEmpty()
-                 || jTextFieldTelefonoProvee.getText().isEmpty() || jTextFieldDireccionProvee.getText().isEmpty() || jTextFieldEmailProvee.getText().isEmpty()
-                 ){
+
+        if (jTextFieldIDProveedor.getText().isEmpty() || jTextFieldNombreProvee.getText().isEmpty()
+                || jTextFieldTelefonoProvee.getText().isEmpty() || jTextFieldDireccionProvee.getText().isEmpty() || jTextFieldEmailProvee.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
-                   
+
+        } else {
+
             String mensaje = proveedorBO.eliminarProveedor(Integer.parseInt(jTextFieldIDProveedor.getText()));
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarProveedores();
@@ -3441,11 +3399,11 @@ public class Administracion extends javax.swing.JFrame {
     private void jTblInsumosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTblInsumosMouseClicked
         try {
             int seleccion = jTblInsumos.rowAtPoint(evt.getPoint());
-            jTextFieldIDInsumos.setText(jTblInsumos.getValueAt(seleccion, 0)+"");
-            jTextFieldNombreInsumos.setText(jTblInsumos.getValueAt(seleccion, 1)+"");
-            jTextFieldCostoInsumos.setText(jTblInsumos.getValueAt(seleccion, 2)+"");
-            jTextFieldUbiInsumos.setText(jTblInsumos.getValueAt(seleccion, 3)+"");
-            jDateChooserInsumo.setDate(ff.parse(jTblInsumos.getValueAt(seleccion, 4)+""));
+            jTextFieldIDInsumos.setText(jTblInsumos.getValueAt(seleccion, 0) + "");
+            jTextFieldNombreInsumos.setText(jTblInsumos.getValueAt(seleccion, 1) + "");
+            jTextFieldCostoInsumos.setText(jTblInsumos.getValueAt(seleccion, 2) + "");
+            jTextFieldUbiInsumos.setText(jTblInsumos.getValueAt(seleccion, 3) + "");
+            jDateChooserInsumo.setDate(ff.parse(jTblInsumos.getValueAt(seleccion, 4) + ""));
         } catch (ParseException ex) {
             Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3455,13 +3413,13 @@ public class Administracion extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             // visualizacion de Examenes:
-            
+
             int seleccion = jTblExamenes.rowAtPoint(evt.getPoint());
-            jTextFieldIDExamenes.setText(jTblExamenes.getValueAt(seleccion, 0)+"");
-            jTextFieldExamen.setText(jTblExamenes.getValueAt(seleccion, 1)+"");
-            jTextFieldResultadoExamen.setText(jTblExamenes.getValueAt(seleccion, 2)+"");
-            jDateChooserExam.setDate(ff.parse(jTblExamenes.getValueAt(seleccion, 3)+""));
-            jTextFieldPacienteExamen.setText(jTblExamenes.getValueAt(seleccion, 4)+"");
+            jTextFieldIDExamenes.setText(jTblExamenes.getValueAt(seleccion, 0) + "");
+            jTextFieldExamen.setText(jTblExamenes.getValueAt(seleccion, 1) + "");
+            jTextFieldResultadoExamen.setText(jTblExamenes.getValueAt(seleccion, 2) + "");
+            jDateChooserExam.setDate(ff.parse(jTblExamenes.getValueAt(seleccion, 3) + ""));
+            jTextFieldPacienteExamen.setText(jTblExamenes.getValueAt(seleccion, 4) + "");
         } catch (ParseException ex) {
             Logger.getLogger(Administracion.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -3469,15 +3427,13 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnEliminarExamenesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnEliminarExamenesActionPerformed
         // Eliminar examenes:
-         
-         
-        if(jTextFieldIDExamenes.getText().isEmpty() || jTextFieldExamen.getText().isEmpty()
-                 || jTextFieldResultadoExamen.getText().isEmpty() || jDateChooserInsumo.getDateFormatString().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()
-                 ){
+
+        if (jTextFieldIDExamenes.getText().isEmpty() || jTextFieldExamen.getText().isEmpty()
+                || jTextFieldResultadoExamen.getText().isEmpty() || jDateChooserInsumo.getDateFormatString().isEmpty() || jTextFieldPacienteExamen.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
-        
-        }else{
-           
+
+        } else {
+
             String mensaje = examenesBO.eliminarExamenes(Integer.parseInt(jTextFieldIDExamenes.getText()));
             JOptionPane.showMessageDialog(null, mensaje);
             limpiarExamenes();
@@ -3557,8 +3513,8 @@ public class Administracion extends javax.swing.JFrame {
 
     public void limpiarPagos() {
         jTextFieldIDPago.setText("");
-        jTextFieldFechaPago.setText("");
-        jTextFieldHoraPago.setText("");
+        jDateChooserFechaPagos.setDate(null);
+        jDateChooserHoraPagos.setDate(null);
         jTextFieldIDPacientePago.setText("");
         jTextFieldIDMedicoPago.setText("");
         jTextFieldIDCitaPago.setText("");
@@ -3586,11 +3542,6 @@ public class Administracion extends javax.swing.JFrame {
         idMaxTratamientos();
     }
 
-
-    
-    
-    
-    
     /**
      * @param args the command line arguments
      */
@@ -3624,8 +3575,7 @@ public class Administracion extends javax.swing.JFrame {
                 new Administracion().setVisible(true);
             }
         });
-        
-       
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -3672,6 +3622,8 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JButton jBtnModificarTrata;
     private com.toedter.calendar.JDateChooser jDateChooserComenta;
     private com.toedter.calendar.JDateChooser jDateChooserExam;
+    private com.toedter.calendar.JDateChooser jDateChooserFechaPagos;
+    private com.toedter.calendar.JDateChooser jDateChooserHoraPagos;
     private com.toedter.calendar.JDateChooser jDateChooserInsumo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -3812,9 +3764,7 @@ public class Administracion extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldEspecialidad;
     private javax.swing.JTextField jTextFieldExamen;
     private javax.swing.JTextField jTextFieldFechaCita;
-    private javax.swing.JTextField jTextFieldFechaPago;
     private javax.swing.JTextField jTextFieldHoraCita;
-    private javax.swing.JTextField jTextFieldHoraPago;
     private javax.swing.JTextField jTextFieldIDCitaPago;
     private javax.swing.JTextField jTextFieldIDCitas;
     private javax.swing.JTextField jTextFieldIDComentarios;
