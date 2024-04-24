@@ -14,6 +14,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -62,30 +63,42 @@ public class ExamenesDAO {
 
 
     public String modificarExamen(Connection con, ExamenesEntity exa) {
-        PreparedStatement pst = null;
-        String sql = "UPDATE REGISTRO_EXAMENES SET TIPO_EXAMEN = ?, RESULTADOS = ?, FECHA = ?, ID_PACIENTE = ?"
-                + "WHERE ID_EXAMEN = ?";
+    CallableStatement cst = null;
+    String mensaje = "";
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        String call = "{ call Actualizar_Examen(?, ?, ?, ?, ?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(5, exa.getIdExamenes());
+        cst.setString(1, exa.getTipoExamen());
+        cst.setString(2, exa.getResultado());
+
+        // Convertir la fecha de java.util.Date a java.sql.Date
+        java.util.Date fechaUtil = exa.getFecha();
+        long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+        java.sql.Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+        cst.setDate(3, fechaSql); // Establecer el java.sql.Date en el CallableStatement
+
+        cst.setInt(4, exa.getIdPaciente());
+
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+        mensaje = "Examen actualizado correctamente";
+
+    } catch (SQLException e) {
+        mensaje = "Error al actualizar el examen: \n" + e.getMessage();
+    } finally {
         try {
-            pst = con.prepareStatement(sql);
-            pst.setString(1, exa.getTipoExamen());
-            pst.setString(2, exa.getResultado());
-//            pst.setDate(3, (Date) exa.getFecha());
-
-            java.util.Date fechaUtil = exa.getFecha();
-            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
-            Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
-            pst.setDate(3, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
-
-            pst.setInt(4, exa.getIdPaciente());
-            pst.setInt(5, exa.getIdExamenes());
-            mensaje = "ACTUALIZADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (Exception e) {
-            mensaje = "NO SE ACTUALIZAR CORRECTAMENTE \n " + e.getMessage();
+            if (cst != null) {
+                cst.close(); // Asegurarse de cerrar el CallableStatement
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return mensaje;
     }
+    return mensaje;
+}
+
 
     public String eliminarExamen(Connection con, int id) {
     CallableStatement cst = null;
@@ -116,29 +129,38 @@ public class ExamenesDAO {
 
 
     public void listarExamen(Connection con, JTable tabla) {
-        DefaultTableModel model;
-        String [] columnas = {"ID","TIPO DE EXAMEN","RESULTADOS","FECHA","ID PACIENTE"};
-        model = new DefaultTableModel(null, columnas);
+    DefaultTableModel model;
+    String[] columnas = {"ID", "TIPO DE EXAMEN", "RESULTADOS", "FECHA", "ID PACIENTE"};
+    model = new DefaultTableModel(null, columnas);
+
+    CallableStatement cst = null;
+    ResultSet rs = null;
+    try {
+        cst = con.prepareCall("{ call Listar_Examenes(?) }");
+        cst.registerOutParameter(1, OracleTypes.CURSOR); // Registro del cursor según el tipo Oracle
+        cst.execute();
+        rs = (ResultSet) cst.getObject(1); // Recuperar el cursor como un ResultSet
         
-        String sql = "SELECT * FROM REGISTRO_EXAMENES ORDER BY ID_EXAMEN";
-        
-        String [] filas = new String[5];
-        Statement st = null;
-        ResultSet rs = null;
-        try {
-            st = con.createStatement();
-            rs = st.executeQuery(sql);
-            while (rs.next()) {
-                for (int i = 0; i < 5; i++) {
-                    filas[i] = rs.getString(i+1);
-                }
-                model.addRow(filas);
+        String[] filas = new String[5];
+        while (rs.next()) {
+            for (int i = 0; i < 5; i++) {
+                filas[i] = rs.getString(i + 1);
             }
-            tabla.setModel(model);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+            model.addRow(filas);
+        }
+        tabla.setModel(model);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA: " + e.getMessage());
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (cst != null) cst.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+}
+
     
     public int getMaxID(Connection con) {
         int id = 0;
