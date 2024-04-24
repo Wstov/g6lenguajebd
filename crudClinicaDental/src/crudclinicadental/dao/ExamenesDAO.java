@@ -23,32 +23,43 @@ public class ExamenesDAO {
         
     private String mensaje="";
     
-    public String agregarExamen(Connection con, ExamenesEntity exa){
-        PreparedStatement pst = null;
-        String sql = "INSERT INTO REGISTRO_EXAMENES (ID_EXAMEN, TIPO_EXAMEN, RESULTADOS, FECHA, ID_PACIENTE) "
-                + "VALUES(?,?,?,?,?)";
+    public String agregarExamen(Connection con, ExamenesEntity exa) {
+    CallableStatement cst = null;
+    String mensaje = "";
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        String call = "{ call Registrar_Examen(?, ?, ?, ?, ?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, exa.getIdExamenes());
+        cst.setString(2, exa.getTipoExamen());
+        cst.setString(3, exa.getResultado());
+
+        // Convertir la fecha de java.util.Date a java.sql.Date
+        java.util.Date fechaUtil = exa.getFecha();
+        long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
+        Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
+        cst.setDate(4, fechaSql); // Establecer el java.sql.Date en el CallableStatement
+
+        cst.setInt(5, exa.getIdPaciente());
+
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+        mensaje = "Examen registrado correctamente";
+
+    } catch (SQLException e) {
+        mensaje = "Error al registrar el examen: \n" + e.getMessage();
+    } finally {
         try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, exa.getIdExamenes());
-            pst.setString(2, exa.getTipoExamen());
-            pst.setString(3, exa.getResultado());
-//            pst.setDate(4, (Date)(exa.getFecha()));
-
-            java.util.Date fechaUtil = exa.getFecha();
-            long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
-            Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
-            pst.setDate(4, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
-
-            pst.setInt(5, exa.getIdPaciente());
-
-            mensaje = "GUARDADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
+            if (cst != null) {
+                cst.close(); // Asegurarse de cerrar el CallableStatement
+            }
         } catch (SQLException e) {
-            mensaje = "NO SE GUARDO CORRECTAMENTE \n " + e.getMessage();
+            e.printStackTrace();
         }
-        return mensaje;
     }
+    return mensaje;
+}
+
 
     public String modificarExamen(Connection con, ExamenesEntity exa) {
         PreparedStatement pst = null;
