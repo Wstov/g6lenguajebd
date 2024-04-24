@@ -2726,23 +2726,19 @@ public class Administracion extends javax.swing.JFrame {
 
     private void jBtnModificarPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnModificarPagoActionPerformed
         // MODIFICAR PAGOS
-        java.util.Date horaSeleccionada = jDateChooserHoraPagos.getDate(); // Obtener la hora seleccionada del JDateChooserHoraPagos
-        java.time.LocalDateTime horaLocalDateTime = null;
-
-        if (jDateChooserFechaPagos.getDateFormatString().isEmpty() || jDateChooserHoraPagos.getDateFormatString().isEmpty()
-                || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty()
-                || jTextFieldIDCitaPago.getText().isEmpty() || jTextFieldIDInsumoPago.getText().isEmpty()
-                || jTextFieldPago.getText().isEmpty()) {
+         if (jDateChooserFechaPagos.getDateFormatString().isEmpty() || jDateChooserHoraPagos.getDateFormatString().isEmpty()
+                || jTextFieldIDPacientePago.getText().isEmpty() || jTextFieldIDMedicoPago.getText().isEmpty() || jTextFieldIDCitaPago.getText().isEmpty()
+                || jTextFieldIDInsumoPago.getText().isEmpty() || jTextFieldPago.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Llene los espacios vacios");
+
         } else {
             try {
+
                 PagoEntity pagoEntity = new PagoEntity();
                 pagoEntity.setIdPago(Integer.parseInt(jTextFieldIDPago.getText()));
                 pagoEntity.setFecha(jDateChooserFechaPagos.getDate());
-                if (horaSeleccionada != null) { // Verificar si se seleccionó una hora
-                    // Convertir la hora seleccionada a LocalDateTime
-                    horaLocalDateTime = horaSeleccionada.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
-                }
+                pagoEntity.setHora(jDateChooserHoraPagos.getDate());
+
                 pagoEntity.setIdPaciente(Integer.parseInt(jTextFieldIDPacientePago.getText()));
                 pagoEntity.setIdMedico(Integer.parseInt(jTextFieldIDMedicoPago.getText()));
                 pagoEntity.setIdCita(Integer.parseInt(jTextFieldIDCitaPago.getText()));

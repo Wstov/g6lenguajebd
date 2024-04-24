@@ -78,7 +78,6 @@ public class PagoDAO {
             java.sql.Date horaSql = new java.sql.Date(millisecondsHora); // Crear un java.sql.Date con los milisegundos
             pst.setDate(2, horaSql); // Establecer el java.sql.Date en el PreparedStatement
 
-
             pst.setInt(3, pagoEntity.getIdPaciente());
             pst.setInt(4, pagoEntity.getIdMedico());
             pst.setInt(5, pagoEntity.getIdCita());
