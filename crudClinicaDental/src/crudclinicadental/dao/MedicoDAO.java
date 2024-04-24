@@ -63,23 +63,6 @@ public class MedicoDAO {
         return mensaje;
     }
 
-//    public String eliminarMedico(Connection con, int id) {
-//        PreparedStatement pst = null;
-//        String sql = "DELETE FROM MEDICOS WHERE ID_MEDICO = ?";
-//        try {
-//            pst = con.prepareStatement(sql);
-//            pst.setInt(1, id);
-//
-//            mensaje = "ELIMINADO CORRECTAMENTE";
-//            pst.execute();
-//            pst.close();
-//        } catch (SQLException  e) {
-//            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
-//            
-//        }
-//        return mensaje;
-//    }
-
     public void listarMedico(Connection con, JTable tabla) {
         DefaultTableModel model;
         String [] columnas = {"ID","NOMBRE","APELLIDO","CEDULA","TELEFONO","TURNO","ESPECIALIDAD"};

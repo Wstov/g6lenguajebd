@@ -10,7 +10,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -77,20 +77,32 @@ public class ExamenesDAO {
     }
 
     public String eliminarExamen(Connection con, int id) {
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM REGISTRO_EXAMENES WHERE ID_EXAMEN = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
+    CallableStatement cst = null;
+    String mensaje = "";
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        String call = "{ call Eliminar_Examen(?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, id);  // Establecer el ID del examen a eliminar
 
-            mensaje = "ELIMINADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (SQLException  e) {
-            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+        mensaje = "Eliminado correctamente";
+
+    } catch (SQLException e) {
+        mensaje = "No se eliminó correctamente: \n" + e.getMessage();
+    } finally {
+        try {
+            if (cst != null) {
+                cst.close();  // Asegurarse de cerrar el CallableStatement
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return mensaje;
     }
+    return mensaje;
+}
+
 
     public void listarExamen(Connection con, JTable tabla) {
         DefaultTableModel model;

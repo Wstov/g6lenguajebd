@@ -79,20 +79,20 @@ public class PacientesDAO {
         cst.setInt(1, id); // Establecer el ID del paciente a verificar
         cst.registerOutParameter(2, Types.INTEGER); // Parámetro de salida para el resultado
 
-        // Ejecutar el procedimiento almacenado
+        
         cst.execute();
 
-        // Obtener el resultado del procedimiento almacenado
+       
         int resultado = cst.getInt(2);
 
-        // Verificar el resultado
+       
         if (resultado == 1) {
             mensaje = "No se puede eliminar el paciente dado que está vinculado a citas registradas.";
         } else {
-            // Llamar al procedimiento almacenado para eliminar al paciente
+           
             String eliminarCall = "{ call Eliminar_Paciente(?) }";
             CallableStatement eliminarCst = con.prepareCall(eliminarCall);
-            eliminarCst.setInt(1, id); // Establecer el ID del paciente a eliminar
+            eliminarCst.setInt(1, id); 
             eliminarCst.execute();
             eliminarCst.close();
             mensaje = "Paciente eliminado correctamente.";
@@ -102,7 +102,7 @@ public class PacientesDAO {
     } finally {
         try {
             if (cst != null) {
-                cst.close(); // Asegurarse de cerrar el CallableStatement
+                cst.close(); 
             }
         } catch (SQLException e) {
             e.printStackTrace();
