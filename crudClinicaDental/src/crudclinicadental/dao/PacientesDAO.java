@@ -10,7 +10,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -69,20 +69,48 @@ public class PacientesDAO {
     }
 
     public String eliminarPaciente(Connection con, int id) {
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM PACIENTE WHERE ID_PACIENTE = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
+    CallableStatement cst = null;
+    String mensaje = "";
 
-            mensaje = "EL PACIENTE SE HA ELIMINADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (Exception e) {
-            mensaje = "EL PACIENTE NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+    try {
+        // Llamar al procedimiento almacenado para verificar el paciente
+        String call = "{ call Verificar_Paciente(?, ?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, id); // Establecer el ID del paciente a verificar
+        cst.registerOutParameter(2, Types.INTEGER); // Parámetro de salida para el resultado
+
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+
+        // Obtener el resultado del procedimiento almacenado
+        int resultado = cst.getInt(2);
+
+        // Verificar el resultado
+        if (resultado == 1) {
+            mensaje = "No se puede eliminar el paciente dado que está vinculado a citas registradas.";
+        } else {
+            // Llamar al procedimiento almacenado para eliminar al paciente
+            String eliminarCall = "{ call Eliminar_Paciente(?) }";
+            CallableStatement eliminarCst = con.prepareCall(eliminarCall);
+            eliminarCst.setInt(1, id); // Establecer el ID del paciente a eliminar
+            eliminarCst.execute();
+            eliminarCst.close();
+            mensaje = "Paciente eliminado correctamente.";
         }
-        return mensaje;
+    } catch (SQLException e) {
+        mensaje = "No se pudo eliminar el paciente: \n" + e.getMessage();
+    } finally {
+        try {
+            if (cst != null) {
+                cst.close(); // Asegurarse de cerrar el CallableStatement
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
+    return mensaje;
+}
+
 
     public void listarPaciente(Connection con, JTable tabla) {
                 DefaultTableModel model;
