@@ -8,7 +8,7 @@ import crudclinicadental.entity.ComentariosEntity;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.sql.SQLException;
 import java.sql.Statement;
 import javax.swing.JOptionPane;
@@ -76,20 +76,33 @@ public class ComentariosDAO {
     }
 
     public String eliminarComentario(Connection con, int id) {
-        PreparedStatement pst = null;
-        String sql = "DELETE FROM COMENTARIOS_CITA WHERE ID_COMENTARIO = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, id);
+    CallableStatement cst = null;
+    String mensaje = "";
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        String call = "{ call Eliminar_Comentario_Cita(?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, id);  // Establecer el ID del comentario a eliminar
 
-            mensaje = "ELIMINADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (SQLException  e) {
-            mensaje = "NO SE ELIMINO CORRECTAMENTE \n " + e.getMessage();
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+        mensaje = "Eliminado correctamente";
+
+    } catch (SQLException e) {
+        mensaje = "No se eliminó correctamente: \n" + e.getMessage();
+    } finally {
+        try {
+            if (cst != null) {
+                cst.close();  // Asegurarse de cerrar el CallableStatement
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return mensaje;
     }
+    return mensaje;
+}
+
+
 
     public void listarComentario(Connection con, JTable tabla) {
         DefaultTableModel model;
