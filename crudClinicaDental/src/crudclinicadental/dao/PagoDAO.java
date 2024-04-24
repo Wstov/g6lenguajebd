@@ -27,8 +27,7 @@ public class PagoDAO {
     
     public String agregarPago(Connection con, PagoEntity pagoEntity){
         PreparedStatement pst = null;
-        String sql = "INSERT INTO PAGO (ID_RECIBO, FECHA, HORA, ID_PACIENTE, ID_MEDICO, ID_CITA, ID_INSUMOS, PAGO) "
-                + "VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "{ call Registrar_Pago(?,?,?,?,?,?,?,?) }";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, pagoEntity.getIdPago());
@@ -61,8 +60,7 @@ public class PagoDAO {
 
     public String modificarPago(Connection con, PagoEntity pagoEntity) {
         PreparedStatement pst = null;
-        String sql = "UPDATE PAGO SET FECHA = ?, HORA = ?, ID_PACIENTE = ?, ID_MEDICO = ?, ID_CITA = ?, ID_INSUMOS = ?, PAGO = ?"
-                + "WHERE ID_RECIBO = ?";
+        String sql = "{ call Actualizar_Pago(?,?,?,?,?,?,?,?) }";
         try {
             pst = con.prepareStatement(sql);
 //            pst.setDate(1, Date.valueOf(pagoEntity.getFecha()));
@@ -126,7 +124,7 @@ public class PagoDAO {
         String [] columnas = {"ID","FECHA","HORA","ID PACIENTE","ID MEDICO","ID CITA","ID INSUMOS","PAGO"};
         model = new DefaultTableModel(null, columnas);
         
-        String sql = "SELECT * FROM PAGO ORDER BY ID_RECIBO";
+        String sql = "{ call Listar_Pagos(?) }";
         
         String [] filas = new String[8];
         Statement st = null;

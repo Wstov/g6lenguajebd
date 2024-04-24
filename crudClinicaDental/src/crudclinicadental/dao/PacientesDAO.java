@@ -24,8 +24,7 @@ public class PacientesDAO {
     
     public String agregarPaciente(Connection con, PacienteEntiy pacienteEntity){
         PreparedStatement pst = null;
-        String sql = "INSERT INTO PACIENTE (ID_PACIENTE, NUM_CEDULA, NOM_PACIENTE, APELLIDOS_PACIENTE, DIRECCION, TELEFONO_P, ALERGIAS, ENFERM_CRONICAS) "
-                + "VALUES(?,?,?,?,?,?,?,?)";
+        String sql = "{ call Insertar_Paciente(?,?,?,?,?,?,?,?) }";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, pacienteEntity.getIdPaciente());
@@ -47,8 +46,7 @@ public class PacientesDAO {
 
     public String modificarPaciente(Connection con, PacienteEntiy pacienteEntity) {
         PreparedStatement pst = null;
-        String sql = "UPDATE PACIENTE SET NUM_CEDULA = ?, NOM_PACIENTE = ?, APELLIDOS_PACIENTE = ?, DIRECCION = ?,TELEFONO_P = ?, ALERGIAS = ?, ENFERM_CRONICAS = ?"
-                + "WHERE ID_PACIENTE = ?";
+        String sql = "{ call Actualizar_Paciente(?,?,?,?,?,?,?,?) }";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, pacienteEntity.getCedula());
@@ -117,7 +115,7 @@ public class PacientesDAO {
         String [] columnas = {"ID","CEDULA","NOMBRE","APELLIDO","DIRECCION","TELEFONO","ALERGIAS", "EFERMEDAD"};
         model = new DefaultTableModel(null, columnas);
         
-        String sql = "SELECT * FROM PACIENTE ORDER BY ID_PACIENTE";
+        String sql = "{ call Listar_Paciente(?) }";
         
         String [] filas = new String[8];
         Statement st = null;

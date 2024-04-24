@@ -19,8 +19,7 @@ public class CitasDAO {
 
     public String agregarCita(Connection con, CitasEntity citasEntity) {
         PreparedStatement pst = null;
-        String sql = "INSERT INTO REGISTRO_CITAS (ID_CITA, HORA, FECHA, CONSULTORIO, ID_PACIENTE, ID_MEDICO) "
-                + "VALUES(?,?,?,?,?,?)";
+        String sql = "{call Insertar_Registro_Citas(?,?,?,?,?,?)}";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, citasEntity.getIdCita());
@@ -49,8 +48,7 @@ public class CitasDAO {
 
     public String modificarCita(Connection con, CitasEntity citasEntity) {
         PreparedStatement pst = null;
-        String sql = "UPDATE REGISTRO_CITAS SET HORA = ?, FECHA = ?, CONSULTORIO = ?, ID_PACIENTE = ?,ID_MEDICO = ?"
-                + "WHERE ID_CITA = ?";
+        String sql = "{call Modificar_Registro_Citas(?, ?, ?, ?, ?, ?)}";
         try {
             pst = con.prepareStatement(sql);
 
@@ -116,7 +114,7 @@ public class CitasDAO {
         String [] columnas = {"ID","HORA","FECHA","CONSULTORIO","ID PACIENTE","ID MEDICO"};
         model = new DefaultTableModel(null, columnas);
         
-        String sql = "SELECT * FROM REGISTRO_CITAS ORDER BY ID_CITA";
+        String sql = "{call Listar_Citas(?)}";
         
         String [] filas = new String[6];
         Statement st = null;

@@ -43,8 +43,7 @@ public class MedicoDAO {
 
     public String modificarMedico(Connection con, MedicoEntity med) {
         PreparedStatement pst = null;
-        String sql = "UPDATE MEDICOS SET NOM_MEDICO = ?, APELLIDOS_MEDICO = ?, CED_MEDICO = ?, TELEFONO_M = ?,TURNO = ?,ESPECIALIDAD = ?"
-                + "WHERE ID_MEDICO = ?";
+        String sql = "{ call Actualizar_Medico(?,?,?,?,?,?,?) }";
         try {
             pst = con.prepareStatement(sql);
             pst.setString(1, med.getNombre());
@@ -68,7 +67,7 @@ public class MedicoDAO {
         String [] columnas = {"ID","NOMBRE","APELLIDO","CEDULA","TELEFONO","TURNO","ESPECIALIDAD"};
         model = new DefaultTableModel(null, columnas);
         
-        String sql = "SELECT * FROM MEDICOS ORDER BY ID_MEDICO";
+        String sql = "{ call Listar_Medicos(?) }";
         
         String [] filas = new String[7];
         Statement st = null;
