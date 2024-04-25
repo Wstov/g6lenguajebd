@@ -68,7 +68,7 @@ public class InsumosDAO {
         cst.execute();
         mensaje = "ACTUALIZADO CORRECTAMENTE";
     } catch (SQLException e) {
-        mensaje = "No se actualizó correctamente \n" + e.getMessage();
+        mensaje = "NO SE ACTUALIZO CORRECTAMENTE \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) {
@@ -174,7 +174,7 @@ public String eliminarInsumo(Connection con, int id) {
             rs.close();
             pst.close();
         } catch (SQLException e) {
-            System.out.println("Error al mostrar id " + e.getMessage());
+            System.out.println("ERROR AL MOSTRAR ID ERROR " + e.getMessage());
         }
         return id;
     }

@@ -92,7 +92,7 @@ public class PacientesDAO {
 
        
         if (resultado == 1) {
-            mensaje = "No se puede eliminar el paciente dado que está vinculado a citas registradas.";
+            mensaje = "NO SE PUEDE ELIMINAR EL PACIENTE DADO QUE ESTA VINCULADO A CITAS REGISTRADAS.";
         } else {
            
             String eliminarCall = "{ call Eliminar_Paciente(?) }";
@@ -103,7 +103,7 @@ public class PacientesDAO {
             mensaje = "PACIENTE ELIMINADO CORRECTAMENTE.";
         }
     } catch (SQLException e) {
-        mensaje = "No se pudo eliminar el paciente: \n" + e.getMessage();
+        mensaje = "NO SE PUEDO ELIMINAR EL PACIENTE: \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) {
@@ -168,7 +168,7 @@ public class PacientesDAO {
             rs.close();
             pst.close();
         } catch (SQLException e) {
-            System.out.println("Error al mostrar id " + e.getMessage());
+            System.out.println("ERROR AL MOSTRAR ID ERROR " + e.getMessage());
         }
         return id;
     }

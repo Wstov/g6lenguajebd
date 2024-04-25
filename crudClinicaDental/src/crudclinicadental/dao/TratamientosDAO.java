@@ -37,9 +37,9 @@ public class TratamientosDAO {
         cst.setInt(5, trata.getIdInsumo());
 
         cst.executeUpdate();  // 'executeUpdate' se usa para operaciones de inserción, actualización y eliminación.
-        mensaje = "Tratamiento guardado correctamente.";
+        mensaje = "TRATAMIENTO GUARDADO CORRECTAMENTE.";
     } catch (SQLException e) {
-        mensaje = "No se guardó correctamente el tratamiento: " + e.getMessage();
+        mensaje = "NO SE GUARDO CORRECTAMENTE EL TRATAMIENTO: " + e.getMessage();
     } finally {
         try {
             if (cst != null) cst.close();
@@ -66,9 +66,9 @@ public class TratamientosDAO {
 
         
         cst.executeUpdate();  
-        mensaje = "Tratamiento actualizado correctamente.";
+        mensaje = "TRATAMIENTO ACTUALIZADO CORRECTAMENTE.";
     } catch (SQLException e) {
-        mensaje = "No se actualizó correctamente el tratamiento: \n" + e.getMessage();
+        mensaje = "NO SE ACTULIZO CORRECTAMENTE: \n" + e.getMessage();
     } finally {
      
         try {
@@ -134,7 +134,7 @@ public class TratamientosDAO {
         }
         tabla.setModel(model);
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "No se puede listar la tabla: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA: " + e.getMessage());
     } finally {
         try {
             if (rs != null) rs.close();
@@ -160,7 +160,7 @@ public class TratamientosDAO {
             rs.close();
             pst.close();
         } catch (SQLException e) {
-            System.out.println("Error al mostrar id " + e.getMessage());
+            System.out.println("ERROR AL MOSTRAR ID " + e.getMessage());
         }
         return id;
     }

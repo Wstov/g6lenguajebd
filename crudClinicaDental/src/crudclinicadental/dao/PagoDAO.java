@@ -172,7 +172,7 @@ public class PagoDAO {
             rs.close();
             pst.close();
         } catch (SQLException e) {
-            System.out.println("Error al mostrar id " + e.getMessage());
+            System.out.println("ERROR AL MOSTRAR ID " + e.getMessage());
         }
         return id;
     }

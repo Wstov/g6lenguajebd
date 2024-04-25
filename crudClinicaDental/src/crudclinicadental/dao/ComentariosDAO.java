@@ -40,9 +40,9 @@ public class ComentariosDAO {
 
         // Ejecutar el procedimiento almacenado
         cst.execute();
-        mensaje = "Comentario guardado correctamente";
+        mensaje = "COMENTARIO GUARDADO CORRECTAMENTE";
     } catch (SQLException e) {
-        mensaje = "No se guardó correctamente \n" + e.getMessage();
+        mensaje = "NO SE GUARDO CORRECTAMENTE \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) {
@@ -74,9 +74,9 @@ public class ComentariosDAO {
         cst.setString(5, comen.getComentario());
 
         cst.execute();
-        mensaje = "Actualizado correctamente";
+        mensaje = "ACTUALIZADO CORRECTAMENTE";
     } catch (SQLException e) {
-        mensaje = "No se actualizó correctamente \n" + e.getMessage();
+        mensaje = "NO SE ACTUALIZO CORRECTAMENTE \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) {
@@ -101,10 +101,10 @@ public class ComentariosDAO {
 
         // Ejecutar el procedimiento almacenado
         cst.execute();
-        mensaje = "Eliminado correctamente";
+        mensaje = "ELIMINADO CORRECTAMENTE";
 
     } catch (SQLException e) {
-        mensaje = "No se eliminó correctamente: \n" + e.getMessage();
+        mensaje = "NO SE ELIMINO CORRECTAMENTE: \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) {
@@ -141,7 +141,7 @@ public class ComentariosDAO {
         }
         tabla.setModel(model);
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "No se puede listar la tabla: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA: " + e.getMessage());
     } finally {
         try {
             if (rs != null) rs.close();
@@ -167,7 +167,7 @@ public class ComentariosDAO {
             rs.close();
             pst.close();
         } catch (SQLException e) {
-            System.out.println("Error al mostrar id " + e.getMessage());
+            System.out.println("ERROR AL MOSTRAR ID ERROR " + e.getMessage());
         }
         return id;
     }

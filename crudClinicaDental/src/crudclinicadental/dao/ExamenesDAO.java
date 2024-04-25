@@ -45,10 +45,10 @@ public class ExamenesDAO {
 
         // Ejecutar el procedimiento almacenado
         cst.execute();
-        mensaje = "Examen registrado correctamente";
+        mensaje = "EXAMEN REGISTRADO CORRECTAMENTE.";
 
     } catch (SQLException e) {
-        mensaje = "Error al registrar el examen: \n" + e.getMessage();
+        mensaje = "ERROR AL REGISTRAR EL EXAMEN: \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) {
@@ -83,10 +83,10 @@ public class ExamenesDAO {
 
         // Ejecutar el procedimiento almacenado
         cst.execute();
-        mensaje = "Examen actualizado correctamente";
+        mensaje = "EXAMEN ACTUALIZADO CORRECTAMENTE.";
 
     } catch (SQLException e) {
-        mensaje = "Error al actualizar el examen: \n" + e.getMessage();
+        mensaje = "ERROR AL ACTUALIZAR EL EXAMEN: \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) {
@@ -111,10 +111,10 @@ public class ExamenesDAO {
 
         // Ejecutar el procedimiento almacenado
         cst.execute();
-        mensaje = "Eliminado correctamente";
+        mensaje = "ELIMINADO CORRECTAMENTE";
 
     } catch (SQLException e) {
-        mensaje = "No se eliminó correctamente: \n" + e.getMessage();
+        mensaje = "NO SE ELIMINO CORRECTAMENTE: \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) {
@@ -176,7 +176,7 @@ public class ExamenesDAO {
             rs.close();
             pst.close();
         } catch (SQLException e) {
-            System.out.println("Error al mostrar id " + e.getMessage());
+            System.out.println("ERROR AL MOSTRAR ID ERROR " + e.getMessage());
         }
         return id;
     }

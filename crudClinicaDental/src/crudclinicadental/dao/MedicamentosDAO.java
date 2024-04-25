@@ -37,9 +37,9 @@ public class MedicamentosDAO {
         cst.setInt(6, medicamentosEntity.getIdproveedor());
 
         cst.execute();
-        mensaje = "Guardado correctamente";
+        mensaje = "GUARDADO CORRECTAMENTE";
     } catch (SQLException e) {
-        mensaje = "No se guardó correctamente \n" + e.getMessage();
+        mensaje = "NO SE GUARDO CORRECTAMENTE \n" + e.getMessage();
     } finally {
         try {
             if (cst != null) cst.close();
@@ -65,9 +65,9 @@ public class MedicamentosDAO {
         cst.setInt(6, medicamentosEntity.getIdproveedor());
 
         cst.executeUpdate(); // Note el uso de executeUpdate para operaciones DML como UPDATE
-        mensaje = "Medicamento actualizado correctamente.";
+        mensaje = "MEDICAMENTO ACTUALIZADO CORRECTAMENTE.";
     } catch (SQLException e) {
-        mensaje = "Error al actualizar el medicamento: " + e.getMessage();
+        mensaje = "ERROR AL ACTUALZAR EL MEDICAMENTO: " + e.getMessage();
         e.printStackTrace();
     } finally {
         try {
@@ -132,7 +132,7 @@ public class MedicamentosDAO {
         }
         tabla.setModel(model);
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "No se puede listar la tabla: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA: " + e.getMessage());
     } finally {
         try {
             if (rs != null) rs.close();
@@ -158,7 +158,7 @@ public class MedicamentosDAO {
             rs.close();
             pst.close();
         } catch (SQLException e) {
-            System.out.println("Error al mostrar id " + e.getMessage());
+            System.out.println("ERROR AL MOSTRAR ID ERROR " + e.getMessage());
         }
         return id;
     }

@@ -124,7 +124,7 @@ public class MedicoDAO {
             rs.close();
             pst.close();
         } catch (SQLException e) {
-            System.out.println("Error al mostrar id " + e.getMessage());
+            System.out.println("ERROR AL MOSTRAR ID ERROR " + e.getMessage());
         }
         return id;
     }
@@ -149,8 +149,8 @@ public class MedicoDAO {
             // Verificar el resultado
             System.out.println("" + resultado);
             if (resultado == 1) {
-                mensaje = "No se puede eliminar el médico dado que está vinculado a otros datos.\n"
-                        + "Por favor, revise los datos en Registro Citas y Pagos.";
+                mensaje = "NO SE PUEDE ELIMINAR EL MEDICO DADO QUE ESTA VINCULADO A OTRO DATOS.\n"
+                        + "POR FAVOR, REVISE LOS DATOS EN REGISTRO CITAS Y PAGOS.";
             } else {
                 // Llamar al procedimiento almacenado para eliminar al médico
                 String eliminarCall = "{ call Eliminar_Medico(?) }";

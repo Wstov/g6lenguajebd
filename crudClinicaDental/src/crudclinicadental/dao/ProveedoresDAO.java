@@ -36,9 +36,9 @@ public class ProveedoresDAO {
 
         // Ejecutar el procedimiento almacenado
         cst.execute();
-        mensaje = "El proveedor fue guardado correctamente.";
+        mensaje = "EL PROVEEDOR FUE GUARDADO CORRECTAMENTE.";
     } catch (SQLException e) {
-        mensaje = "El proveedor no se guardó correctamente: " + e.getMessage();
+        mensaje = "EL PROVEEDOR NO SE GUARDO CORRECTAMENTE: " + e.getMessage();
         e.printStackTrace();
     } finally {
         try {
@@ -70,9 +70,9 @@ public class ProveedoresDAO {
 
         // Ejecutar el procedimiento almacenado
         cst.execute();
-        mensaje = "El proveedor fue actualizado correctamente.";
+        mensaje = "EL PROVEEDOR FUE ACTUALIZADO CORRECTAMENTE.";
     } catch (SQLException e) {
-        mensaje = "El proveedor no se actualizó correctamente: \n" + e.getMessage();
+        mensaje = "EL PROVEEDOR NO SE ACTUALIZO: \n" + e.getMessage();
         e.printStackTrace();
     } finally {
         // Cerrar el CallableStatement
