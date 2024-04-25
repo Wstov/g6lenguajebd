@@ -60,8 +60,8 @@ CREATE TABLE Pago (
 CREATE TABLE Proveedores (
     ProveedorID INT PRIMARY KEY,
     Nombre VARCHAR2(255),
-    Tel閒ono VARCHAR2(15),
-    Direcci髇 VARCHAR2(500),
+    Tel茅fono VARCHAR2(15),
+    Direcci贸n VARCHAR2(500),
     Email VARCHAR2(100)
 );
 
@@ -70,7 +70,7 @@ CREATE TABLE Medicamentos (
     Nombre VARCHAR2(255),
     Tipo VARCHAR2(100),
     Dosis VARCHAR2(100),
-    Descripci髇 VARCHAR2(500),
+    Descripci贸n VARCHAR2(500),
     ProveedorID INT,
     FOREIGN KEY (ProveedorID) REFERENCES Proveedores(ProveedorID)
 );
@@ -103,13 +103,12 @@ CREATE TABLE Comentarios_Cita (
     FOREIGN KEY (ID_Paciente) REFERENCES Paciente(ID_Paciente)
 );
 
+
 --------------------------------------------------------------------------------------------
-
+--------------------------------------------------------------------------------------------
 --25 procedimientos
-
---1. Insertar nuevo paciente
-
-CREATE OR REPLACE PROCEDURE Insertar_Paciente(
+---------------5 procedimientos Pacientes ----------------------
+create or replace NONEDITIONABLE PROCEDURE Insertar_Paciente(
     p_ID_Paciente IN INT,
     p_Num_Cedula IN NUMBER,
     p_Nom_Paciente IN VARCHAR2,
@@ -125,120 +124,10 @@ BEGIN
     VALUES (p_ID_Paciente, p_Num_Cedula, p_Nom_Paciente, p_Apellidos_Paciente, p_Direccion, p_Telefono_p, p_Alergias, p_Enferm_Cronicas);
     COMMIT;
 END Insertar_Paciente;
-/
 
-BEGIN
-    Insertar_Paciente(
-        p_ID_Paciente => 26,
-        p_Num_Cedula => 112270854,
-        p_Nom_Paciente => 'Juan',
-        p_Apellidos_Paciente => 'P閞ez',
-        p_Direccion => 'Calle Principal, San-Jose',
-        p_Telefono_p => 88664455,
-        p_Alergias => 'Polen',
-        p_Enferm_Cronicas => 'Hipertensi髇'
-    );
-END;
-/
+---------------------------------------------------------------------------------
 
---2. Insertar Medico
-
-CREATE OR REPLACE PROCEDURE Insertar_Medico(
-    p_ID_Medico IN INT,
-    p_Nom_Medico IN VARCHAR2,
-    p_Apellidos_Medico IN VARCHAR2,
-    p_Ced_Medico IN NUMBER,
-    p_Telefono_m IN NUMBER,
-    p_Turno IN VARCHAR2,
-    p_Especialidad IN VARCHAR2
-)
-IS
-BEGIN
-    INSERT INTO Medicos(ID_Medico, Nom_Medico, Apellidos_Medico, Ced_Medico, Telefono_m, Turno, Especialidad)
-    VALUES (p_ID_Medico, p_Nom_Medico, p_Apellidos_Medico, p_Ced_Medico, p_Telefono_m, p_Turno, p_Especialidad);
-    COMMIT;
-END;
-/
-
-BEGIN
-    Insertar_Medico(
-        p_ID_Medico => 26,
-        p_Nom_Medico => 'Ana',
-        p_Apellidos_Medico => 'Gonz醠ez',
-        p_Ced_Medico => 12570985,
-        p_Telefono_m => 88765432,
-        p_Turno => 'Ma馻na',
-        p_Especialidad => 'Odontologa'
-    );
-END;
-/
-
---3. Insertar registro de citas
-
-CREATE OR REPLACE PROCEDURE Insertar_Registro_Citas(
-    p_ID_Cita IN NUMBER,
-    p_Hora IN TIMESTAMP,
-    p_Fecha IN DATE,
-    p_Consultorio IN VARCHAR2,
-    p_ID_Paciente IN NUMBER,
-    p_ID_Medico IN NUMBER
-)
-IS
-BEGIN
-    INSERT INTO Registro_Citas(ID_Cita, Hora, Fecha, Consultorio, ID_Paciente, ID_Medico)
-    VALUES (p_ID_Cita, p_Hora, p_Fecha, p_Consultorio, p_ID_Paciente, p_ID_Medico);
-    COMMIT;
-END;
-/
-
-
-BEGIN
-    Insertar_Registro_Citas(
-        p_ID_Cita => 26,
-        p_Hora => TO_TIMESTAMP('2024-03-06 13:15:00', 'YYYY-MM-DD HH24:MI:SS'),
-        p_Fecha => TO_DATE('2024-03-06', 'YYYY-MM-DD'),
-        p_Consultorio => 'P209',
-        p_ID_Paciente => 26,
-        p_ID_Medico => 4
-    );
-END;
-/
-
-
-
---4. Insertar insumos--
-
-CREATE OR REPLACE PROCEDURE Insertar_Insumos(
-    p_ID_Insumos IN INT,
-    p_Nombre_Insu IN VARCHAR2,
-    p_Costo IN DECIMAL,
-    p_Ubicacion IN VARCHAR2,
-    p_Fecha_Vencimiento IN DATE
-)
-IS
-BEGIN
-    INSERT INTO Insumos(ID_Insumos, Nombre_Insu, Costo, Ubicacion, Fecha_Vencimiento)
-    VALUES (p_ID_Insumos, p_Nombre_Insu, p_Costo, p_Ubicacion, p_Fecha_Vencimiento);
-    COMMIT;
-END;
-/
-
-
-BEGIN
-    Insertar_Insumos(
-        p_ID_Insumos => 26,
-        p_Nombre_Insu => 'Vendaje',
-        p_Costo => 10000,
-        p_Ubicacion => 'BPB',
-        p_Fecha_Vencimiento => TO_DATE('2024-12-31', 'YYYY-MM-DD')
-    );
-END;
-/
-
-
---5. Actualizar Paciente
-
-CREATE OR REPLACE PROCEDURE Actualizar_Informacion_Paciente(
+create or replace NONEDITIONABLE PROCEDURE Actualizar_Informacion_Paciente(
     p_ID_Paciente IN INT,
     p_Nom_Paciente IN VARCHAR2,
     p_Apellidos_Paciente IN VARCHAR2,
@@ -259,25 +148,75 @@ BEGIN
     WHERE ID_Paciente = p_ID_Paciente;
     COMMIT;
 END;
-/
 
+------------------------------------------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Verificar_Paciente (
+    p_ID_Paciente IN Registro_Citas.ID_Paciente%TYPE,
+    p_Resultado OUT NUMBER
+)
+IS
+    v_Contador NUMBER;
 BEGIN
-    Actualizar_Informacion_Paciente(
-        p_ID_Paciente => 25,
-        p_Nom_Paciente => 'Julieta',
-        p_Apellidos_Paciente => 'Fallas',
-        p_Direccion => 'Calle Segunda, San-Jose',
-        p_Telefono_p => 98234567,
-        p_Alergias => 'Polvo',
-        p_Enferm_Cronicas => 'Hipertensi髇'
-    );
-END;
-/
+    -- Inicializar el contador a 0
+    v_Contador := 0;
+
+    -- Verificar si el ID del paciente existe en la tabla Registro_Citas
+    SELECT COUNT(*)
+    INTO v_Contador
+    FROM Registro_Citas
+    WHERE ID_Paciente = p_ID_Paciente;
+
+    -- Asignar el resultado basado en el contador
+    IF v_Contador > 0 THEN
+        p_Resultado := 1; -- Hay citas asociadas con el paciente
+    ELSE
+        p_Resultado := 0; -- No hay citas asociadas
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        p_Resultado := 0; -- En caso de error, considerar que no se puede eliminar
+END Verificar_Paciente;
 
 
---6. Actualizar Medico
+-----------------------------------------------------------------------------
 
-CREATE OR REPLACE PROCEDURE Actualizar_Informacion_Medico(
+create or replace NONEDITIONABLE PROCEDURE Eliminar_Paciente (
+    p_ID_Paciente IN Paciente.ID_Paciente%TYPE
+)
+IS
+    v_Resultado NUMBER;
+BEGIN
+    -- Verificar primero si el paciente puede ser eliminado
+    Verificar_Paciente(p_ID_Paciente, v_Resultado);
+
+    IF v_Resultado = 0 THEN
+        -- Si no hay citas asociadas, proceder a eliminar al paciente
+        DELETE FROM Paciente WHERE ID_Paciente = p_ID_Paciente;
+    ELSE
+        -- Si hay citas, lanzar una excepci贸n personalizada
+        RAISE_APPLICATION_ERROR(-20001, 'No se puede eliminar el paciente porque tiene citas asociadas.');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar otros errores que puedan ocurrir
+        RAISE_APPLICATION_ERROR(-20002, 'Error al intentar eliminar el paciente.');
+END Eliminar_Paciente;
+
+-------------------------------------------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Listar_Pacientes(p_cursor OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT ID_Paciente, Num_Cedula, Nom_Paciente, Apellidos_Paciente, Direccion, Telefono_p, Alergias, Enferm_Cronicas
+    FROM Paciente;
+END Listar_Pacientes;
+
+-------------------------------------------------------------------------------------------
+
+-----------------5 procedimientos Medicos-------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Insertar_Medico(
     p_ID_Medico IN INT,
     p_Nom_Medico IN VARCHAR2,
     p_Apellidos_Medico IN VARCHAR2,
@@ -288,35 +227,121 @@ CREATE OR REPLACE PROCEDURE Actualizar_Informacion_Medico(
 )
 IS
 BEGIN
+    INSERT INTO Medicos(ID_Medico, Nom_Medico, Apellidos_Medico, Ced_Medico, Telefono_m, Turno, Especialidad)
+    VALUES (p_ID_Medico, p_Nom_Medico, p_Apellidos_Medico, p_Ced_Medico, p_Telefono_m, p_Turno, p_Especialidad);
+    COMMIT;
+END;
+
+-----------------------------------------------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Actualizar_Medico (
+    p_ID_Medico IN INT,
+    p_Nom_Medico IN VARCHAR2,
+    p_Apellidos_Medico IN VARCHAR2,
+    p_Ced_Medico IN NUMBER,
+    p_Telefono_M IN NUMBER,
+    p_Turno IN VARCHAR2,
+    p_Especialidad IN VARCHAR2
+)
+IS
+BEGIN
     UPDATE Medicos
     SET Nom_Medico = p_Nom_Medico,
         Apellidos_Medico = p_Apellidos_Medico,
         Ced_Medico = p_Ced_Medico,
-        Telefono_m = p_Telefono_m,
+        Telefono_m = p_Telefono_M,
         Turno = p_Turno,
         Especialidad = p_Especialidad
     WHERE ID_Medico = p_ID_Medico;
+
+    COMMIT;
+END Actualizar_Medico;
+
+----------------------------------------------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Verificar_Medico (
+    p_ID_Medico IN Registro_Citas.ID_Medico%TYPE,
+    p_Resultado OUT NUMBER
+)
+IS
+    v_Contador NUMBER;
+BEGIN
+    -- Inicializar el contador a 0
+    v_Contador := 0;
+
+    -- Verificar si el ID del m茅dico existe al menos una vez en la tabla Registro_Citas
+    SELECT COUNT(*)
+    INTO v_Contador
+    FROM Registro_Citas
+    WHERE ID_Medico = p_ID_Medico
+    AND ROWNUM = 1; -- Detener la consulta despu茅s de encontrar la primera coincidencia
+
+    -- Asignar el resultado basado en el contador
+    IF v_Contador > 0 THEN
+        p_Resultado := 1; -- Se encontr贸 al menos una vez el ID del m茅dico
+    ELSE
+        p_Resultado := 0; -- No se encontr贸 el ID del m茅dico
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        p_Resultado := 0; -- Si ocurre alg煤n error, devolver 0
+END Verificar_Medico;
+
+------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Eliminar_Medico (
+    p_ID_Medico IN Medicos.ID_Medico%TYPE
+)
+IS
+BEGIN
+    DELETE FROM Medicos
+    WHERE ID_Medico = p_ID_Medico;
+
+    COMMIT;
+
+    DBMS_OUTPUT.PUT_LINE('El m茅dico con ID ' || p_ID_Medico || ' ha sido eliminado correctamente.');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No se encontr贸 ning煤n m茅dico con ID ' || p_ID_Medico || '. No se realiz贸 ninguna operaci贸n.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error al intentar eliminar el m茅dico con ID ' || p_ID_Medico || ': ' || SQLERRM);
+END Eliminar_Medico;
+
+
+--------------------------------------------------------------------------------------------------------
+
+
+create or replace NONEDITIONABLE PROCEDURE Listar_Medicos(p_cursor OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT ID_Medico, Nom_Medico, Apellidos_Medico, Ced_Medico, Telefono_m, Turno, Especialidad
+    FROM Medicos;
+END Listar_Medicos;
+
+---------------------------------------------------------------------------------------------------
+
+
+---------------- 5 procedimientos Citas-----------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Insertar_Registro_Citas(
+    p_ID_Cita IN NUMBER,
+    p_Hora IN TIMESTAMP,
+    p_Fecha IN DATE,
+    p_Consultorio IN VARCHAR2,
+    p_ID_Paciente IN NUMBER,
+    p_ID_Medico IN NUMBER
+)
+IS
+BEGIN
+    INSERT INTO Registro_Citas(ID_Cita, Hora, Fecha, Consultorio, ID_Paciente, ID_Medico)
+    VALUES (p_ID_Cita, p_Hora, p_Fecha, p_Consultorio, p_ID_Paciente, p_ID_Medico);
     COMMIT;
 END;
-/
-
-BEGIN
-    Actualizar_Informacion_Medico(
-        p_ID_Medico => 25,
-        p_Nom_Medico => 'Jorge',
-        p_Apellidos_Medico => 'Ch醰ez L髉ez',
-        p_Ced_Medico => 667890234,
-        p_Telefono_m => 57234567,
-        p_Turno => 'Tarde',
-        p_Especialidad => 'Dentistageneral'
-    );
-END;
-/
 
 
---7. Actualizar Registro de citas
+-----------------------------------------------------------------------
 
-CREATE OR REPLACE PROCEDURE Actualizar_Registro_Citas(
+create or replace NONEDITIONABLE PROCEDURE Actualizar_Registro_Citas(
     p_ID_Cita IN NUMBER,
     p_Hora IN TIMESTAMP,
     p_Fecha IN DATE,
@@ -335,143 +360,74 @@ BEGIN
     WHERE ID_Cita = p_ID_Cita;
     COMMIT;
 END;
-/
 
+-----------------------------------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Verificar_Cita (
+    p_ID_Cita IN Comentarios_Cita.ID_Cita%TYPE,
+    p_Resultado OUT NUMBER
+)
+IS
+    v_Contador NUMBER;
 BEGIN
-    Actualizar_Registro_Citas(
-        p_ID_Cita => 25,
-        p_Hora => TO_TIMESTAMP('2024-03-21 14:30:00', 'YYYY-MM-DD HH24:MI:SS'),
-        p_Fecha => TO_DATE('2024-03-21', 'YYYY-MM-DD'),
-        p_Consultorio => 'P124',
-        p_ID_Paciente => 25,
-        p_ID_Medico => 3
-    );
-END;
-/
+    -- Inicializar el contador a 0
+    v_Contador := 0;
 
+    -- Verificar si el ID de la cita existe en la tabla Comentarios_Cita
+    SELECT COUNT(*)
+    INTO v_Contador
+    FROM Comentarios_Cita
+    WHERE ID_Cita = p_ID_Cita
+    AND ROWNUM = 1; -- Aseg煤rate de que la consulta se detiene despu茅s de encontrar la primera coincidencia
 
---8. Actualizar insumos
+    -- Asignar el resultado basado en el contador
+    IF v_Contador > 0 THEN
+        p_Resultado := 1; -- La cita existe
+    ELSE
+        p_Resultado := 0; -- La cita no existe
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        p_Resultado := 0; -- En caso de cualquier otro error, devolver 0
+END Verificar_Cita;
 
-CREATE OR REPLACE PROCEDURE Actualizar_Informacion_Insumos(
-    p_ID_Insumos IN INT,
-    p_Nombre_Insu IN VARCHAR2,
-    p_Costo IN DECIMAL,
-    p_Ubicacion IN VARCHAR2,
-    p_Fecha_Vencimiento IN DATE
+-----------------------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Eliminar_Cita (
+     p_ID_Cita IN Registro_Citas.ID_Cita%TYPE
 )
 IS
 BEGIN
-    UPDATE Insumos
-    SET Nombre_Insu = p_Nombre_Insu,
-        Costo = p_Costo,
-        Ubicacion = p_Ubicacion,
-        Fecha_Vencimiento = p_Fecha_Vencimiento
-    WHERE ID_Insumos = p_ID_Insumos;
+    DELETE FROM Registro_Citas
+    WHERE ID_Cita = p_ID_Cita;
+
+
     COMMIT;
-END;
-/
 
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No se encontr贸 ning煤n Cita con ID ' || p_ID_Cita || '. No se realiz贸 ninguna operaci贸n.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error al intentar eliminar la cita con ID ' || p_ID_Cita || ': ' || SQLERRM);
+END  Eliminar_Cita;
+
+------------------------------------------------------------------------------------------
+
+
+create or replace NONEDITIONABLE PROCEDURE Listar_Registro_Citas(p_cursor OUT SYS_REFCURSOR) AS
 BEGIN
-    Actualizar_Informacion_Insumos(
-        p_ID_Insumos => 25,
-        p_Nombre_Insu => 'Gasas est閞iles',
-        p_Costo => 5000,
-        p_Ubicacion => 'BP1',
-        p_Fecha_Vencimiento => TO_DATE('15/04/24')
-    );
-END;
-/
+    OPEN p_cursor FOR
+    SELECT ID_Cita, Hora, Fecha, Consultorio, ID_Paciente, ID_Medico
+    FROM Registro_Citas;
+END Listar_Registro_Citas;
 
 
+------------------------------------------------------------------------------------------
 
---9. Listado de Insumos
+----------------4 procedimientos pagos--------------------------------------------
 
-CREATE OR REPLACE PROCEDURE Listar_Insumos
-IS
-BEGIN
-    FOR rec IN (SELECT ID_Insumos, Nombre_Insu, Costo, Ubicacion, Fecha_Vencimiento FROM Insumos)
-    LOOP
-        DBMS_OUTPUT.PUT_LINE('ID Insumo: ' || rec.ID_Insumos || ', Nombre: ' || rec.Nombre_Insu || ', Costo: ' || rec.Costo || ', Ubicacion: ' || rec.Ubicacion || ', Fecha de Vencimiento: ' || TO_CHAR(rec.Fecha_Vencimiento, 'YYYY-MM-DD'));
-    END LOOP;
-END;
-/
---10. listado de Citas
-
-PROCEDURE Listar_Citas AS
-    CURSOR c_citas IS
-        SELECT * FROM Registro_Citas;
-    -- Variables para almacenar los datos de cada fila
-    v_id_cita Registro_Citas.ID_Cita%TYPE;
-    v_hora_cita Registro_Citas.Hora%TYPE;
-    v_fecha_cita Registro_Citas.Fecha%TYPE;
-    v_consultorio Registro_Citas.Consultorio%TYPE;
-    v_id_paciente Registro_Citas.ID_Paciente%TYPE;
-    v_id_medico Registro_Citas.ID_Medico%TYPE;
-BEGIN
-    OPEN c_citas;
-    LOOP
-        FETCH c_citas INTO v_id_cita, v_hora_cita, v_fecha_cita, v_consultorio, v_id_paciente, v_id_medico;
-        EXIT WHEN c_citas%NOTFOUND;
-        -- Operaciones con los datos obtenidos
-        DBMS_OUTPUT.PUT_LINE('ID Cita: ' || v_id_cita || ', Hora: ' || v_hora_cita || ', Fecha: ' || v_fecha_cita || ', Consultorio: ' || v_consultorio || ', ID Paciente: ' || v_id_paciente || ', ID Medico: ' || v_id_medico);
-    END LOOP;
-    CLOSE c_citas;
-END Listar_Citas;
-
-
---11. Listado de medicos
-
-PROCEDURE Listar_Medicos AS
-    CURSOR c_medicos IS
-        SELECT ID_Medico, Nom_Medico FROM Medicos;
-    -- Variables para almacenar los datos de cada fila
-    v_id_medico Medicos.ID_Medico%TYPE;
-    v_nom_medico Medicos.Nom_Medico%TYPE;
-BEGIN
-    OPEN c_medicos;
-    LOOP
-        FETCH c_medicos INTO v_id_medico, v_nom_medico;
-        EXIT WHEN c_medicos%NOTFOUND;
-        -- Operaciones con los datos obtenidos
-        DBMS_OUTPUT.PUT_LINE('ID Medico: ' || v_id_medico || ', Nombre: ' || v_nom_medico);
-    END LOOP;
-    CLOSE c_medicos;
-END Listar_Medicos;
-
---12. Listado de Paciente
-
-PROCEDURE Listar_Pacientes AS
-    CURSOR c_pacientes IS
-        SELECT * FROM Paciente;
-    v_id_paciente Paciente.ID_Paciente%TYPE;
-    v_num_cedula Paciente.Num_Cedula%TYPE;
-    v_nom_paciente Paciente.Nom_Paciente%TYPE;
-    v_apellidos_paciente Paciente.Apellidos_Paciente%TYPE;
-    v_direccion Paciente.Direccion%TYPE;
-    v_telefono_p Paciente.Telefono_p%TYPE;
-    v_alergias Paciente.Alergias%TYPE;
-    v_enferm_cronicas Paciente.Enferm_Cronicas%TYPE;
-BEGIN
-
-    DBMS_OUTPUT.PUT_LINE('Listado de Pacientes:');
-    DBMS_OUTPUT.PUT_LINE('ID_PACIENTE | NUM_CEDULA | NOM_PACIENTE | APELLIDOS_PACIENTE | DIRECCION | TELEFONO_P | ALERGIAS | ENFERM_CRONICAS');
-    DBMS_OUTPUT.PUT_LINE('-------------------------------------------------------------------------------------------------');
-
-    OPEN c_pacientes;
-
-    LOOP
-        FETCH c_pacientes INTO v_id_paciente, v_num_cedula, v_nom_paciente, v_apellidos_paciente, v_direccion, v_telefono_p, v_alergias, v_enferm_cronicas;
-        EXIT WHEN c_pacientes%NOTFOUND;
-
-        DBMS_OUTPUT.PUT_LINE(v_id_paciente || ' | ' || v_num_cedula || ' | ' || v_nom_paciente || ' | ' || v_apellidos_paciente || ' | ' || v_direccion || ' | ' || v_telefono_p || ' | ' || v_alergias || ' | ' || v_enferm_cronicas);
-    END LOOP;
-
-    CLOSE c_pacientes;
-END;
-
---13. Registrar un pago
-
-CREATE OR REPLACE PROCEDURE Registrar_Pago(
+create or replace NONEDITIONABLE PROCEDURE Registrar_Pago(
     p_ID_Recibo IN INT,
     p_Fecha IN DATE,
     p_Hora IN TIMESTAMP,
@@ -487,12 +443,10 @@ BEGIN
     VALUES (p_ID_Recibo, p_Fecha, p_Hora, p_ID_Paciente, p_ID_Medico, p_ID_Cita, p_ID_Insumos, p_Pago);
     COMMIT;
 END;
-/
 
+-------------------------------------------------------------
 
---14. Actualizar un pago
-
-CREATE OR REPLACE PROCEDURE Actualizar_Pago(
+create or replace NONEDITIONABLE PROCEDURE Actualizar_Pago(
     p_ID_Recibo IN INT,
     p_Fecha IN DATE,
     p_Hora IN TIMESTAMP,
@@ -515,11 +469,10 @@ BEGIN
     WHERE ID_Recibo = p_ID_Recibo;
     COMMIT;
 END;
-/
 
---15. Eliminar un pago
+---------------------------------------------------------------
 
-CREATE OR REPLACE PROCEDURE Eliminar_Pago(
+create or replace NONEDITIONABLE PROCEDURE Eliminar_Pago(
     p_ID_Recibo IN INT
 )
 IS
@@ -528,133 +481,244 @@ BEGIN
     WHERE ID_Recibo = p_ID_Recibo;
     COMMIT;
 END;
-/
 
---16. Registrar un nuevo proveedor
+--------------------------------------------------------------
 
-CREATE OR REPLACE PROCEDURE Registrar_Proveedor(
-    p_ProveedorID IN INT,
-    p_Nombre IN VARCHAR2,
-    p_Tel閒ono IN VARCHAR2,
-    p_Direcci髇 IN VARCHAR2,
-    p_Email IN VARCHAR2
+create or replace NONEDITIONABLE PROCEDURE Listar_Pagos(p_cursor OUT SYS_REFCURSOR) AS
+BEGIN
+    OPEN p_cursor FOR
+    SELECT ID_Recibo, Fecha, Hora, ID_Paciente, ID_Medico, ID_Cita, ID_Insumos, Pago
+    FROM Pago;
+END Listar_Pagos;
+
+-----------------------------------------------------------------------------------
+
+------------4  procedimientos Examenes-------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Registrar_Examen(
+    p_ID_Examen IN NUMBER,
+    p_Tipo_Examen IN VARCHAR2,
+    p_Resultados IN VARCHAR2,
+    p_Fecha IN DATE,
+    p_ID_Paciente IN NUMBER
 )
 IS
 BEGIN
-    INSERT INTO Proveedores(ProveedorID, Nombre, Tel閒ono, Direcci髇, Email)
-    VALUES (p_ProveedorID, p_Nombre, p_Tel閒ono, p_Direcci髇, p_Email);
+    INSERT INTO Registro_Examenes(ID_Examen, Tipo_Examen, Resultados, Fecha, ID_Paciente)
+    VALUES (p_ID_Examen, p_Tipo_Examen, p_Resultados, p_Fecha, p_ID_Paciente);
     COMMIT;
 END;
-/
 
---17. Actualizar informaci髇 de proveedor
+
+-------------------------------------------------------------------------------------------
+
+
+create or replace NONEDITIONABLE PROCEDURE Actualizar_Examen (
+    p_ID_Examen IN Registro_Examenes.ID_Examen%TYPE,
+    p_Tipo_Examen IN Registro_Examenes.Tipo_Examen%TYPE,
+    p_Resultados IN Registro_Examenes.Resultados%TYPE,
+    p_Fecha IN Registro_Examenes.Fecha%TYPE,
+    p_ID_Paciente IN Registro_Examenes.ID_Paciente%TYPE
+)
+IS
+BEGIN
+    UPDATE Registro_Examenes
+    SET Tipo_Examen = p_Tipo_Examen,
+        Resultados = p_Resultados,
+        Fecha = p_Fecha,
+        ID_Paciente = p_ID_Paciente
+    WHERE ID_Examen = p_ID_Examen;
+
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Error al actualizar el examen: ' || SQLERRM);
+END Actualizar_Examen;
+
+
+----------------------------------------------------------------------------------------
+
+
+create or replace NONEDITIONABLE PROCEDURE Eliminar_Examen (
+    p_ID_Examen IN Registro_Examenes.ID_Examen%TYPE
+)
+IS
+    v_Existe NUMBER;
+BEGIN
+    -- Primero verificar si el examen existe
+    SELECT COUNT(*) INTO v_Existe FROM Registro_Examenes WHERE ID_Examen = p_ID_Examen;
+
+    IF v_Existe = 0 THEN
+        -- Si no existe, lanzar un error
+        RAISE_APPLICATION_ERROR(-20001, 'Examen no encontrado.');
+    ELSE
+        -- Si existe, proceder a eliminar el examen
+        DELETE FROM Registro_Examenes WHERE ID_Examen = p_ID_Examen;
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Capturar cualquier otro error que ocurra durante la ejecuci贸n
+        RAISE_APPLICATION_ERROR(-20002, 'Error al intentar eliminar el examen: ' || SQLERRM);
+END Eliminar_Examen;
+
+
+
+-----------------------------------------------------------------------------------------------
+
+
+create or replace NONEDITIONABLE PROCEDURE Listar_Examenes (p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT ID_Examen, Tipo_Examen, Resultados, Fecha, ID_Paciente
+        FROM Registro_Examenes
+        ORDER BY ID_Examen;
+END Listar_Examenes;
+
+--------------------------------------------------------------------------------------------
+
+------------- 5 procedimientos Proveedores ---------------------------------------------
+
+
+CREATE OR REPLACE PROCEDURE Insertar_Proveedor(
+    p_ProveedorID IN Proveedores.ProveedorID%TYPE,
+    p_Nombre IN Proveedores.Nombre%TYPE,
+    p_Telefono IN Proveedores.Tel茅fono%TYPE,
+    p_Direccion IN Proveedores.Direcci贸n%TYPE,
+    p_Email IN Proveedores.Email%TYPE
+)
+IS
+BEGIN
+    INSERT INTO Proveedores (ProveedorID, Nombre, Tel茅fono, Direcci贸n, Email)
+    VALUES (p_ProveedorID, p_Nombre, p_Telefono, p_Direccion, p_Email);
+    COMMIT;
+END Insertar_Proveedor;
+
+
+--------------------------------------------------------------------------------
 
 CREATE OR REPLACE PROCEDURE Actualizar_Proveedor(
-    p_ProveedorID IN INT,
-    p_Nombre IN VARCHAR2,
-    p_Tel閒ono IN VARCHAR2,
-    p_Direcci髇 IN VARCHAR2,
-    p_Email IN VARCHAR2
+    p_ProveedorID IN Proveedores.ProveedorID%TYPE,
+    p_Nombre IN Proveedores.Nombre%TYPE,
+    p_Telefono IN Proveedores.Tel茅fono%TYPE,
+    p_Direccion IN Proveedores.Direcci贸n%TYPE,
+    p_Email IN Proveedores.Email%TYPE
 )
 IS
 BEGIN
     UPDATE Proveedores
     SET Nombre = p_Nombre,
-        Tel閒ono = p_Tel閒ono,
-        Direcci髇 = p_Direcci髇,
+        Tel茅fono = p_Telefono,
+        Direcci贸n = p_Direccion,
         Email = p_Email
     WHERE ProveedorID = p_ProveedorID;
     COMMIT;
-END;
-/
+END Actualizar_Proveedor;
 
---18. Eliminar un proveedor
 
-CREATE OR REPLACE PROCEDURE Eliminar_Proveedor(
-    p_ProveedorID IN INT
+--------------------------------------------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Verificar_Proveedor (
+    p_ProveedorID IN Proveedores.ProveedorID%TYPE,
+    p_Resultado OUT NUMBER
 )
 IS
+    v_Contador NUMBER;
 BEGIN
-    DELETE FROM Proveedores
+    -- Inicializar el contador a 0
+    v_Contador := 0;
+
+    -- Verificar si el ID del proveedor existe al menos una vez en la tabla Medicamentos
+    -- Se asume que el inter茅s primario es saber si hay medicamentos asociados a este proveedor
+    SELECT COUNT(*)
+    INTO v_Contador
+    FROM Medicamentos
+    WHERE ProveedorID = p_ProveedorID
+    AND ROWNUM = 1; -- Detener la consulta despu茅s de encontrar la primera coincidencia
+
+    -- Asignar el resultado basado en el contador
+    IF v_Contador > 0 THEN
+        p_Resultado := 1; -- Se encontr贸 al menos una vez el ID del proveedor
+    ELSE
+        p_Resultado := 0; -- No se encontr贸 el ID del proveedor
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        p_Resultado := 0; -- Si ocurre alg煤n error, devolver 0
+
+END Verificar_Proveedor;
+
+-----------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Eliminar_Proveedor (
+    p_ProveedorID IN Proveedores.ProveedorID%TYPE
+)
+IS
+    -- Variable para contar medicamentos asociados
+    v_count_medicamentos NUMBER;
+BEGIN
+    -- Primero, verificar si hay medicamentos asociados al proveedor
+    SELECT COUNT(*)
+    INTO v_count_medicamentos
+    FROM Medicamentos
     WHERE ProveedorID = p_ProveedorID;
-    COMMIT;
-END;
-/
 
---19. Registrar Medicamento
+    IF v_count_medicamentos > 0 THEN
+        -- No permitir la eliminaci贸n si hay medicamentos asociados
+        DBMS_OUTPUT.PUT_LINE('No se puede eliminar el proveedor con ID ' || p_ProveedorID ||
+                             ' porque tiene medicamentos asociados.');
+    ELSE
+        -- Si no hay medicamentos asociados, proceder a eliminar el proveedor
+        DELETE FROM Proveedores
+        WHERE ProveedorID = p_ProveedorID;
 
-CREATE OR REPLACE PROCEDURE Registrar_Medicamento(
-    p_MedicamentoID IN INT,
-    p_Nombre IN VARCHAR2,
-    p_Tipo IN VARCHAR2,
-    p_Dosis IN VARCHAR2,
-    p_Descripci髇 IN VARCHAR2,
-    p_ProveedorID IN INT
+        -- Confirmar los cambios
+        COMMIT;
+
+        DBMS_OUTPUT.PUT_LINE('Proveedor con ID ' || p_ProveedorID || ' ha sido eliminado correctamente.');
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Manejar cualquier otro error que pueda surgir
+        DBMS_OUTPUT.PUT_LINE('Error al intentar eliminar el proveedor con ID ' || p_ProveedorID || ': ' || SQLERRM);
+        -- En caso de error, deshacer todos los cambios
+        ROLLBACK;
+END Eliminar_Proveedor;
+
+
+--------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE Listar_Proveedores(p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT ProveedorID, Nombre, Tel茅fono, Direcci贸n, Email
+        FROM Proveedores
+        ORDER BY ProveedorID;
+END Listar_Proveedores;
+
+-----------------------------------------------------------------------------------
+
+------------------------4 procedimientos tratamientos------------------------------
+
+
+CREATE OR REPLACE PROCEDURE Insertar_Tratamiento(
+    p_ID_Tratamiento IN Tratamientos.ID_Tratamiento%TYPE,
+    p_Nombre IN Tratamientos.Nombre%TYPE,
+    p_Descripcion IN Tratamientos.Descripcion%TYPE,
+    p_Costo IN Tratamientos.Costo%TYPE,
+    p_ID_Insumo IN Tratamientos.ID_Insumo%TYPE
 )
 IS
 BEGIN
-    INSERT INTO Medicamentos(MedicamentoID, Nombre, Tipo, Dosis, Descripci髇, ProveedorID)
-    VALUES (p_MedicamentoID, p_Nombre, p_Tipo, p_Dosis, p_Descripci髇, p_ProveedorID);
-    COMMIT;
-END;
-/
-
---20. Actualizar Medicamento
-
-CREATE OR REPLACE PROCEDURE Actualizar_Medicamento(
-    p_MedicamentoID IN INT,
-    p_Nombre IN VARCHAR2,
-    p_Tipo IN VARCHAR2,
-    p_Dosis IN VARCHAR2,
-    p_Descripci髇 IN VARCHAR2,
-    p_ProveedorID IN INT
-)
-IS
-BEGIN
-    UPDATE Medicamentos
-    SET Nombre = p_Nombre,
-        Tipo = p_Tipo,
-        Dosis = p_Dosis,
-        Descripci髇 = p_Descripci髇,
-        ProveedorID = p_ProveedorID
-    WHERE MedicamentoID = p_MedicamentoID;
-    COMMIT;
-END;
-/
-
---21. Eliminar Medicamento
-
-CREATE OR REPLACE PROCEDURE Eliminar_Medicamento(
-    p_MedicamentoID IN INT
-)
-IS
-BEGIN
-    DELETE FROM Medicamentos
-    WHERE MedicamentoID = p_MedicamentoID;
-    COMMIT;
-END;
-/
-
---22. Registrar Tratamiento
-
-CREATE OR REPLACE PROCEDURE Registrar_Tratamiento(
-    p_ID_Tratamiento IN NUMBER,
-    p_Nombre IN VARCHAR2,
-    p_Descripcion IN VARCHAR2,
-    p_Costo IN DECIMAL,
-    p_ID_Insumo IN INT
-)
-IS
-BEGIN
-    INSERT INTO Tratamientos(ID_Tratamiento, Nombre, Descripcion, Costo, ID_Insumo)
+    INSERT INTO Tratamientos (ID_Tratamiento, Nombre, Descripcion, Costo, ID_Insumo)
     VALUES (p_ID_Tratamiento, p_Nombre, p_Descripcion, p_Costo, p_ID_Insumo);
     COMMIT;
-END;
-/
+END Insertar_Tratamiento;
 
---23. Actualizar Tratamiento
+----------------------------------------------------------------------------------
 
-CREATE OR REPLACE PROCEDURE Actualizar_Tratamiento(
+create or replace NONEDITIONABLE PROCEDURE Actualizar_Tratamiento(
     p_ID_Tratamiento IN NUMBER,
     p_Nombre IN VARCHAR2,
     p_Descripcion IN VARCHAR2,
@@ -671,11 +735,12 @@ BEGIN
     WHERE ID_Tratamiento = p_ID_Tratamiento;
     COMMIT;
 END;
-/
 
---24. Eliminar Tratamiento
 
-CREATE OR REPLACE PROCEDURE Eliminar_Tratamiento(
+
+---------------------------------------------------------------------------------
+
+create or replace NONEDITIONABLE PROCEDURE Eliminar_Tratamiento(
     p_ID_Tratamiento IN NUMBER
 )
 IS
@@ -684,30 +749,174 @@ BEGIN
     WHERE ID_Tratamiento = p_ID_Tratamiento;
     COMMIT;
 END;
-/
 
---25. Registrar Examen M閐ico
 
-CREATE OR REPLACE PROCEDURE Registrar_Examen(
-    p_ID_Examen IN NUMBER,
-    p_Tipo_Examen IN VARCHAR2,
-    p_Resultados IN VARCHAR2,
-    p_Fecha IN DATE,
-    p_ID_Paciente IN NUMBER
+---------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE Listar_Tratamientos(p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT ID_Tratamiento, Nombre, Descripcion, Costo, ID_Insumo
+        FROM Tratamientos
+        ORDER BY ID_Tratamiento;
+END Listar_Tratamientos;
+
+
+--------------------------------------------------------------------------------
+
+---------------------4 procedimientos medicamento ------------------------------
+
+
+CREATE OR REPLACE PROCEDURE Insertar_Medicamento(
+    p_MedicamentoID IN INT,
+    p_Nombre IN VARCHAR2,
+    p_Tipo IN VARCHAR2,
+    p_Dosis IN VARCHAR2,
+    p_Descripcion IN VARCHAR2,
+    p_ProveedorID IN INT
 )
 IS
 BEGIN
-    INSERT INTO Registro_Examenes(ID_Examen, Tipo_Examen, Resultados, Fecha, ID_Paciente)
-    VALUES (p_ID_Examen, p_Tipo_Examen, p_Resultados, p_Fecha, p_ID_Paciente);
+    INSERT INTO Medicamentos (MedicamentoID, Nombre, Tipo, Dosis, Descripci贸n, ProveedorID)
+    VALUES (p_MedicamentoID, p_Nombre, p_Tipo, p_Dosis, p_Descripcion, p_ProveedorID);
     COMMIT;
 END;
-/
+----------------------------------------------------------------------------
 
-
+CREATE OR REPLACE PROCEDURE Actualizar_Medicamento(
+    p_MedicamentoID IN Medicamentos.MedicamentoID%TYPE,
+    p_Nombre IN Medicamentos.Nombre%TYPE,
+    p_Tipo IN Medicamentos.Tipo%TYPE,
+    p_Dosis IN Medicamentos.Dosis%TYPE,
+    p_Descripcion IN Medicamentos.Descripci贸n%TYPE,
+    p_ProveedorID IN Medicamentos.ProveedorID%TYPE
+)
+IS
+BEGIN
+    UPDATE Medicamentos
+    SET Nombre = p_Nombre,
+        Tipo = p_Tipo,
+        Dosis = p_Dosis,
+        Descripci贸n = p_Descripcion,
+        ProveedorID = p_ProveedorID
+    WHERE MedicamentoID = p_MedicamentoID;
+END Actualizar_Medicamento;
 
 -------------------------------------------------------------------------------------------
 
--- Genmeracion de 5 VISTAS
+create or replace NONEDITIONABLE PROCEDURE Eliminar_Medicamento (
+    p_MedicamentoID IN Medicamentos.MedicamentoID%TYPE
+)
+IS
+BEGIN
+    DELETE FROM Medicamentos
+    WHERE MedicamentoID = p_MedicamentoID;
+
+    COMMIT;
+
+    DBMS_OUTPUT.PUT_LINE('El medicamento con ID ' || p_MedicamentoID || ' ha sido eliminado correctamente.');
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('No se encontr贸 ning煤n medicamento con ID ' || p_MedicamentoID || '. No se realiz贸 ninguna operaci贸n.');
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Error al intentar eliminar el medicamento con ID ' || p_MedicamentoID || ': ' || SQLERRM);
+END Eliminar_Medicamento;
+
+
+--------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE PROCEDURE Listar_Medicamentos (p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT MedicamentoID, Nombre, Tipo, Dosis, Descripci贸n, ProveedorID
+        FROM Medicamentos
+        ORDER BY MedicamentoID;
+END Listar_Medicamentos;
+
+------------------------------------------------------------------------------------------
+
+--------------4 procedimiento comentarios ----------------------------------------------
+
+
+CREATE OR REPLACE NONEDITIONABLE PROCEDURE Insertar_Comentario(
+    p_ID_Comentario IN INT,
+    p_ID_Cita IN INT,
+    p_ID_Paciente IN INT,
+    p_Fecha IN DATE,
+    p_Comentario IN VARCHAR2
+)
+IS
+BEGIN
+    INSERT INTO Comentarios_Cita(ID_Comentario, ID_Cita, ID_Paciente, Fecha, Comentario)
+    VALUES (p_ID_Comentario, p_ID_Cita, p_ID_Paciente, p_Fecha, p_Comentario);
+    COMMIT;
+END;
+
+
+------------------------------------------------------------------------------------------------
+
+
+CREATE OR REPLACE PROCEDURE Actualizar_Comentario (
+    p_ID_Comentario IN INT,
+    p_ID_Cita IN INT,
+    p_ID_Paciente IN INT,
+    p_Fecha IN DATE,
+    p_Comentario IN VARCHAR2
+)
+IS
+BEGIN
+    UPDATE COMENTARIOS_CITA
+    SET ID_Cita = p_ID_Cita, 
+        ID_Paciente = p_ID_Paciente, 
+        Fecha = p_Fecha, 
+        Comentario = p_Comentario
+    WHERE ID_Comentario = p_ID_Comentario;
+END;
+
+------------------------------------------------------------------------------------------------
+
+
+create or replace NONEDITIONABLE PROCEDURE Eliminar_Comentario_Cita (
+    p_ID_Comentario IN Comentarios_Cita.ID_Comentario%TYPE
+)
+IS
+    v_Existe INT;
+BEGIN
+    -- Primero verificar si el comentario existe
+    SELECT COUNT(*) INTO v_Existe FROM Comentarios_Cita WHERE ID_Comentario = p_ID_Comentario;
+
+    IF v_Existe = 0 THEN
+        -- Si no existe, lanzar un error
+        RAISE_APPLICATION_ERROR(-20001, 'Comentario no encontrado.');
+    ELSE
+        -- Si existe, proceder a eliminar el comentario
+        DELETE FROM Comentarios_Cita WHERE ID_Comentario = p_ID_Comentario;
+    END IF;
+EXCEPTION
+    WHEN OTHERS THEN
+        -- Capturar cualquier otro error que ocurra durante la ejecuci贸n
+        RAISE_APPLICATION_ERROR(-20002, 'Error al intentar eliminar el comentario: ' || SQLERRM);
+END Eliminar_Comentario_Cita;
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+CREATE OR REPLACE PROCEDURE Listar_Comentarios (p_cursor OUT SYS_REFCURSOR)
+IS
+BEGIN
+    OPEN p_cursor FOR
+        SELECT ID_Comentario, ID_Cita, ID_Paciente, Fecha, Comentario
+        FROM Comentarios_Cita
+        ORDER BY ID_Comentario;
+END Listar_Comentarios;
+
+-------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------
+-- Genmeracion de 10 VISTAS
 
 --1. Vista Detalles de Citas
 
@@ -741,11 +950,11 @@ WHERE M.Especialidad = 'Dentistageneral'
 GROUP BY M.ID_Medico, M.Nom_Medico, M.Apellidos_Medico;
 
 
---5. Vista Medicos de turno en la ma馻na
-CREATE VIEW Vista_Medicos_Turno_Ma馻na AS
+--5. Vista Medicos de turno en la ma帽ana
+CREATE VIEW Vista_Medicos_Turno_Ma帽ana AS
 SELECT ID_Medico, Nom_Medico, Apellidos_Medico, Especialidad
 FROM Medicos
-WHERE Turno = 'Ma馻na';
+WHERE Turno = 'Ma帽ana';
 
 --6. Vista Pacientes Con Alergia Polen
 CREATE VIEW Vista_Pacientes_Con_Alergia_Polen AS
@@ -780,222 +989,209 @@ WHERE Ubicacion = 'BP1';
 SELECT * FROM Vista_Insumos_En_Ubicacion_BP1;
 
 
-
+---------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------
 
--- Elaboracion de 15 funciones
---1. Secuencia pacientes
-CREATE SEQUENCE SecuenciaPacientes
-    START WITH 1
-    INCREMENT BY 1
-    NOCACHE
-    NOCYCLE;
+-- Elaboracion de 15 funciones--------------------
 
-
---2. Funcion pacientes Nuevo
-
-CREATE OR REPLACE FUNCTION RegistrarNuevoPaciente(
-    p_Nombre VARCHAR2,
-    p_Apellido VARCHAR2,
-    p_Telefono VARCHAR2,
-    p_CorreoElectronico VARCHAR2
-)
-RETURN NUMBER
-AS
-    v_NuevoIdPaciente NUMBER;
+CREATE OR REPLACE FUNCTION obtener_nombre_paciente(p_id IN INT)
+RETURN VARCHAR2
+IS
+    v_nombre VARCHAR2(100);
 BEGIN
-    -- Obtener el pr髕imo valor de la secuencia para IdPaciente
-    SELECT SecuenciaPacientes.NEXTVAL INTO v_NuevoIdPaciente FROM DUAL;
-
-    -- Insertar el nuevo paciente
-    INSERT INTO Pacientes (IdPaciente, Nombre, Apellido, Telefono, CorreoElectronico)
-    VALUES (v_NuevoIdPaciente, p_Nombre, p_Apellido, p_Telefono, p_CorreoElectronico);
-
-    RETURN v_NuevoIdPaciente;
+    SELECT Nom_Paciente INTO v_nombre FROM Paciente WHERE ID_Paciente = p_id;
+    RETURN v_nombre;
 END;
-/
 
+------------------------------------------------------------------
 
-DECLARE
-    nuevoId NUMBER;
+CREATE OR REPLACE FUNCTION obtener_nombre_medico(p_id IN INT)
+RETURN VARCHAR2
+IS
+    v_nombre VARCHAR2(100);
 BEGIN
-    nuevoId := RegistrarNuevoPaciente('NombreEjemplo', 'ApellidoEjemplo', '123456789', 'ejemplo@correo.com');
-    DBMS_OUTPUT.PUT_LINE('Nuevo IdPaciente: ' || nuevoId);
+    SELECT Nom_Medico INTO v_nombre FROM Medicos WHERE ID_Medico = p_id;
+    RETURN v_nombre;
 END;
-/
 
 
---3. Listar pacintes
-CREATE OR REPLACE FUNCTION ListarTodosLosPacientes
+----------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION obtener_id_medico(p_nombre IN VARCHAR2, p_apellidos IN VARCHAR2)
+RETURN INT
+IS
+    v_id INT;
+BEGIN
+    SELECT ID_Medico INTO v_id FROM Medicos WHERE Nom_Medico = p_nombre AND Apellidos_Medico = p_apellidos;
+    RETURN v_id;
+END;
+
+
+---------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION obtener_citas_paciente(p_id IN INT)
 RETURN SYS_REFCURSOR
-AS
-   v_Cursor SYS_REFCURSOR;
+IS
+    v_cursor SYS_REFCURSOR;
 BEGIN
-   OPEN v_Cursor FOR
-      SELECT * FROM Paciente;
-   RETURN v_Cursor;
+    OPEN v_cursor FOR
+    SELECT * FROM Registro_Citas WHERE ID_Paciente = p_id;
+    RETURN v_cursor;
 END;
-/
 
 
---4. Buscar pacinete por ID
-CREATE OR REPLACE FUNCTION BuscarPacientePorId(
-   p_IdPaciente NUMBER
-)
+--------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION obtener_costo_tratamiento(p_id IN INT)
+RETURN DECIMAL
+IS
+    v_costo DECIMAL(10, 2);
+BEGIN
+    SELECT SUM(Costo) INTO v_costo FROM Tratamientos WHERE ID_Tratamiento = p_id;
+    RETURN v_costo;
+END;
+
+
+------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION verificar_alergias_paciente(p_id IN INT)
+RETURN VARCHAR2
+IS
+    v_alergias VARCHAR2(255);
+BEGIN
+    SELECT Alergias INTO v_alergias FROM Paciente WHERE ID_Paciente = p_id;
+    RETURN v_alergias;
+END;
+
+
+--------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION obtener_insumos_vencidos
 RETURN SYS_REFCURSOR
-AS
-   v_Cursor SYS_REFCURSOR;
+IS
+    v_cursor SYS_REFCURSOR;
 BEGIN
-   OPEN v_Cursor FOR
-      SELECT * FROM Paciente WHERE IdPaciente = p_IdPaciente;
-   RETURN v_Cursor;
+    OPEN v_cursor FOR
+    SELECT * FROM Insumos WHERE Fecha_Vencimiento < SYSDATE;
+    RETURN v_cursor;
 END;
-/
 
 
---5. Modificar Informacion Paciente
-CREATE OR REPLACE PROCEDURE ModificarInformacionPaciente(
-   p_IdPaciente NUMBER,
-   p_NuevoNombre VARCHAR2,
-   p_NuevoApellido VARCHAR2,
-   p_NuevoTelefono VARCHAR2,
-   p_NuevoCorreoElectronico VARCHAR2
-)
-AS
-BEGIN
-   UPDATE Pacientes
-   SET Nombre = p_NuevoNombre,
-       Apellido = p_NuevoApellido,
-       Telefono = p_NuevoTelefono,
-       CorreoElectronico = p_NuevoCorreoElectronico
-   WHERE IdPaciente = p_IdPaciente;
-END;
-/
+--------------------------------------------------------------
 
---6. Listar Citas Por Medico
-CREATE OR REPLACE FUNCTION ListarCitasPorMedico(
-   p_IdMedico NUMBER
-)
+CREATE OR REPLACE FUNCTION obtener_medicamentos_por_proveedor(p_proveedor_id IN INT)
 RETURN SYS_REFCURSOR
-AS
-   v_Cursor SYS_REFCURSOR;
+IS
+    v_cursor SYS_REFCURSOR;
 BEGIN
-   OPEN v_Cursor FOR
-      SELECT * FROM REGISTRO_CITAS WHERE IdMedico = p_IdMedico;
-   RETURN v_Cursor;
+    OPEN v_cursor FOR
+    SELECT * FROM Medicamentos WHERE ProveedorID = p_proveedor_id;
+    RETURN v_cursor;
 END;
-/
 
+-------------------------------------------------------------
 
---7. Calcular Duracion Cita
-CREATE OR REPLACE FUNCTION CalcularDuracionCita(
-   p_IdCita NUMBER
-)
-RETURN NUMBER
-AS
-   v_Duracion NUMBER;
+CREATE OR REPLACE FUNCTION obtener_total_pagos_paciente(p_id IN INT)
+RETURN DECIMAL
+IS
+    v_total DECIMAL(10, 2);
 BEGIN
-   SELECT EXTRACT(MINUTE FROM (FechaHoraFin - FechaHoraCita)) INTO v_Duracion
-   FROM (
-      SELECT FechaHoraCita, LEAD(FechaHoraCita) OVER (ORDER BY FechaHoraCita) AS FechaHoraFin
-      FROM REGISTRO_CITAS
-      WHERE IdCita = p_IdCita
-   );
-   RETURN v_Duracion;
+    SELECT SUM(Pago) INTO v_total FROM Pago WHERE ID_Paciente = p_id;
+    RETURN v_total;
 END;
-/
+
+--------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION obtener_ultimo_id_insumo
+RETURN INT
+IS
+    v_id INT;
+BEGIN
+    SELECT MAX(ID_Insumos) INTO v_id FROM Insumos;
+    RETURN v_id;
+END;
+
+--------------------------------------------------------------
 
 
---8. Listar Citas Por Rango Fechas
-CREATE OR REPLACE FUNCTION ListarCitasPorRangoFechas(
-   p_FechaInicio TIMESTAMP,
-   p_FechaFin TIMESTAMP
-)
+CREATE OR REPLACE FUNCTION obtener_detalles_examen(p_id IN INT)
 RETURN SYS_REFCURSOR
-AS
-   v_Cursor SYS_REFCURSOR;
+IS
+    v_cursor SYS_REFCURSOR;
 BEGIN
-   OPEN v_Cursor FOR
-      SELECT * FROM REGISTRO_CITAS
-      WHERE FechaHoraCita BETWEEN p_FechaInicio AND p_FechaFin;
-   RETURN v_Cursor;
+    OPEN v_cursor FOR
+    SELECT * FROM Registro_Examenes WHERE ID_Examen = p_id;
+    RETURN v_cursor;
 END;
-/
 
---10. Contar Citas Por Estado
-CREATE OR REPLACE FUNCTION ContarCitasPorEstado(
-   p_Estado VARCHAR2
-)
-RETURN NUMBER
-AS
-   v_Contador NUMBER;
-BEGIN
-   SELECT COUNT(*) INTO v_Contador
-   FROM REGISTRO_CITAS
-   WHERE Estado = p_Estado;
-   RETURN v_Contador;
-END;
-/
+------------------------------------------------------------
 
-
---11. Listar Citas Pendientes Por Medico
-CREATE OR REPLACE FUNCTION ListarCitasPendientesPorMedico(
-   p_IdMedico NUMBER
-)
+CREATE OR REPLACE FUNCTION obtener_citas_medico(p_id IN INT)
 RETURN SYS_REFCURSOR
-AS
-   v_Cursor SYS_REFCURSOR;
+IS
+    v_cursor SYS_REFCURSOR;
 BEGIN
-   OPEN v_Cursor FOR
-      SELECT * FROM REGISTRO_CITAS
-      WHERE IdMedico = p_IdMedico
-      AND Estado = 'Pendiente';
-   RETURN v_Cursor;
+    OPEN v_cursor FOR
+    SELECT * FROM Registro_Citas WHERE ID_Medico = p_id;
+    RETURN v_cursor;
 END;
-/
 
---12. Listar Citas Por Recurso
-CREATE OR REPLACE FUNCTION ListarCitasPorRecurso(
-   p_IdRecurso NUMBER
-)
+----------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION verificar_disponibilidad_consultorio(p_consultorio IN VARCHAR2, p_fecha IN DATE, p_hora IN TIMESTAMP)
+RETURN VARCHAR2
+IS
+    v_disponibilidad VARCHAR2(10);
+BEGIN
+    SELECT CASE
+            WHEN COUNT(*) > 0 THEN 'No disponible'
+            ELSE 'Disponible'
+           END
+    INTO v_disponibilidad
+    FROM Registro_Citas
+    WHERE Consultorio = p_consultorio AND Fecha = p_fecha AND Hora = p_hora;
+    
+    RETURN v_disponibilidad;
+END;
+
+---------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION obtener_medicamentos_por_especialidad(p_especialidad IN VARCHAR2)
 RETURN SYS_REFCURSOR
-AS
-   v_Cursor SYS_REFCURSOR;
+IS
+    v_cursor SYS_REFCURSOR;
 BEGIN
-   OPEN v_Cursor FOR
-      SELECT * FROM REGISTRO_CITAS
-      WHERE IdRecurso = p_IdRecurso;
-   RETURN v_Cursor;
+    OPEN v_cursor FOR
+    SELECT M.*
+    FROM Medicamentos M
+    INNER JOIN Proveedores P ON M.ProveedorID = P.ProveedorID
+    INNER JOIN Medicos MD ON P.Nombre = MD.Especialidad
+    WHERE MD.Especialidad = p_especialidad;
+    
+    RETURN v_cursor;
 END;
-/
 
+-----------------------------------------------------
 
---13. Eliminar Citas Pasadas
-CREATE OR REPLACE PROCEDURE EliminarCitasPasadas
-AS
+CREATE OR REPLACE FUNCTION calcular_ingresos_citas(p_fecha_inicio IN DATE, p_fecha_fin IN DATE)
+RETURN DECIMAL
+IS
+    v_total DECIMAL(10, 2);
 BEGIN
-   DELETE FROM Citas
-   WHERE FechaHoraCita < SYSTIMESTAMP;
+    SELECT SUM(Pago)
+    INTO v_total
+    FROM Pago
+    WHERE Fecha BETWEEN p_fecha_inicio AND p_fecha_fin;
+    
+    RETURN v_total;
 END;
-/
 
 
---14. Listar Citas Pendientes
-CREATE OR REPLACE FUNCTION ListarCitasPendientes
-RETURN SYS_REFCURSOR
-AS
-   v_Cursor SYS_REFCURSOR;
-BEGIN
-   OPEN v_Cursor FOR
-      SELECT * FROM REGISTRO_CITAS WHERE Estado = 'Pendiente';
-   RETURN v_Cursor;
-END;
-/
-
+-----------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------
---Realizar 10 paquetes
+--Realizar 10 paquetes------------------
 
---1. Paquete de Gesti髇 de Pacientes
+--1. Paquete de Gesti贸n de Pacientes
 
 CREATE OR REPLACE PACKAGE pkg_gestion_pacientes AS
     PROCEDURE insertar_paciente(p_id INT, p_cedula NUMBER, p_nombre VARCHAR2, p_apellidos VARCHAR2, p_direccion VARCHAR2, p_telefono NUMBER, p_alergias VARCHAR2, p_enfermedades VARCHAR2);
@@ -1026,7 +1222,7 @@ END pkg_gestion_pacientes;
 /
 
 
---2. Paquete de Gesti髇 de Citas
+--2. Paquete de Gesti贸n de Citas
 
 CREATE OR REPLACE PACKAGE pkg_gestion_citas AS
     PROCEDURE agendar_cita(p_id_cita NUMBER, p_hora TIMESTAMP, p_fecha DATE, p_consultorio VARCHAR2, p_id_paciente NUMBER, p_id_medico NUMBER);
@@ -1056,7 +1252,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_gestion_citas AS
 END pkg_gestion_citas;
 /
 
---3. Paquete de Gesti髇 de M閐icos
+--3. Paquete de Gesti贸n de M茅dicos
 
 CREATE OR REPLACE PACKAGE pkg_gestion_medicos AS
     PROCEDURE agregar_medico(p_id_medico INT, p_nombre VARCHAR2, p_apellidos VARCHAR2, p_cedula NUMBER, p_telefono NUMBER, p_turno VARCHAR2, p_especialidad VARCHAR2);
@@ -1086,7 +1282,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_gestion_medicos AS
 END pkg_gestion_medicos;
 /
 
---4. Paquete de Gesti髇 de Pagos
+--4. Paquete de Gesti贸n de Pagos
 
 CREATE OR REPLACE PACKAGE pkg_gestion_pagos AS
     PROCEDURE registrar_pago(p_id_recibo INT, p_fecha DATE, p_hora TIMESTAMP, p_id_paciente NUMBER, p_id_medico NUMBER, p_id_cita NUMBER, p_id_insumos NUMBER, p_monto DECIMAL);
@@ -1119,7 +1315,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_gestion_pagos AS
 END pkg_gestion_pagos;
 /
 
---5. Paquete de Gesti髇 de Insumos
+--5. Paquete de Gesti贸n de Insumos
 
 CREATE OR REPLACE PACKAGE pkg_gestion_insumos AS
     PROCEDURE agregar_insumo(p_id_insumos INT, p_nombre VARCHAR2, p_costo DECIMAL, p_ubicacion VARCHAR2, p_fecha_vencimiento DATE);
@@ -1152,7 +1348,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_gestion_insumos AS
 END pkg_gestion_insumos;
 /
 
---6. Paquete de Gesti髇 de Proveedores
+--6. Paquete de Gesti贸n de Proveedores
 
 CREATE OR REPLACE PACKAGE pkg_gestion_proveedores AS
     PROCEDURE agregar_proveedor(p_id_proveedor INT, p_nombre VARCHAR2, p_telefono VARCHAR2, p_direccion VARCHAR2, p_email VARCHAR2);
@@ -1164,7 +1360,7 @@ END pkg_gestion_proveedores;
 CREATE OR REPLACE PACKAGE BODY pkg_gestion_proveedores AS
     PROCEDURE agregar_proveedor(p_id_proveedor INT, p_nombre VARCHAR2, p_telefono VARCHAR2, p_direccion VARCHAR2, p_email VARCHAR2) IS
     BEGIN
-        INSERT INTO Proveedores(ProveedorID, Nombre, Tel閒ono, Direcci髇, Email)
+        INSERT INTO Proveedores(ProveedorID, Nombre, Tel茅fono, Direcci贸n, Email)
         VALUES (p_id_proveedor, p_nombre, p_telefono, p_direccion, p_email);
         COMMIT;
     END agregar_proveedor;
@@ -1172,7 +1368,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_gestion_proveedores AS
     PROCEDURE actualizar_proveedor(p_id_proveedor INT, p_nombre VARCHAR2, p_telefono VARCHAR2, p_direccion VARCHAR2, p_email VARCHAR2) IS
     BEGIN
         UPDATE Proveedores
-        SET Nombre = p_nombre, Tel閒ono = p_telefono, Direcci髇 = p_direccion, Email = p_email
+        SET Nombre = p_nombre, Tel茅fono = p_telefono, Direcci贸n = p_direccion, Email = p_email
         WHERE ProveedorID = p_id_proveedor;
         COMMIT;
     END actualizar_proveedor;
@@ -1185,7 +1381,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_gestion_proveedores AS
 END pkg_gestion_proveedores;
 /
 
---7. Paquete de Gesti髇 de Tratamientos
+--7. Paquete de Gesti贸n de Tratamientos
 
 CREATE OR REPLACE PACKAGE pkg_gestion_tratamientos AS
     PROCEDURE agregar_tratamiento(p_id_tratamiento NUMBER, p_nombre VARCHAR2, p_descripcion VARCHAR2, p_costo DECIMAL, p_id_insumo INT);
@@ -1218,7 +1414,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_gestion_tratamientos AS
 END pkg_gestion_tratamientos;
 /
 
---8. Paquete de Gesti髇 de Medicamentos
+--8. Paquete de Gesti贸n de Medicamentos
 
 CREATE OR REPLACE PACKAGE pkg_gestion_medicamentos AS
     PROCEDURE agregar_medicamento(p_medicamento_id INT, p_nombre VARCHAR2, p_tipo VARCHAR2, p_dosis VARCHAR2, p_descripcion VARCHAR2, p_proveedor_id INT);
@@ -1230,7 +1426,7 @@ END pkg_gestion_medicamentos;
 CREATE OR REPLACE PACKAGE BODY pkg_gestion_medicamentos AS
     PROCEDURE agregar_medicamento(p_medicamento_id INT, p_nombre VARCHAR2, p_tipo VARCHAR2, p_dosis VARCHAR2, p_descripcion VARCHAR2, p_proveedor_id INT) IS
     BEGIN
-        INSERT INTO Medicamentos(MedicamentoID, Nombre, Tipo, Dosis, Descripci髇, ProveedorID)
+        INSERT INTO Medicamentos(MedicamentoID, Nombre, Tipo, Dosis, Descripci贸n, ProveedorID)
         VALUES (p_medicamento_id, p_nombre, p_tipo, p_dosis, p_descripcion, p_proveedor_id);
         COMMIT;
     END agregar_medicamento;
@@ -1238,7 +1434,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_gestion_medicamentos AS
     PROCEDURE actualizar_medicamento(p_medicamento_id INT, p_nombre VARCHAR2, p_tipo VARCHAR2, p_dosis VARCHAR2, p_descripcion VARCHAR2, p_proveedor_id INT) IS
     BEGIN
         UPDATE Medicamentos
-        SET Nombre = p_nombre, Tipo = p_tipo, Dosis = p_dosis, Descripci髇 = p_descripcion, ProveedorID = p_proveedor_id
+        SET Nombre = p_nombre, Tipo = p_tipo, Dosis = p_dosis, Descripci贸n = p_descripcion, ProveedorID = p_proveedor_id
         WHERE MedicamentoID = p_medicamento_id;
         COMMIT;
     END actualizar_medicamento;
@@ -1278,7 +1474,7 @@ CREATE OR REPLACE PACKAGE BODY pkg_reportes AS
 END pkg_reportes;
 /
 
---10.  Paquete de Gesti髇 de Ex醡enes M閐icos
+--10.  Paquete de Gesti贸n de Ex谩menes M茅dicos
 
 CREATE OR REPLACE PACKAGE pkg_gestion_examenes AS
     PROCEDURE agregar_examen(p_id_examen NUMBER, p_tipo VARCHAR2, p_resultados VARCHAR2, p_fecha DATE, p_id_paciente NUMBER);
@@ -1312,10 +1508,10 @@ END pkg_gestion_examenes;
 /
 
 ----------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
 
 --Desarrollar 5 TRIGGERS
 
---1. Insetar paciente
 CREATE OR REPLACE TRIGGER trg_after_insert_paciente
 AFTER INSERT ON Paciente
 FOR EACH ROW
@@ -1324,62 +1520,50 @@ BEGIN
 END;
 /
 
+----------------------------------------------------------------------
 
---2. Insertar cita
-CREATE OR REPLACE TRIGGER Trig_Insertar_Cita
-BEFORE INSERT ON Registro_Citas
+CREATE OR REPLACE TRIGGER trg_after_insert_medico
+AFTER INSERT ON Medicos
 FOR EACH ROW
 BEGIN
-    IF :NEW.Fecha < SYSDATE THEN
-        RAISE_APPLICATION_ERROR(-20001, 'No se puede programar una cita en una fecha pasada.');
-    END IF;
+    DBMS_OUTPUT.PUT_LINE('Se ha insertado un nuevo m茅dico con ID: ' || :NEW.ID_Medico);
 END;
 /
 
---3. Notificar Nuevo Pago
-CREATE OR REPLACE TRIGGER Trig_Notificar_Nuevo_Pago
-AFTER INSERT ON Pago
+------------------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER trg_after_insert_cita
+AFTER INSERT ON Registro_Citas
 FOR EACH ROW
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Se ha registrado un nuevo pago con ID de recibo: ' || :NEW.ID_Recibo);
+    DBMS_OUTPUT.PUT_LINE('Se ha insertado una nueva cita con ID: ' || :NEW.ID_Cita);
 END;
 /
 
-SET SERVEROUTPUT ON;
+------------------------------------------------------------------------
 
-
---4. Restriccion Eliminacion de Medico
-CREATE OR REPLACE TRIGGER Trig_Restriccion_Eliminacion_Medico
-BEFORE DELETE ON Medicos
+CREATE OR REPLACE TRIGGER trg_after_insert_insumo
+AFTER INSERT ON Insumos
 FOR EACH ROW
-DECLARE
-    v_cantidad NUMBER;
 BEGIN
-    SELECT COUNT(*) INTO v_cantidad
-    FROM Registro_Citas
-    WHERE ID_Medico = :OLD.ID_Medico;
-
-    IF v_cantidad > 0 THEN
-        RAISE_APPLICATION_ERROR(-20001, 'No se puede eliminar el m閐ico porque tiene citas asociadas.');
-    END IF;
+    DBMS_OUTPUT.PUT_LINE('Se ha insertado un nuevo insumo con ID: ' || :NEW.ID_Insumos);
 END;
 /
 
---5. Actulizacion Ubicacion de Insumo
-CREATE OR REPLACE TRIGGER Trig_Actualizar_Ubicacion_Insumo
-BEFORE INSERT OR UPDATE ON Insumos
+
+-------------------------------------------------------------------------
+
+CREATE OR REPLACE TRIGGER trg_after_insert_tratamiento
+AFTER INSERT ON Tratamientos
 FOR EACH ROW
 BEGIN
-    IF :NEW.Fecha_Vencimiento < ADD_MONTHS(TRUNC(SYSDATE), 12) THEN
-        :NEW.Ubicacion := 'Almac閚 2';
-    END IF;
+    DBMS_OUTPUT.PUT_LINE('Se ha insertado un nuevo tratamiento con ID: ' || :NEW.ID_Tratamiento);
 END;
 /
-
 
 
 ----------------------------------------------------------------------------------------
-
+----------------------------------------------------------------------------------------
 -- 15 Cursores 
 SET SERVEROUTPUT ON;
 --1. Cursor Listado de Pacientes
@@ -1475,16 +1659,16 @@ END;
 
 CREATE OR REPLACE PROCEDURE Listar_Proveedores_Medicamentos AS
     CURSOR c_proveedores IS
-        SELECT DISTINCT Proveedores.Nombre, Proveedores.Tel閒ono, Proveedores.Direcci髇, Proveedores.Email
+        SELECT DISTINCT Proveedores.Nombre, Proveedores.Tel茅fono, Proveedores.Direcci贸n, Proveedores.Email
         FROM Proveedores
         JOIN Medicamentos ON Proveedores.ProveedorID = Medicamentos.ProveedorID;
     v_nombre Proveedores.Nombre%TYPE;
-    v_telefono Proveedores.Tel閒ono%TYPE;
-    v_direccion Proveedores.Direcci髇%TYPE;
+    v_telefono Proveedores.Tel茅fono%TYPE;
+    v_direccion Proveedores.Direcci贸n%TYPE;
     v_email Proveedores.Email%TYPE;
 BEGIN
     DBMS_OUTPUT.PUT_LINE('Listado de Proveedores de Medicamentos:');
-    DBMS_OUTPUT.PUT_LINE('NOMBRE | TEL蒄ONO | DIRECCI覰 | EMAIL');
+    DBMS_OUTPUT.PUT_LINE('NOMBRE | TEL脡FONO | DIRECCI脫N | EMAIL');
     DBMS_OUTPUT.PUT_LINE('----------------------------------------------------');
 
     OPEN c_proveedores;
@@ -1513,7 +1697,7 @@ CREATE OR REPLACE PROCEDURE Listar_Tratamientos_Por_Tipo(p_tipo_tratamiento VARC
     v_costo Tratamientos.Costo%TYPE;
 BEGIN
     DBMS_OUTPUT.PUT_LINE('Listado de Tratamientos por Tipo:');
-    DBMS_OUTPUT.PUT_LINE('ID_TRATAMIENTO | NOMBRE | DESCRIPCI覰 | COSTO');
+    DBMS_OUTPUT.PUT_LINE('ID_TRATAMIENTO | NOMBRE | DESCRIPCI脫N | COSTO');
     DBMS_OUTPUT.PUT_LINE('---------------------------------------------------------');
 
     OPEN c_tratamientos_tipo;
@@ -1529,7 +1713,7 @@ END;
 /
 
 
--- 6. Listado de Ex醡enes por Paciente
+-- 6. Listado de Ex谩menes por Paciente
 
 CREATE OR REPLACE PROCEDURE Listar_Examenes_Por_Paciente(p_ID_Paciente NUMBER) AS
     CURSOR c_examenes IS
@@ -1557,8 +1741,6 @@ BEGIN
     CLOSE c_examenes;
 END;
 /
-
-
 
 
 -- 7. Cursor Listado de tratamientos
@@ -1654,7 +1836,7 @@ BEGIN
 END;
 /
 
---11. Listado de Insumos Pr髕imos a Vencer
+--11. Listado de Insumos Pr贸ximos a Vencer
 CREATE OR REPLACE PROCEDURE Listar_Insumos_Proximos_Vencer AS
     CURSOR c_insumos_proximos IS
         SELECT ID_Insumos, Nombre_Insu, Fecha_Vencimiento
@@ -1664,7 +1846,7 @@ CREATE OR REPLACE PROCEDURE Listar_Insumos_Proximos_Vencer AS
     v_nombre_insumo Insumos.Nombre_Insu%TYPE;
     v_fecha_vencimiento Insumos.Fecha_Vencimiento%TYPE;
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Listado de Insumos Pr髕imos a Vencer:');
+    DBMS_OUTPUT.PUT_LINE('Listado de Insumos Pr贸ximos a Vencer:');
     DBMS_OUTPUT.PUT_LINE('ID_INSUMO | NOMBRE_INSUMO | FECHA_VENCIMIENTO');
     DBMS_OUTPUT.PUT_LINE('-------------------------------------------------');
 
@@ -1705,7 +1887,7 @@ CREATE OR REPLACE PROCEDURE Pacientes_Atendidos_Por_Dia AS
     v_dia Registro_Citas.Fecha%TYPE;
     v_total_pacientes NUMBER;
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Pacientes Atendidos por D韆:');
+    DBMS_OUTPUT.PUT_LINE('Pacientes Atendidos por D铆a:');
     DBMS_OUTPUT.PUT_LINE('------------------------------');
     OPEN c_pacientes_por_dia;
     LOOP
@@ -1732,14 +1914,14 @@ CREATE OR REPLACE PROCEDURE Pacientes_Atendidos_Por_Medico AS
     v_apellidos_medico Medicos.Apellidos_Medico%TYPE;
     v_total_pacientes NUMBER;
 BEGIN
-    DBMS_OUTPUT.PUT_LINE('Pacientes Atendidos por M閐ico:');
+    DBMS_OUTPUT.PUT_LINE('Pacientes Atendidos por M茅dico:');
     DBMS_OUTPUT.PUT_LINE('----------------------------------');
     OPEN c_pacientes_por_medico;
     LOOP
         FETCH c_pacientes_por_medico INTO v_id_medico, v_nombre_medico, v_apellidos_medico, v_total_pacientes;
         EXIT WHEN c_pacientes_por_medico%NOTFOUND;
         
-        DBMS_OUTPUT.PUT_LINE('M閐ico: ' || v_nombre_medico || ' ' || v_apellidos_medico || ' (ID: ' || v_id_medico || ')' || ' - Total de Pacientes Atendidos: ' || v_total_pacientes);
+        DBMS_OUTPUT.PUT_LINE('M茅dico: ' || v_nombre_medico || ' ' || v_apellidos_medico || ' (ID: ' || v_id_medico || ')' || ' - Total de Pacientes Atendidos: ' || v_total_pacientes);
     END LOOP;
     CLOSE c_pacientes_por_medico;
 END;
@@ -1759,7 +1941,7 @@ BEGIN
     LOOP
         FETCH PacientesEnfermedadesCursor INTO PacienteRec;
         EXIT WHEN PacientesEnfermedadesCursor%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE('ID: ' || PacienteRec.ID_Paciente || ', Nombre: ' || PacienteRec.Nom_Paciente || ' ' || PacienteRec.Apellidos_Paciente || ', Enfermedades Cr髇icas: ' || PacienteRec.Enferm_Cronicas);
+        DBMS_OUTPUT.PUT_LINE('ID: ' || PacienteRec.ID_Paciente || ', Nombre: ' || PacienteRec.Nom_Paciente || ' ' || PacienteRec.Apellidos_Paciente || ', Enfermedades Cr贸nicas: ' || PacienteRec.Enferm_Cronicas);
     END LOOP;
     CLOSE PacientesEnfermedadesCursor;
 EXCEPTION
@@ -1768,5 +1950,4 @@ EXCEPTION
 END;
 /
 ----------------------------------------------------------------------------------------
-
 
