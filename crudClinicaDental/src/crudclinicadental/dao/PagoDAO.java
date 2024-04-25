@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -124,23 +125,35 @@ public class PagoDAO {
         String [] columnas = {"ID","FECHA","HORA","ID PACIENTE","ID MEDICO","ID CITA","ID INSUMOS","PAGO"};
         model = new DefaultTableModel(null, columnas);
         
-        String sql = "{ call Listar_Pagos(?) }";
-        
-        String [] filas = new String[8];
-        Statement st = null;
+                CallableStatement cst = null;
         ResultSet rs = null;
         try {
-            st = con.createStatement();
-            rs = st.executeQuery(sql);
+            cst = con.prepareCall("{ call Listar_Pacientes(?) }");
+            cst.registerOutParameter(1, OracleTypes.CURSOR); 
+            cst.execute();
+            rs = (ResultSet) cst.getObject(1);
+
+            String[] filas = new String[8];
             while (rs.next()) {
                 for (int i = 0; i < 8; i++) {
-                    filas[i] = rs.getString(i+1);
+                    filas[i] = rs.getString(i + 1);
                 }
                 model.addRow(filas);
             }
             tabla.setModel(model);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA PAGOS: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cst != null) {
+                    cst.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     
