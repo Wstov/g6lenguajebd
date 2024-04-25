@@ -66,20 +66,20 @@ public class ExamenesDAO {
     CallableStatement cst = null;
     String mensaje = "";
     try {
-        // Preparar la llamada al procedimiento almacenado
+       
         String call = "{ call Actualizar_Examen(?, ?, ?, ?, ?) }";
         cst = con.prepareCall(call);
-        cst.setInt(5, exa.getIdExamenes());
-        cst.setString(1, exa.getTipoExamen());
-        cst.setString(2, exa.getResultado());
+        cst.setInt(1, exa.getIdExamenes());
+        cst.setString(2, exa.getTipoExamen());
+        cst.setString(3, exa.getResultado());
 
-        // Convertir la fecha de java.util.Date a java.sql.Date
+        
         java.util.Date fechaUtil = exa.getFecha();
-        long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
-        java.sql.Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
-        cst.setDate(3, fechaSql); // Establecer el java.sql.Date en el CallableStatement
+        long milliseconds = fechaUtil.getTime(); 
+        java.sql.Date fechaSql = new java.sql.Date(milliseconds); 
+        cst.setDate(4, fechaSql);
 
-        cst.setInt(4, exa.getIdPaciente());
+        cst.setInt(5, exa.getIdPaciente());
 
         // Ejecutar el procedimiento almacenado
         cst.execute();
@@ -90,7 +90,7 @@ public class ExamenesDAO {
     } finally {
         try {
             if (cst != null) {
-                cst.close(); // Asegurarse de cerrar el CallableStatement
+                cst.close(); 
             }
         } catch (SQLException e) {
             e.printStackTrace();

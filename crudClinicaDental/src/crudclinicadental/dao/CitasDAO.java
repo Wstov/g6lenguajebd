@@ -89,34 +89,41 @@ public class CitasDAO {
     String mensaje = "";
 
     try {
-        // Preparar la llamada al procedimiento almacenado
-        String call = "{ call Eliminar_Cita(?) }";
+        String call = "{ call Verificar_Cita(?, ?) }";
         cst = con.prepareCall(call);
-        cst.setInt(1, idCita); // Establecer el ID de la cita como parámetro
-
-        // Ejecutar el procedimiento almacenado
+        cst.setInt(1, idCita);
+        cst.registerOutParameter(2, Types.INTEGER);
         cst.execute();
 
-        // Verificar si el procedimiento ha afectado alguna fila
-        if (cst.getUpdateCount() > 0) {
-            mensaje = "ELIMINADA CORRECTAMENTE";
-        } else {
-            mensaje = "SE ELIMINÓ LA CITA CON EL ID: " + idCita;
-        }
-    } catch (SQLException e) {
-        mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
-    } finally {
-        try {
-            if (cst != null) {
-                cst.close(); // Asegurarse de cerrar el CallableStatement
+        int resultado = cst.getInt(2);
+        System.out.println("" + resultado);
+            if (resultado == 1) {
+                mensaje = "No se puede eliminar el cita dado que está vinculado a otros datos.\n"
+                        + "Por favor, revise los datos en Comentarios Citas.";
+            } else {
+                // Llamar al procedimiento almacenado para eliminar al médico
+                String eliminarCall = "{ call  Eliminar_Cita(?) }";
+                CallableStatement eliminarCst = con.prepareCall(eliminarCall);
+                eliminarCst.setInt(1, idCita); // Establecer el ID del médico a eliminar
+                eliminarCst.execute();
+                eliminarCst.close();
+                // ... Código para eliminar al médico ...
+                mensaje = "ELIMINADO CORRECTAMENTE";
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
+        } finally {
+            try {
+                if (cst != null) {
+                    cst.close(); // Asegúrate de cerrar el CallableStatement
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
+        return mensaje;
     }
 
-    return mensaje;
-}
 
     public void listarCita(Connection con, JTable tabla) {
         DefaultTableModel model;
