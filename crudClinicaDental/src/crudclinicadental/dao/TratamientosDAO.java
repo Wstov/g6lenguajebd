@@ -5,6 +5,7 @@
 package crudclinicadental.dao;
 
 import crudclinicadental.entity.TratamientoEntity;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.*;
@@ -13,6 +14,7 @@ import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -22,45 +24,62 @@ public class TratamientosDAO {
         
     private String mensaje="";
     
-    public String agregarTratamiento(Connection con, TratamientoEntity trata){
-        PreparedStatement pst = null;
-        String sql = "INSERT INTO TRATAMIENTOS (ID_TRATAMIENTO, NOMBRE, DESCRIPCION, COSTO, ID_INSUMO) "
-                + "VALUES(?,?,?,?,?)";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, trata.getIdTratamiento());
-            pst.setString(2, trata.getNombre());
-            pst.setString(3, trata.getDescripcion());
-            pst.setDouble(4, trata.getCosto());
-            pst.setInt(5, trata.getIdInsumo());
-            mensaje = "GUARDADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (SQLException e) {
-            mensaje = "NO SE GUARDO CORRECTAMENTE \n " + e.getMessage();
-        }
-        return mensaje;
-    }
+    public String agregarTratamiento(Connection con, TratamientoEntity trata) {
+    CallableStatement cst = null;
+    String mensaje = "";
+    try {
+        String call = "{ call Insertar_Tratamiento(?, ?, ?, ?, ?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, trata.getIdTratamiento());
+        cst.setString(2, trata.getNombre());
+        cst.setString(3, trata.getDescripcion());
+        cst.setBigDecimal(4, BigDecimal.valueOf(trata.getCosto()));  // Usa BigDecimal para DECIMAL
+        cst.setInt(5, trata.getIdInsumo());
 
-    public String modificarTratamiento(Connection con,  TratamientoEntity trata) {
-        PreparedStatement pst = null;
-        String sql = "UPDATE TRATAMIENTOS SET NOMBRE = ?, DESCRIPCION = ?, COSTO = ?, ID_INSUMO = ?"
-                + "WHERE ID_TRATAMIENTO = ?";
+        cst.executeUpdate();  // 'executeUpdate' se usa para operaciones de inserción, actualización y eliminación.
+        mensaje = "Tratamiento guardado correctamente.";
+    } catch (SQLException e) {
+        mensaje = "No se guardó correctamente el tratamiento: " + e.getMessage();
+    } finally {
         try {
-            pst = con.prepareStatement(sql);
-            pst.setString(1, trata.getNombre());
-            pst.setString(2, trata.getDescripcion());
-            pst.setDouble(3, trata.getCosto());
-            pst.setInt(4, trata.getIdInsumo());
-            pst.setInt(5, trata.getIdTratamiento());
-            mensaje = "ACTUALIZADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (Exception e) {
-            mensaje = "NO SE ACTUALIZO CORRECTAMENTE \n " + e.getMessage();
+            if (cst != null) cst.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return mensaje;
     }
+    return mensaje;
+}
+
+
+    public String modificarTratamiento(Connection con, TratamientoEntity trata) {
+    CallableStatement cst = null;
+    String mensaje = "";
+    try {
+       
+        String call = "{ call Actualizar_Tratamiento(?, ?, ?, ?, ?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, trata.getIdTratamiento());
+        cst.setString(2, trata.getNombre());
+        cst.setString(3, trata.getDescripcion());
+        cst.setBigDecimal(4, BigDecimal.valueOf(trata.getCosto()));
+        cst.setInt(5, trata.getIdInsumo());
+
+        
+        cst.executeUpdate();  
+        mensaje = "Tratamiento actualizado correctamente.";
+    } catch (SQLException e) {
+        mensaje = "No se actualizó correctamente el tratamiento: \n" + e.getMessage();
+    } finally {
+     
+        try {
+            if (cst != null) cst.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    return mensaje;
+}
+
 
     public String eliminarTratamiento(Connection con, int idTratamiento) {
     CallableStatement cst = null;
@@ -93,29 +112,39 @@ public class TratamientosDAO {
 
 
     public void listarTratamiento(Connection con, JTable tabla) {
-        DefaultTableModel model;
-        String [] columnas = {"ID","NOMBRE","DESCRIPCION","COSTO","ID_INSUMO"};
-        model = new DefaultTableModel(null, columnas);
-        
-        String sql = "SELECT * FROM TRATAMIENTOS ORDER BY ID_TRATAMIENTO";
-        
-        String [] filas = new String[5];
-        Statement st = null;
-        ResultSet rs = null;
-        try {
-            st = con.createStatement();
-            rs = st.executeQuery(sql);
-            while (rs.next()) {
-                for (int i = 0; i < 5; i++) {
-                    filas[i] = rs.getString(i+1);
-                }
-                model.addRow(filas);
+    DefaultTableModel model;
+    String[] columnas = {"ID", "NOMBRE", "DESCRIPCION", "COSTO", "ID_INSUMO"};
+    model = new DefaultTableModel(null, columnas);
+
+    CallableStatement cst = null;
+    ResultSet rs = null;
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        cst = con.prepareCall("{ call Listar_Tratamientos(?) }");
+        cst.registerOutParameter(1, OracleTypes.CURSOR); // Registrar el parámetro de salida del cursor
+        cst.execute();
+        rs = (ResultSet) cst.getObject(1); // Obtener el conjunto de resultados del cursor
+
+        String[] filas = new String[columnas.length];
+        while (rs.next()) {
+            for (int i = 0; i < columnas.length; i++) {
+                filas[i] = rs.getString(i + 1);
             }
-            tabla.setModel(model);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+            model.addRow(filas);
+        }
+        tabla.setModel(model);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "No se puede listar la tabla: " + e.getMessage());
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (cst != null) cst.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+}
+
     
     public int getMaxID(Connection con) {
         int id = 0;
