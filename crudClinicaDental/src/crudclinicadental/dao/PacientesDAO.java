@@ -100,7 +100,7 @@ public class PacientesDAO {
             eliminarCst.setInt(1, id); 
             eliminarCst.execute();
             eliminarCst.close();
-            mensaje = "Paciente eliminado correctamente.";
+            mensaje = "PACIENTE ELIMINADO CORRECTAMENTE.";
         }
     } catch (SQLException e) {
         mensaje = "No se pudo eliminar el paciente: \n" + e.getMessage();
@@ -118,7 +118,7 @@ public class PacientesDAO {
 
 
     public void listarPaciente(Connection con, JTable tabla) {
-                DefaultTableModel model;
+        DefaultTableModel model;
         String [] columnas = {"ID","CEDULA","NOMBRE","APELLIDO","DIRECCION","TELEFONO","ALERGIAS", "EFERMEDAD"};
         model = new DefaultTableModel(null, columnas);
         

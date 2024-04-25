@@ -9,6 +9,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import oracle.jdbc.OracleTypes;
 /**
  *
  * @author Wstov
@@ -47,30 +48,38 @@ public class CitasDAO {
     }
 
     public String modificarCita(Connection con, CitasEntity citasEntity) {
-        PreparedStatement pst = null;
-        String sql = "{call Modificar_Registro_Citas(?, ?, ?, ?, ?, ?)}";
+        CallableStatement cst = null;
+        String sql = "{call Actualizar_Registro_Citas(?, ?, ?, ?, ?, ?)}";
         try {
-            pst = con.prepareStatement(sql);
-
+            cst = con.prepareCall(sql);
+            cst.setInt(1, citasEntity.getIdCita());
             java.util.Date horaUtil = citasEntity.getHora();
             long millisecondsHora = horaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
             java.sql.Date horaSql = new java.sql.Date(millisecondsHora); // Crear un java.sql.Date con los milisegundos
-            pst.setDate(1, horaSql); // Establecer el java.sql.Date en el PreparedStatement
+            cst.setDate(2, horaSql); // Establecer el java.sql.Date en el PreparedStatement
 
             java.util.Date fechaUtil = citasEntity.getFecha();
             long milliseconds = fechaUtil.getTime(); // Obtener la cantidad de milisegundos desde el epoch
             java.sql.Date fechaSql = new java.sql.Date(milliseconds); // Crear un java.sql.Date con los milisegundos
-            pst.setDate(2, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
+            cst.setDate(3, fechaSql); // Establecer el java.sql.Date en el PreparedStatement
 
-            pst.setString(3, citasEntity.getConsultorio());
-            pst.setInt(4, citasEntity.getIdpaciente());
-            pst.setInt(5, citasEntity.getIdMedico());
-            pst.setInt(6, citasEntity.getIdCita());
-            mensaje = "ACTUALIZADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
+            cst.setString(4, citasEntity.getConsultorio());
+            cst.setInt(5, citasEntity.getIdpaciente());
+            cst.setInt(6, citasEntity.getIdMedico());
+
+            mensaje = "CITA ACTUALIZADA CORRECTAMENTE";
+            cst.execute();
+            cst.close();
         } catch (Exception e) {
             mensaje = "NO SE PUDO ACTUALIZAR CORRECTAMENTE \n " + e.getMessage();
+        } finally {
+            try {
+                if (cst != null) {
+                    cst.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return mensaje;
     }
@@ -92,7 +101,7 @@ public class CitasDAO {
         if (cst.getUpdateCount() > 0) {
             mensaje = "ELIMINADA CORRECTAMENTE";
         } else {
-            mensaje = "NO SE ENCONTRÓ NINGUNA CITA CON ID " + idCita;
+            mensaje = "SE ELIMINÓ LA CITA CON EL ID: " + idCita;
         }
     } catch (SQLException e) {
         mensaje = "NO SE ELIMINÓ CORRECTAMENTE \n" + e.getMessage();
@@ -111,26 +120,38 @@ public class CitasDAO {
 
     public void listarCita(Connection con, JTable tabla) {
         DefaultTableModel model;
-        String [] columnas = {"ID","HORA","FECHA","CONSULTORIO","ID PACIENTE","ID MEDICO"};
+        String[] columnas = {"ID", "HORA", "FECHA", "CONSULTORIO", "ID PACIENTE", "ID MEDICO"};
         model = new DefaultTableModel(null, columnas);
-        
-        String sql = "{call Listar_Citas(?)}";
-        
-        String [] filas = new String[6];
-        Statement st = null;
+
+        CallableStatement cst = null;
         ResultSet rs = null;
         try {
-            st = con.createStatement();
-            rs = st.executeQuery(sql);
+            cst = con.prepareCall("{ call Listar_Registro_Citas(?) }");
+            cst.registerOutParameter(1, OracleTypes.CURSOR);
+            cst.execute();
+            rs = (ResultSet) cst.getObject(1);
+
+            String[] filas = new String[6];
             while (rs.next()) {
                 for (int i = 0; i < 6; i++) {
-                    filas[i] = rs.getString(i+1);
+                    filas[i] = rs.getString(i + 1);
                 }
                 model.addRow(filas);
             }
             tabla.setModel(model);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA CITAS: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cst != null) {
+                    cst.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     
