@@ -1,3 +1,5 @@
 /crudClinicaDental/nbproject/private/
 /crudClinicaDental/build/
 /crudClinicaDental/dist/
+
+crudClinicaDental/src/crudclinicadental/db/Conexion.java
