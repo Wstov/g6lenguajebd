@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import java.sql.*;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -19,46 +20,72 @@ public class ProveedoresDAO {
 
     private String mensaje = "";
 
+    
     public String agregarProveedores(Connection con, ProveedoresEntity proveeEntity) {
-        PreparedStatement pst = null;
-        String sql = "{ call Registrar_Proveedor(?,?,?,?,?,?,?) }";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, proveeEntity.getIdProveedor());
-            pst.setString(2, proveeEntity.getNombre());
-            pst.setString(3, proveeEntity.getTelefono());
-            pst.setString(4, proveeEntity.getDireccion());
-            pst.setString(5, proveeEntity.getEmail());
+    CallableStatement cst = null;
+    String mensaje = "";
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        String call = "{ call Insertar_Proveedor(?, ?, ?, ?, ?) }";
+        cst = con.prepareCall(call);
+        cst.setInt(1, proveeEntity.getIdProveedor());
+        cst.setString(2, proveeEntity.getNombre());
+        cst.setString(3, proveeEntity.getTelefono());
+        cst.setString(4, proveeEntity.getDireccion());
+        cst.setString(5, proveeEntity.getEmail());
 
-            mensaje = "EL PROVEEDOR GUARDADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (Exception e) {
-            mensaje = "EL PROVEEDOR NO SE GUARDO CORRECTAMENTE \n " + e.getMessage();
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+        mensaje = "El proveedor fue guardado correctamente.";
+    } catch (SQLException e) {
+        mensaje = "El proveedor no se guardó correctamente: " + e.getMessage();
+        e.printStackTrace();
+    } finally {
+        try {
+            if (cst != null) {
+                cst.close(); // Asegurarse de cerrar el CallableStatement
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return mensaje;
     }
+    return mensaje;
+}
+
+
 
     public String modificarProveedores(Connection con, ProveedoresEntity proveeEntity) {
-        PreparedStatement pst = null;
-        String sql = "UPDATE PROVEEDORES SET NOMBRE = ?, TELÉFONO = ?, DIRECCIÓN = ?, EMAIL = ?"
-                + "WHERE PROVEEDORID = ?";
-        try {
-            pst = con.prepareStatement(sql);
-            pst.setString(1, proveeEntity.getNombre());
-            pst.setString(2, proveeEntity.getTelefono());
-            pst.setString(3, proveeEntity.getDireccion());
-            pst.setString(4, proveeEntity.getEmail());
-            pst.setInt(5, proveeEntity.getIdProveedor());
+    CallableStatement cst = null;
+    String mensaje = "";
+    try {
+        // Preparar la llamada al procedimiento almacenado
+        String call = "{ call Actualizar_Proveedor(?, ?, ?, ?, ?) }";
+        cst = con.prepareCall(call);
+        // Establecer los parámetros del procedimiento almacenado
+        cst.setInt(1, proveeEntity.getIdProveedor());
+        cst.setString(2, proveeEntity.getNombre());
+        cst.setString(3, proveeEntity.getTelefono());
+        cst.setString(4, proveeEntity.getDireccion());
+        cst.setString(5, proveeEntity.getEmail());
 
-            mensaje = "El PROVEEDOR SE GUARDO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
-        } catch (Exception e) {
-            mensaje = "EL PROVEEDORES NO SE GUARDO CORRECTAMENTE \n " + e.getMessage();
+        // Ejecutar el procedimiento almacenado
+        cst.execute();
+        mensaje = "El proveedor fue actualizado correctamente.";
+    } catch (SQLException e) {
+        mensaje = "El proveedor no se actualizó correctamente: \n" + e.getMessage();
+        e.printStackTrace();
+    } finally {
+        // Cerrar el CallableStatement
+        try {
+            if (cst != null) cst.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-        return mensaje;
     }
+    return mensaje;
+}
+
+    
 
    public String eliminarProveedores(Connection con, int idProveedor) {
     CallableStatement cst = null;
@@ -106,30 +133,39 @@ public class ProveedoresDAO {
     return mensaje;
 }
 
-    public void listarProveedores(Connection con, JTable tabla) {
-                DefaultTableModel model;
-        String [] columnas = {"ID","NOMBRE","TELEFONO","DIRECCION","EMAIL"};
-        model = new DefaultTableModel(null, columnas);
-        
-        String sql = "SELECT * FROM PROVEEDORES ORDER BY PROVEEDORID";
-        
-        String [] filas = new String[5];
-        Statement st = null;
-        ResultSet rs = null;
-        try {
-            st = con.createStatement();
-            rs = st.executeQuery(sql);
-            while (rs.next()) {
-                for (int i = 0; i < 5; i++) {
-                    filas[i] = rs.getString(i+1);
-                }
-                model.addRow(filas);
+   public void listarProveedores(Connection con, JTable tabla) {
+    DefaultTableModel model;
+    String[] columnas = {"ID", "NOMBRE", "TELÉFONO", "DIRECCIÓN", "EMAIL"};
+    model = new DefaultTableModel(null, columnas);
+
+    CallableStatement cst = null;
+    ResultSet rs = null;
+    try {
+        cst = con.prepareCall("{ call Listar_Proveedores(?) }");
+        cst.registerOutParameter(1, OracleTypes.CURSOR); // Registrar el parámetro de salida del cursor
+        cst.execute();
+        rs = (ResultSet) cst.getObject(1); // Obtener el conjunto de resultados del cursor
+
+        String[] filas = new String[5];
+        while (rs.next()) {
+            for (int i = 0; i < 5; i++) {
+                filas[i] = rs.getString(i + 1);
             }
-            tabla.setModel(model);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+            model.addRow(filas);
+        }
+        tabla.setModel(model);
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(null, "No se puede listar la tabla: " + e.getMessage());
+    } finally {
+        try {
+            if (rs != null) rs.close();
+            if (cst != null) cst.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+}
+
 
     public int getMaxID(Connection con) {
         int id = 0;
