@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SpringLayout;
 import javax.swing.table.DefaultTableModel;
+import oracle.jdbc.OracleTypes;
 /**
  *
  * @author Wstov
@@ -42,50 +43,72 @@ public class MedicoDAO {
     }
 
     public String modificarMedico(Connection con, MedicoEntity med) {
-        PreparedStatement pst = null;
+        CallableStatement cst = null;
         String sql = "{ call Actualizar_Medico(?,?,?,?,?,?,?) }";
         try {
-            pst = con.prepareStatement(sql);
-            pst.setString(1, med.getNombre());
-            pst.setString(2, med.getApellido());
-            pst.setInt(3, med.getCedula());
-            pst.setInt(4, med.getTelefono());
-            pst.setString(5, med.getTurno());
-            pst.setString(6, med.getEspecialidad());
-            pst.setInt(7, med.getIdMedico());
+            cst = con.prepareCall(sql);
+            cst.setInt(1, med.getIdMedico());
+            cst.setString(2, med.getNombre());
+            cst.setString(3, med.getApellido());
+            cst.setInt(4, med.getCedula());
+            cst.setInt(5, med.getTelefono());
+            cst.setString(6, med.getTurno());
+            cst.setString(7, med.getEspecialidad());
+            
             mensaje = "ACTUALIZADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
+            cst.execute();
         } catch (Exception e) {
-            mensaje = "NO SE ACTUALIZAR CORRECTAMENTE \n " + e.getMessage();
+            mensaje = "NO SE ACTUALIZÓ CORRECTAMENTE \n " + e.getMessage();
+        } finally {
+        try {
+            if (cst != null) {
+                cst.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
+    }
         return mensaje;
     }
 
     public void listarMedico(Connection con, JTable tabla) {
         DefaultTableModel model;
-        String [] columnas = {"ID","NOMBRE","APELLIDO","CEDULA","TELEFONO","TURNO","ESPECIALIDAD"};
+        String[] columnas = {"ID", "NOMBRE", "APELLIDO", "CEDULA", "TELEFONO", "TURNO", "ESPECIALIDAD"};
         model = new DefaultTableModel(null, columnas);
-        
-        String sql = "{ call Listar_Medicos(?) }";
-        
-        String [] filas = new String[7];
-        Statement st = null;
+
+        CallableStatement cst = null;
         ResultSet rs = null;
         try {
-            st = con.createStatement();
-            rs = st.executeQuery(sql);
+            cst = con.prepareCall("{ call Listar_Medicos(?) }");
+            cst.registerOutParameter(1, OracleTypes.CURSOR); 
+            cst.execute();
+            rs = (ResultSet) cst.getObject(1);
+
+            String[] filas = new String[7];
             while (rs.next()) {
                 for (int i = 0; i < 7; i++) {
-                    filas[i] = rs.getString(i+1);
+                    filas[i] = rs.getString(i + 1);
                 }
                 model.addRow(filas);
             }
             tabla.setModel(model);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA MEDICOS: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cst != null) {
+                    cst.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+
     
     public int getMaxID(Connection con) {
         int id = 0;

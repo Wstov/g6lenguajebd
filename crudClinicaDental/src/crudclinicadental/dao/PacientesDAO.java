@@ -14,6 +14,7 @@ import java.sql.*;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import oracle.jdbc.OracleTypes;
 
 /**
  *
@@ -45,23 +46,31 @@ public class PacientesDAO {
     }
 
     public String modificarPaciente(Connection con, PacienteEntiy pacienteEntity) {
-        PreparedStatement pst = null;
+        CallableStatement cst = null;
         String sql = "{ call Actualizar_Paciente(?,?,?,?,?,?,?,?) }";
+        
         try {
-            pst = con.prepareStatement(sql);
-            pst.setInt(1, pacienteEntity.getCedula());
-            pst.setString(2, pacienteEntity.getNombre());
-            pst.setString(3, pacienteEntity.getApellidos());
-            pst.setString(4, pacienteEntity.getDireccion());
-            pst.setInt(5, pacienteEntity.getTelefono());
-            pst.setString(6, pacienteEntity.getAlegias());
-            pst.setString(7, pacienteEntity.getEnfermedad());
-            pst.setInt(8, pacienteEntity.getIdPaciente());
+            cst = con.prepareCall(sql);
+            cst.setInt(1, pacienteEntity.getIdPaciente());
+            cst.setInt(2, pacienteEntity.getCedula());
+            cst.setString(3, pacienteEntity.getNombre());
+            cst.setString(4, pacienteEntity.getApellidos());
+            cst.setString(5, pacienteEntity.getDireccion());
+            cst.setInt(6, pacienteEntity.getTelefono());
+            cst.setString(7, pacienteEntity.getAlegias());
+            cst.setString(8, pacienteEntity.getEnfermedad());
             mensaje = "PACIENTE GUARDADO CORRECTAMENTE";
-            pst.execute();
-            pst.close();
+            cst.execute();
         } catch (Exception e) {
             mensaje = "EL PACIENTE NO SE GUARDO CORRECTAMENTE \n " + e.getMessage();
+        } finally {
+            try {
+                if (cst != null) {
+                    cst.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         return mensaje;
     }
@@ -77,10 +86,8 @@ public class PacientesDAO {
         cst.setInt(1, id); // Establecer el ID del paciente a verificar
         cst.registerOutParameter(2, Types.INTEGER); // Parámetro de salida para el resultado
 
-        
         cst.execute();
 
-       
         int resultado = cst.getInt(2);
 
        
@@ -115,23 +122,35 @@ public class PacientesDAO {
         String [] columnas = {"ID","CEDULA","NOMBRE","APELLIDO","DIRECCION","TELEFONO","ALERGIAS", "EFERMEDAD"};
         model = new DefaultTableModel(null, columnas);
         
-        String sql = "{ call Listar_Paciente(?) }";
-        
-        String [] filas = new String[8];
-        Statement st = null;
+        CallableStatement cst = null;
         ResultSet rs = null;
         try {
-            st = con.createStatement();
-            rs = st.executeQuery(sql);
+            cst = con.prepareCall("{ call Listar_Pacientes(?) }");
+            cst.registerOutParameter(1, OracleTypes.CURSOR); 
+            cst.execute();
+            rs = (ResultSet) cst.getObject(1);
+
+            String[] filas = new String[8];
             while (rs.next()) {
                 for (int i = 0; i < 8; i++) {
-                    filas[i] = rs.getString(i+1);
+                    filas[i] = rs.getString(i + 1);
                 }
                 model.addRow(filas);
             }
             tabla.setModel(model);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA PACIENTES: " + e.getMessage());
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+                if (cst != null) {
+                    cst.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
     

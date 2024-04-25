@@ -21,8 +21,7 @@ public class ProveedoresDAO {
 
     public String agregarProveedores(Connection con, ProveedoresEntity proveeEntity) {
         PreparedStatement pst = null;
-        String sql = "INSERT INTO PROVEEDORES (PROVEEDORID, NOMBRE, TELÉFONO, DIRECCIÓN, EMAIL) "
-                + "VALUES(?,?,?,?,?)";
+        String sql = "{ call Registrar_Proveedor(?,?,?,?,?,?,?) }";
         try {
             pst = con.prepareStatement(sql);
             pst.setInt(1, proveeEntity.getIdProveedor());

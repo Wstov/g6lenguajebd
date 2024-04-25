@@ -11,7 +11,6 @@ import java.sql.*;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -67,7 +66,7 @@ public class InsumosDAO {
         cst.setDate(5, fechaSql);
 
         cst.execute();
-        mensaje = "Actualizado correctamente";
+        mensaje = "ACTUALIZADO CORRECTAMENTE";
     } catch (SQLException e) {
         mensaje = "No se actualizó correctamente \n" + e.getMessage();
     } finally {
@@ -149,7 +148,7 @@ public String eliminarInsumo(Connection con, int id) {
         }
         tabla.setModel(model);
     } catch (SQLException e) {
-        JOptionPane.showMessageDialog(null, "No se puede listar la tabla: " + e.getMessage());
+        JOptionPane.showMessageDialog(null, "NO SE PUEDE LISTAR LA TABLA INSUMOS: " + e.getMessage());
     } finally {
         try {
             if (rs != null) rs.close();
